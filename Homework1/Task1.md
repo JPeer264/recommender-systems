@@ -6,6 +6,10 @@ crawler - get recent tracks
 
 Fetch API with 500 users and 5000 unique artists
 
+### How?
+
+We loop over the given users and send an API request each. When we receive the data we save the artists in a global array. An `if` statement will check if the minimum amount of artists is reached.
+
 ## Splitted task 2 (Sentence 4)
 
 2 files:
