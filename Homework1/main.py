@@ -77,13 +77,14 @@ def limit_user(all_users, maxAmountOfUsers):
         # Get artist-history from users via LastFM-API call
         # urllib.quote = Replace special characters in string
         top_artists = lfm_api_user_call("gettopartists", urllib.quote(user))
-        artists     = top_artists['topartists']['artist']
+
+        # Get artists
+        artists = top_artists['topartists']['artist']
 
         # Create list of artist-names (all_artists) by iterating
         # through list with all artist information (artists)
         for artist in artists:
             artist_name = artist['name']
-
             all_artist_names.append(artist_name)
 
         # Fill list with users
@@ -97,7 +98,6 @@ def limit_user(all_users, maxAmountOfUsers):
         if len(all_artist_names) >= 50 and len(limited_users) >= maxAmountOfUsers:
             print len(all_artist_names)
             print len(limited_users)
-
             return limited_users
 # /limit_user
 
@@ -110,14 +110,12 @@ def get_unique_items(iterable):
 
     :return: an array with no duplicates
     """
-    seen   = set()
+    seen = set()
     result = []
-
     for item in iterable:
         if item not in seen:
             seen.add(item)
             result.append(item)
-
     return result
 # /get_unique_items
 
