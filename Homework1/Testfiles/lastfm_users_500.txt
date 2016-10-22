@@ -1,0 +1,500 @@
+384	Supascoopa	UK	35	m
+1206	the55		-1	n
+2622	framivimi		-1	
+2732	guartrapa		-1	n
+3653	badmusik	UK	31	m
+4813	lukievan	US	43	m
+4830	kalkulator_riot		-1	n
+5069	antifuchs	AT	30	m
+5213	dtnl	UK	37	n
+5834	ApolaKipso	DE	-1	
+6958	darcybrown	US	36	m
+7687	fast74	IE	-1	m
+10081	pervirave	DE	-1	f
+10879	nada		-1	n
+11297	acom	DE	31	n
+12619	fauste		-1	n
+14308	Soulshiiine	BR	31	m
+14829	jodub		51	m
+15067	ighbal	ES	38	m
+15434	c3o	AT	28	n
+15541	joelb53		-1	n
+16537	PeppoVal	IT	45	m
+17970	antsfightdirty	AU	29	m
+1000450	aubilenon	US	36	m
+1000557	carcino		-1	n
+1000651	atomicvampire	US	33	m
+1000842	gagravarr		-1	
+1001190	gbooker	UK	48	m
+1001647	Jaymz	NL	-1	
+1001711	Laekoth	US	28	m
+1001713	Berto	US	30	m
+1002285	lochutus		-1	n
+1002638	evilpuppetmaster		-1	n
+1002693	Brandon	US	36	n
+1002697	LinuxPeach		-1	n
+1002905	Stan	CA	-1	m
+1003045	Excalibre	US	28	n
+1003134	KingDaveRa	UK	29	m
+1003798	hilly	UK	33	m
+1003910	Modnar		-1	
+1004064	Tokelil	DK	31	m
+1004584	djkor	RU	30	m
+1005171	horsecow	UK	26	
+1005261	Zabby		28	m
+1006640	corrupttiki		-1	
+1007115	Morrigan	US	29	f
+1007118	Vaidah	US	30	f
+1007377	jk	UK	36	m
+1007420	BenniP	DE	27	m
+1007547	deviloki	BR	35	m
+1008023	MadPunk	CH	27	m
+1008113	cykeichan	JP	37	m
+1008332	homis	US	-1	m
+1008363	jonny2510	UK	-1	m
+1008551	gregmay	US	30	m
+1008797	Macro	US	22	m
+1009181	redpola	UK	40	m
+1009451	burninator	US	25	m
+1009632	Riot_Nrrrd	US	53	m
+1009940	Advena	NO	-1	f
+1010145	agent-blue	UK	29	m
+1012517	Alec	UK	27	m
+1014744	batboy	US	-1	m
+1015392	dougwinter	UK	39	m
+1016310	Strangelove	BE	26	m
+1016475	induce	SE	28	m
+1016760	99centmenu	US	26	m
+1017873	adisan		-1	m
+1018238	drauks	SE	31	m
+1018480	Phasis	DK	36	m
+1018542	foozmeat	US	37	m
+1021097	bifi	DE	27	m
+1021445	GrantGochnauer	US	33	m
+1022229	therealmonkeyboy	UK	33	m
+1022990	ajpiano		26	
+1023115	asbestospiping	UK	30	m
+1023595	dead666		27	n
+1023623	Yatahaze	CA	26	m
+1023656	frischling	FI	-1	m
+1023672	frail_words_collapse	AU	24	f
+1023863	Zlayed	UK	32	m
+1023989	cowabungabe	US	27	m
+1024190	Paranoia	UK	24	m
+1024743	AdmiralMemo	US	30	m
+1025350	gluid	HU	28	m
+1026493	xii	US	29	m
+1029562	Lizzard	DE	-1	m
+1029742	Injektilo623	US	21	m
+1031170	danielascrima		26	f
+1031637	FootFun	US	-1	m
+1032363	Swanray		-1	n
+1034770	kattefisken	NO	25	m
+1035006	JoFanny	UK	25	f
+1035020	Agento_Orange	UK	27	m
+1035640	Magicmags		-1	
+1036286	AHM	US	-1	
+1036845	arevelation		-1	n
+1037776	alkaholikc	CA	27	m
+1038111	Red_Eye	DE	26	m
+1038343	Teh		-1	n
+1038987	dooberfig		29	n
+1038997	droppedD	US	28	m
+1039046	chrisg	CA	36	m
+1039205	xevious	UK	35	m
+1039249	cellarchild	DE	26	f
+1039355	LewisDodgson	US	24	m
+1039579	RemyDWD	US	32	m
+1040397	JungleR	RU	31	m
+1040458	asubbota	AQ	28	m
+1040533	hhh	RU	-1	n
+1040586	Mapa	RU	29	f
+1040674	Atop		35	m
+1040923	BeRaN	CZ	30	m
+1040986	6sic6	DE	25	m
+1041209	ThePsycho	DE	30	m
+1041403	knut	NO	26	m
+1041758	milburn		-1	
+1041908	SpockMX	US	23	m
+1042244	efreetales	BR	-1	m
+1042762	Persephone	US	27	f
+1042860	Alinda	NL	47	f
+1042903	bedlam	US	94	m
+1042995	limeonaire	US	-1	n
+1044219	joy01	HU	26	m
+1044302	kjedi	US	26	m
+1044535	osiris8	SE	38	m
+1044661	Doggland	SE	33	n
+1044761	Hanners	UK	32	m
+1044776	SuperDOS	SE	28	m
+1044912	Foxke	NL	30	m
+1045130	naomijade	UK	-1	f
+1045479	rakers	NL	35	m
+1045501	hatr3d	KH	24	n
+1045587	d0rr	LV	26	m
+1045654	thedollaramount	US	26	n
+1045706	langtall	NL	37	m
+1045707	marlowe_is_dead	AQ	0	m
+1045824	Lapino	BE	28	m
+1046066	A1win	FI	27	m
+1046183	funky		31	m
+1046264	Asano	JP	37	f
+1046644	ff3j	US	27	m
+1046659	Tw33Q	NL	27	m
+1046678	tenrapid	ZA	35	m
+1046993	xtrogoff	ES	25	m
+1047533	herman78	RU	33	m
+1047671	roboppy	US	26	f
+1047699	tacticus	AU	27	m
+1047729	MetalWolf	NL	26	f
+1048016	par	SE	29	m
+1048040	einraz	US	26	m
+1048362	followtheformat	UK	26	m
+1048837	MilkyGorelick	IL	25	m
+1049078	mercadal	US	30	m
+1049203	hjelm		-1	n
+1049298	int3	FI	47	m
+1049522	sethtisue	US	40	m
+1049656	drrnwbb	FI	35	m
+1049846	blaise	NL	26	m
+1050187	Quessain	NL	25	n
+1051870	LloydSkoyd	US	29	m
+1052285	Pirko	SE	31	m
+1052995	chunkywizard	UK	42	m
+1053214	krash	CA	-1	m
+1053550	lKirbyl	DE	27	m
+1053592	joeynotjoe	US	28	m
+1053633	alanpt	NZ	35	m
+1054287	NightGeometry	UK	-1	n
+1054663	stickwithjosh	US	30	m
+1054941	BorderLinez	DE	31	m
+1054946	T-Storm	AT	27	m
+1055118	miraga715	US	34	m
+1055281	Macs	DE	25	m
+1056506	chiclet	US	30	f
+1056594	bartholos	DE	25	m
+1056595	cut_your_ribbon		-1	
+1056687	dib	UA	28	m
+1056935	Madbob	UK	30	m
+1057326	aquaguard03	US	27	m
+1057727	jenny852	UK	26	f
+1057829	Aztvgl	NL	-1	m
+1058317	choonmonger	UK	47	n
+1058776	Harkov	NL	26	m
+1058807	AJMouse	NL	27	m
+1058814	Vlasbaard	NL	34	m
+1058825	Johanvandijk	NL	31	m
+1059156	asesina	US	25	f
+1060877	cellgfx	NZ	35	m
+1061441	apu1nahasa		30	m
+1062818	poziomka	US	26	f
+1062888	Matt025	US	-1	m
+1062956	moonmonkey		-1	m
+1063094	TBhound95	US	31	m
+1063392	Werdz	US	27	m
+1063816	ScrObot		33	m
+1063836	gffan59	US	33	m
+1063973	gotroot801	US	39	m
+1064160	hallucinati	US	29	m
+1064252	djgizmoe	JP	40	n
+1064612	ideoplast	US	37	f
+1064696	redwine	US	29	m
+1064882	Etrigan480	US	31	m
+1065252	NotOneOfUs	US	26	m
+1065278	dSort	PL	27	m
+1065441	chefantiuser	US	84	m
+1065697	Yenneman	BE	26	m
+1065846	afraidtech		28	m
+1066011	NajkLord	SE	30	m
+1066049	sgtrama	US	27	m
+1066173	42	US	50	m
+1066341	KlodsHans	DK	-1	
+1066852	Quiksilver101	CA	31	m
+1067785	patpitiee	BE	35	m
+1068226	rybesh	US	35	n
+1068399	FloodSpectre	US	29	m
+1070023	jaysonnj	US	32	m
+1070155	Clouseau	SE	38	m
+1070291	jonte	SE	26	m
+1070642	Orbtastic	UK	39	m
+1070693	dudge	UK	-1	m
+1070696	larbr	NO	-1	m
+1070820	AntDigger	US	29	m
+1071129	deckard0	US	37	n
+1071395	BaalZebub	FR	28	m
+1071422	TneLiS	PL	28	m
+1071628	Llama2022	US	24	m
+1072283	MJascow	NL	-1	m
+1072317	sofia17	CC	-1	n
+1072752	antenne	DK	48	m
+1072954	alternachild	US	29	m
+1073342	SenatorCWu	IT	25	m
+1073613	Fenem	US	24	m
+1073624	-B-	NL	-1	m
+1073957	Reaper_One	NL	27	m
+1073993	erikah	NO	33	n
+1074381	nozomi323	JP	-1	m
+1074564	AcidA	DE	27	m
+1076924	Timberlyn0	UK	26	m
+1077321	SamStarling	UK	24	m
+2003209	Runkst	BE	33	m
+2003374	Ansimorph	DE	29	m
+2003993	kristywoods		-1	n
+2004140	dropout	US	23	f
+2004527	BadlyDeclared	CA	36	m
+2004595	RyanPC	US	24	m
+2004651	kwacky1	AU	37	m
+2004785	jystewart	UK	31	m
+2005054	4d4m	PL	32	m
+2005162	chieee	JP	29	f
+2005581	adamdavis		-1	
+2005786	Anybody	AT	24	m
+2005859	kodo		-1	n
+2006017	Weirdomusic	NL	43	m
+2006479	pcmaniac	RS	26	m
+2006714	Kajun	UK	32	m
+2007044	Boyo	UK	24	m
+2007237	vnzjunk		-1	n
+2007488	bitscape		-1	n
+2008052	ekg75	US	37	f
+2008126	jaymirage	US	29	
+2008475	ACS	US	28	m
+2008921	rpruiz	MX	-1	m
+2009825	Maxen4	CA	-1	n
+2010358	goom	DE	27	m
+2010648	bjorgviningi	IS	34	m
+2010767	h3h	US	28	m
+2011049	Roque	CH	26	m
+2011676	jessbrandi	US	31	f
+2012408	d3l	BG	30	m
+2013259	NakedMusic	PT	26	m
+2013264	davold	UK	38	m
+2013894	Venerea	CA	26	m
+2014225	bbc6music	UK	10	n
+2014258	killrobots	US	35	m
+2014566	deltawing12	US	25	m
+2014660	big_perm	AU	35	m
+2015890	Yasonyacky	US	36	m
+2015923	ThoR294	US	25	m
+2016172	Skuld	UK	-1	m
+2016185	peterryard	IE	31	m
+2016281	appe	SE	25	m
+2016788	Vilden	SE	26	m
+2017046	kirigoe	SE	29	m
+2017104	Madje	NL	28	m
+2017143	Humpage	UK	25	f
+2017294	floodofredd	US	28	m
+2017845	blackcalx	US	35	m
+2018202	Gridface	ST	27	m
+2019896	Century_Skunk	UK	32	m
+2019942	kaboofa	US	25	m
+2020050	1eiht7	IE	26	m
+2020221	mugabe	SE	-1	m
+2020395	-xz-		26	m
+2020550	flutt	SE	-1	m
+2020596	hockeyplayer168	US	24	m
+2020751	BobRasey	US	-1	m
+2020795	huphtur	US	-1	m
+2021135	Calvin924	US	29	m
+2021446	hotaru	US	27	m
+2021453	Pe8er	PL	29	m
+2023686	Anad	US	-1	m
+2023857	exabyte	BG	27	m
+2023864	RobsesseD	AU	31	m
+2024012	dermike	SE	31	m
+2024417	jsaettem	AR	33	m
+2025068	Neuromanc	HU	-1	n
+2025911	philna	US	-1	m
+2025998	swarthydog	AU	26	m
+2026407	GreatKingRat	NL	52	m
+2026540	Bibzilla	DE	36	m
+2026899	coquelicot	US	25	f
+2027291	__hage	JP	45	m
+2027295	katwinx	US	-1	f
+2027708	aznyellojersey		-1	n
+2028545	Maceration	UK	27	n
+2028764	OneBeat	US	27	
+2029026	Graphity	DE	-1	m
+2029044	TheSecondComing	AU	-1	m
+2029164	blomma	FI	24	f
+2030280	kimiki222	US	21	f
+2030411	andyy	UK	35	m
+2030480	Raptor_	BG	27	m
+2030825	ababo	UK	30	m
+2031036	iamjosh	SE	28	m
+2031270	djsatansfury	UK	27	m
+2031667	34789235667	US	23	f
+2031796	Magd	US	23	m
+2031865	andrewkendall	UK	31	m
+2032143	Traverse	US	30	n
+2032776	csamson	US	27	m
+2033034	Dwb		-1	n
+2033121	jangze	DE	37	m
+2034316	dieen	JP	-1	m
+2034573	Volitionist	US	28	f
+2035661	Mairus	BR	41	m
+2035866	Kriz	SE	29	m
+2036485	thebaldingone	UK	47	m
+2036945	funstraw	US	40	n
+2037575	LeSven	DE	34	m
+2038898	bluecuracau	SE	30	n
+2039625	Kwasek	US	32	m
+2040102	PabloGS	NI	29	m
+2041547	atlasttheend	US	31	m
+2041825	leedtourwood	NO	36	m
+2042158	Akolade	CA	34	m
+2042934	ddeftones	NL	31	m
+2043453	MrBroom	US	31	m
+2043627	drt	DE	-1	n
+2043966	busyou-don	KY	-1	n
+2044850	jsong	US	-1	
+2046671	daeth	CA	27	m
+2047095	silverelf		-1	
+2047475	-Bram-	NL	25	m
+2047831	emilysmith	SE	33	f
+2048049	krystall	CA	36	m
+2048518	combinatorial	US	40	m
+2048782	Bloog	US	28	m
+2048827	Rubyroth	NO	24	m
+2048948	muesli	UK	32	m
+2049386	feelingsinister	AU	-1	f
+2049551	doomsower	FI	30	m
+2051167	Adziorek	PL	25	m
+2051181	donactive	SE	32	m
+2051372	inkyblue2	US	33	n
+2051420	mindR	NL	29	m
+2052015	Ole_RThorsen	NO	24	m
+2052248	ajmiller	US	30	m
+2052756	iEatGLass	CA	30	m
+2052795	Kavernn	CA	23	m
+2052851	Zerobae	AT	34	m
+2052993	Haikz	FI	-1	n
+2053196	alaska	AU	20	f
+2053829	feedhead	US	99	m
+2054622	c0pyr1gh7	CA	35	m
+2055652	jfindon		25	m
+2056364	dontminieraser	US	27	f
+2056895	ZacNaloen	UK	-1	n
+2057047	cabeshpash	US	24	m
+2057125	happiesachi		31	
+2057169	hornbuckle	US	-1	m
+2057811	Zeppelin456	US	-1	m
+2058161	jacquisadler	UK	45	f
+2058501	Alioth		-1	n
+2058511	Jinkobah	US	29	
+2058805	Aegon	BG	26	m
+2059080	illegal	BE	25	m
+2059245	crouchingbadger	UK	-1	m
+2059685	anonym001	DE	25	m
+2059839	mexykanin	PL	30	m
+2059883	finz	NL	37	m
+2060026	aldur	FI	-1	m
+2060503	likeem		-1	n
+2060645	Soundgardenia	US	27	f
+2060650	brickghost	US	33	m
+2060656	ivyandthewall		-1	n
+2061005	Zappatta	IL	31	m
+2061069	losarihetze	IL	23	m
+2061348	AutumnLover	SI	29	m
+2061388	Oh_Teh_Noes	UK	24	m
+2061589	frags	SE	28	m
+2062026	chochis	ES	35	n
+2062264	Ball0r	DE	26	m
+2062696	kiimu	US	-1	f
+2063610	schm1	DK	34	m
+2064055	DiamondDave	UK	37	m
+2064762	Hansidu	NO	23	m
+2065460	aje	US	23	m
+2065629	groovypepsiguy	US	39	m
+2065883	carp	FI	29	m
+2066535	burningbridges	US	27	m
+2066564	Aaron1		-1	n
+2066761	digitaldust	UK	-1	m
+2067004	Mattress	US	33	m
+2067285	cyneelc	ES	40	m
+2068633	SwissBoy		-1	n
+2068774	forkmantis	US	39	m
+2068995	Angel_OD	FI	30	m
+2069403	daHien	DE	37	m
+2069426	riwilo	NL	40	m
+2069487	Undefined_242	SE	30	m
+2069824	amelsl		-1	n
+2070277	gwachob		-1	m
+2070648	Tette	SE	23	f
+2071238	80s		29	m
+2071701	chr1s-eG	DE	24	m
+2072646	Springsteen	US	36	m
+2072651	timsamoff	US	40	m
+2072669	svensonsan	DE	36	m
+2073140	BlueCloud	US	40	m
+2073404	catchinstars	CA	25	f
+2073564	distortia	UK	23	f
+2073565	Daedolon	FI	26	m
+2073713	Ice_Visions	UK	24	m
+2074047	Aut0mat1c	US	34	m
+2074151	menth0l	PL	30	m
+2074415	hax	US	30	m
+2075079	raymond1984	BE	27	m
+2075174	Goraengensaft	DE	22	f
+2075769	Fanon	SE	-1	n
+2076073	Baletempest	UK	27	m
+2076242	Mad_Arab	BR	35	m
+2076468	alexjh	CA	-1	
+2076729	crw	US	-1	
+2077240	JoeBravo	NL	34	m
+2077741	droptheearth	US	27	m
+2077772	ericgheorghe	US	24	m
+2078417	notbot	SE	34	m
+2078773	mentalsarah	UK	-1	f
+2079253	illyn	RU	33	m
+2079861	kitog		-1	
+2080218	Vastad	UK	35	m
+2081030	pmbartles		-1	n
+2081116	11-8	US	32	m
+2083044	skegee82		-1	n
+2084858	h_i_t	JP	-1	f
+2085748	Arbitar	US	21	m
+2086068	hilarion	FI	30	m
+2087038	kyle_broflovsky	PT	-1	n
+2087288	damik	UK	-1	m
+2087614	Plazma	NO	27	m
+2087782	Stubert	UK	-1	m
+2089254	Sinilindin	US	32	m
+2089648	marsbiker		-1	n
+2089801	favouritesky	UK	28	m
+2089833	ashmishra	UK	38	m
+2089901	staticcity	US	-1	
+2090039	charles1986		25	n
+2090112	akoolstik	US	-1	n
+2090851	bongomanrae	AU	27	n
+2091317	AndySchanie	CA	35	
+2092396	deadastronaut	PL	28	m
+2093544	theyenine	CA	-1	m
+2093871	Baggieboy		-1	n
+2093901	dalen	SE	29	m
+2093989	Wildean		28	n
+2094286	colmgallagher		-1	n
+2094753	Jessica771	CA	-1	f
+2095195	lintumies	FI	37	m
+2095275	lawa	SE	-1	m
+2095434	bellmondo	SE	35	m
+2095747	harveydrone	US	44	m
+2095754	Niceaction	UK	33	m
+2095865	TheRedDog	UK	-1	n
+2096037	aeonic	FI	28	m
+2096336	helloerica	US	-1	f
+2096353	saturos	UK	-1	m
+2096360	qbertqbert	US	32	m
+2096409	Hamagic	US	23	m
+2097382	-Ev-	US	28	m
+2097525	yoka	US	-1	n
+2098258	znaak	NO	23	m
+2098659	Yetipants	NO	31	m
+2099837	Quingess	NL	24	f
+2100546	Geronimo6260	US	-1	
+2101299	atku10	UK	43	m
+2101400	gateht	UK	24	m
+2101973	TeenageDeathBoy	US	23	m
+2102520	Aldhissla	DK	23	m
+2102912	degreeoftruth	AU	43	m
+2103133	Oooch	UK	22	
