@@ -1,12 +1,6 @@
 import csv
 import helper # helper.py
 
-USER_FILE = './Testfiles/C1ku_users_extended.csv'
-OUTPUT_DIR = './user_info/'
-
-LASTFM_API_KEY = "8aa5abf299b1aaf6e4758f6ce3dc2fcf"
-LASTFM_API_URL = "http://ws.audioscrobbler.com/2.0/"
-
 def read_user_file(uf):
     """
     Read csv-File
