@@ -6,6 +6,8 @@ import os
 USER_FILE = './Testfiles/C1ku_users_extended.csv'
 OUTPUT_DIR = './user_info/'
 
+VERBOSE = True
+
 def read_user_file(uf):
     """
     Read csv-File
@@ -37,6 +39,9 @@ def limit_user(all_users, maxAmountOfUsers):
     limited_users = []
     all_artist_names = []
 
+    if VERBOSE:
+        helper.log_highlight("Creating user base")
+
     # Loop through list of all users
     for user in all_users:
         # Get artist-history from users via LastFM-API call
@@ -53,12 +58,19 @@ def limit_user(all_users, maxAmountOfUsers):
         # Fill list with users
         limited_users.append(user)
 
+        if VERBOSE:
+            print "Added new user [" + str(len(limited_users)) + " of " + str(maxAmountOfUsers) + "]"
+
         # Delete duplicates from all_artist_names and save to new list all_artist_names
         all_artist_names = helper.get_unique_items(all_artist_names)
 
         # Limit amount of unique artists to a minimum of 50 and limit amount of users to minimum of 5
         # If true - stop for loop and return users (limited_users)
         if len(all_artist_names) >= 50 and len(limited_users) >= maxAmountOfUsers:
+
+            if VERBOSE:
+                print "\nSuccessfully created the user base\n"
+
             return limited_users
 
 # /limit_user
@@ -117,13 +129,18 @@ def lfm_save_history_of_users(users):
 
     content = ""
 
-    print "Saving listening history . . ."
+    if VERBOSE:
+        helper.log_highlight("Saving listening history")
 
     # mkdir in py
     if not os.path.exists(OUTPUT_DIR):
         os.makedirs(OUTPUT_DIR)
 
-    for user in users:
+    for index, user in enumerate(users,start=1):
+
+        if VERBOSE:
+            print "Fetch recent tracks [" + str(index) + " of " + str(len(users)) + "]"
+
         recent_tracks = helper.api_user_call("getrecenttracks", user)
         recent_track = recent_tracks['recenttracks']['track']
         listening_history = lfm_prepare_history_string(recent_track, user)
@@ -135,7 +152,8 @@ def lfm_save_history_of_users(users):
     text_file.write(content)
     text_file.close()
 
-    print "Successfully created listening_history.txt"
+    if VERBOSE:
+        print "\nSuccessfully created listening_history.txt\n"
 
     return
 
@@ -145,13 +163,18 @@ def lfm_save_user_characteristics(users):
 
     content = ""
 
-    print "Saving user characteristics . . ."
+    if VERBOSE:
+        helper.log_highlight("Saving user characteristics")
 
     # mkdir in py
     if not os.path.exists(OUTPUT_DIR):
         os.makedirs(OUTPUT_DIR)
 
-    for user in users:
+    for index, user in enumerate(users,start=1):
+
+        if VERBOSE:
+            print "Fetch user characteristics [" + str(index) + " of " + str(len(users)) + "]"
+
         user_info = helper.api_user_call("getinfo", user)
         user = user_info['user']
         user_string = lfm_prepare_user_characteristics_string(user)
@@ -163,7 +186,8 @@ def lfm_save_user_characteristics(users):
     text_file.write(content)
     text_file.close()
 
-    print "Successfully created users_characteristics.txt"
+    if VERBOSE:
+        print "\nSuccessfully created users_characteristics.txt\n"
 
     return
 
@@ -175,6 +199,3 @@ if __name__ == "__main__":
 
     lfm_save_history_of_users(limited_users)
     lfm_save_user_characteristics(limited_users)
-
-# CTRL + Shift + E for Debug
-# CTRL + Shift + R for Run
