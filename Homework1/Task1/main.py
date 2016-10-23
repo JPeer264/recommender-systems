@@ -11,7 +11,8 @@ BASE_DIR   = './output'
 USER_LIST_FILE  = BASE_DIR + '/user_list.csv'
 OUTPUT_DIR = BASE_DIR + '/user_info/'
 
-VERBOSE = True
+VERBOSE = True # set to True prints information about the current state into the console
+VERBOSE_DEPTH = 2 # describes how deep the verbose mode goes - maximum 2
 
 def read_user_file(uf):
     """
@@ -132,7 +133,7 @@ def limit_user(all_users, min_amount_of_users, play_count, min_amount_of_artists
 
                 all_artist_names.append(artist_name)
 
-        if VERBOSE:
+        if VERBOSE and VERBOSE_DEPTH == 2:
             print "    Artists (not unique): " + str(len(all_artist_names))
 
         # Data cleansing: only add users with more than 10 unique artists
@@ -143,7 +144,7 @@ def limit_user(all_users, min_amount_of_users, play_count, min_amount_of_artists
             # Delete duplicates from all_artist_names and save to new list all_artist_names
             all_artist_names = helper.get_unique_items(all_artist_names)
 
-            if VERBOSE:
+            if VERBOSE and VERBOSE_DEPTH == 2:
                 print "    Artists (unique):     " + str(len(all_artist_names))
 
             # Limit amount of unique artists for all users to a defined minimum (min_amount_of_unique_artists_all_users)
@@ -223,7 +224,10 @@ def lfm_save_history_of_users(users):
 
         recent_tracks = helper.api_user_call("getrecenttracks", user)['recenttracks']['track']
 
-        for recent_track in recent_tracks:
+        for index, recent_track in enumerate(recent_tracks, start = 1):
+            if VERBOSE and VERBOSE_DEPTH == 2:
+                print "    Fetch recent track [" + str(index) + " of " + str(len(recent_tracks)) + "]"
+
             listening_history = lfm_prepare_history_string(recent_track, user)
             content           += listening_history + "\n"
 
