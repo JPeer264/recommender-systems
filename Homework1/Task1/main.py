@@ -10,6 +10,8 @@ USER_FILE  = '../Testfiles/C1ku_users_extended.csv'
 BASE_DIR   = './output'
 USER_LIST_FILE  = BASE_DIR + '/user_list.csv'
 OUTPUT_DIR = BASE_DIR + '/user_info/'
+USER_CHARACTERISTICS_FILE = OUTPUT_DIR + "users_characteristics.txt"
+USER_LISTENING_HISTORY = OUTPUT_DIR + "listening_history.txt"
 
 VERBOSE = True # set to True prints information about the current state into the console
 VERBOSE_DEPTH = 2 # describes how deep the verbose mode goes - maximum 2
@@ -60,12 +62,13 @@ def get_user_friends(all_users, limit_user):
                 if index > limit_user:
                     all_users_and_friends = list + all_user_friends
                     all_unique_users = helper.get_unique_items(all_users_and_friends)
-                    np.savetxt("user_list.csv", all_unique_users, delimiter=",", fmt='%s')
+                    np.savetxt(USER_LIST_FILE, all_unique_users, delimiter=",", fmt='%s')
                     # print len(all_users_and_friends)
                     # print len(all_unique_users)
 
                     if VERBOSE:
-                        print "\nSuccessfully fetched friends\n"
+                        print "\nSuccessfully created " + USER_LIST_FILE
+                        print "Successfully fetched friends\n"
 
                     return
 
@@ -75,7 +78,7 @@ def get_user_friends(all_users, limit_user):
     all_users_and_friends = list + all_user_friends
     all_unique_users      = helper.get_unique_items(all_users_and_friends)
 
-    np.savetxt("user_list.csv", all_unique_users, delimiter=",", fmt='%s')
+    np.savetxt(USER_LIST_FILE, all_unique_users, delimiter=",", fmt='%s')
 
     return
 # /get_user_friends
@@ -231,14 +234,13 @@ def lfm_save_history_of_users(users):
             listening_history = lfm_prepare_history_string(recent_track, user)
             content           += listening_history + "\n"
 
-    output_file = OUTPUT_DIR + '/listening_history.txt'
-    text_file   = open(output_file, 'w')
+    text_file   = open(USER_LISTENING_HISTORY, 'w')
 
     text_file.write(content)
     text_file.close()
 
     if VERBOSE:
-        print "\nSuccessfully created listening_history.txt\n"
+        print "\nSuccessfully created " + USER_LISTENING_HISTORY + "\n"
 
     return
 
@@ -263,14 +265,13 @@ def lfm_save_user_characteristics(users):
         user_string = lfm_prepare_user_characteristics_string(user)
         content     += user_string + "\n"
 
-    output_file = OUTPUT_DIR + '/users_characteristics.txt'
-    text_file   = open(output_file, 'w')
+    text_file   = open(USER_CHARACTERISTICS_FILE, 'w')
 
     text_file.write(content)
     text_file.close()
 
     if VERBOSE:
-        print "\nSuccessfully created users_characteristics.txt\n"
+        print "\nSuccessfully created " + USER_CHARACTERISTICS_FILE + "\n"
 
     return
 # /lfm_save_user_characteristics
