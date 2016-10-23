@@ -50,3 +50,17 @@ def get_unique_items(iterable):
     return result
 
 # /get_unique_items
+
+def log_highlight(text):
+    hashes = ""
+
+    for i in text:
+        hashes += "#"
+
+    print ""
+    print "###" + hashes + "###"
+    print "## " + text + " ##"
+    print "###" + hashes + "###"
+    print ""
+
+    return
