@@ -4,7 +4,7 @@ import json
 LASTFM_API_KEY = "8aa5abf299b1aaf6e4758f6ce3dc2fcf"
 LASTFM_API_URL = "http://ws.audioscrobbler.com/2.0/"
 
-def api_user_call(method, username):
+def api_user_call(method, username, additionalstring):
     """
     triggers an api to the user api
 
@@ -18,7 +18,8 @@ def api_user_call(method, username):
           "?method=user." + method + \
           "&user=" + urllib.quote(username) + \
           "&format=json" + \
-          "&api_key=" + LASTFM_API_KEY
+          "&api_key=" + LASTFM_API_KEY + \
+          additionalstring
 
     # Perform API-call and save (comes as String formatted as JSON)
     json_string = urllib.urlopen(url).read()

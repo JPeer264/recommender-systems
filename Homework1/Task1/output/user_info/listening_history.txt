@@ -48,6 +48,156 @@ Predtechensky	c04cd8cd-c535-4e69-b9d3-793888c70741	Terror	703e63db-bc40-438a-bc0
 Predtechensky	9226f916-25fd-423a-b02d-b96ad4408ac5	Lashdown	153a2542-819b-4656-99ce-d774dbf5a9e4	Interlude	1366619958
 Predtechensky	9226f916-25fd-423a-b02d-b96ad4408ac5	Lashdown	153a2542-819b-4656-99ce-d774dbf5a9e4	Interlude	1366619957
 Predtechensky	784413ff-a530-4b57-8ae0-2760bf26b9a6	Back Alley Hooligans	2250e4c8-2e85-4005-b034-9b412de496a1	Guerrilla Warfare	1366619876
+Predtechensky	e9e2a634-984f-4c10-bf7b-7970179e1ef1	Suicidal Tendencies	044059a6-688a-40eb-ae49-0cadba297288	Show Some Love... Tear It Down	1366608083
+Predtechensky	0743b15a-3c32-48c8-ad58-cb325350befa	blink-182		Dogs Eating Dogs	1366607873
+Predtechensky	0743b15a-3c32-48c8-ad58-cb325350befa	blink-182		Dogs Eating Dogs	1366607872
+Predtechensky		city saints		Sick Society	1366607799
+Predtechensky	784413ff-a530-4b57-8ae0-2760bf26b9a6	Back Alley Hooligans	1b620e50-8895-411e-935c-1784e6fbb4e5	Broken Homes	1366607544
+Predtechensky	92f5c717-83e9-4df1-9250-7964ba2bd770	Face to Face	1d34da8a-d564-4efa-b323-7aa435164f69	123 Drop	1366607403
+Predtechensky	92f5c717-83e9-4df1-9250-7964ba2bd770	Face to Face	1d34da8a-d564-4efa-b323-7aa435164f69	123 Drop	1366607402
+Predtechensky		RunningLate		Bad Habits, Good Memories	1366607210
+Predtechensky	784413ff-a530-4b57-8ae0-2760bf26b9a6	Back Alley Hooligans	7f30d61b-2778-49c8-90c3-e689eabfc5f7	Creepin & Crawlin	1366607044
+Predtechensky	bd76aca9-b69d-4553-9156-818191c2a22b	The Explosion	6851d8f3-8ff6-4e94-b860-cfa969c4ee1d	Reactor	1366606811
+Predtechensky	97417292-3fb0-40ea-8837-5540cfb4de71	Chuck Ragan	9df5da07-8a94-48b4-b681-14e73cf9a7d3	Do What You Do	1366586768
+Predtechensky	87c5dedd-371d-4a53-9f7f-80522fb7f3cb	Björk	3fb96765-c83e-420e-8035-4c2a63c7346a	Jóga	1366558793
+Predtechensky	a1a0308f-f7db-4e48-b442-2f22bc7b25ea	Knucklehead		Restless Heart	1366454024
+Predtechensky		Oxo 86		Wie Gott in Frankreich	1366453600
+Predtechensky		Oxo 86		Auf die Liebe und auf die Sehnsucht	1366446217
+Predtechensky	27ecc338-fbc1-472d-a96f-f5926e117648	The Scam		Gold Coast Police	1366411162
+Predtechensky	27ecc338-fbc1-472d-a96f-f5926e117648	The Scam		Never Surrender	1366411037
+Predtechensky	27ecc338-fbc1-472d-a96f-f5926e117648	The Scam		Corruption	1366410969
+Predtechensky	27ecc338-fbc1-472d-a96f-f5926e117648	The Scam		Vicious Cycles	1366410969
+Predtechensky	27ecc338-fbc1-472d-a96f-f5926e117648	The Scam		Corruption	1366410881
+Predtechensky		Oxo 86		Auf die Liebe und auf die Sehnsucht	1366409499
+Predtechensky	df26def7-fc3d-441b-babd-efb47d0aa8b8	Booze & Glory		the day i´m in my grave	1366408637
+Predtechensky	5a903ca5-395f-4686-8642-2e1f04cd139d	Last Rough Cause		Worst Week of My Life	1366405876
+Predtechensky	5a903ca5-395f-4686-8642-2e1f04cd139d	Last Rough Cause	a1f3bd02-4381-4d01-b23e-72dd1640dafc	No Justice	1366405720
+Predtechensky	5a903ca5-395f-4686-8642-2e1f04cd139d	Last Rough Cause	b65b9f6e-2b02-40e7-9a97-3373a4ddae82	Common Ground	1366405485
+Predtechensky	5a903ca5-395f-4686-8642-2e1f04cd139d	Last Rough Cause	1638c5ad-24f6-43a8-8abf-1f0ef680c85a	Home Is Where The Heart Is	1366404865
+Predtechensky	90910a44-7579-4730-9499-0546159fe4e3	Paint It Black	60e044f2-79a7-4faf-afd3-179bc8e2947d	Invisible	1366398676
+Predtechensky	90910a44-7579-4730-9499-0546159fe4e3	Paint It Black	60e044f2-79a7-4faf-afd3-179bc8e2947d	Invisible	1366398542
+Predtechensky		The Zapoy!		Свобода	1366398022
+Predtechensky		The Zapoy!		Свобода	1366397866
+Predtechensky		Assholes` Syndicate		My Zombie girl	1366397580
+Predtechensky		Assholes` Syndicate		Set me up	1366397433
+Predtechensky		Assholes` Syndicate		Empty bottles	1366397311
+Predtechensky		Assholes` Syndicate		Native town	1366397092
+Predtechensky		Assholes` Syndicate		Choose	1366396924
+Predtechensky		Assholes` Syndicate		Billy boy last song	1366396760
+Predtechensky		Assholes` Syndicate		Princess & punk	1366396562
+Predtechensky		Assholes` Syndicate		No brains	1366396432
+Predtechensky		Assholes` Syndicate		Bullet	1366396260
+Predtechensky		Assholes` Syndicate		If I had a gun	1366396134
+Predtechensky	bea53756-daed-4110-b807-f32ba357300e	NOI!SE	bad6fc99-a2e4-4710-b62e-f6b55eb42b63	Blame	1366396022
+Predtechensky		Assholes` Syndicate		Back in the business	1366395883
+Predtechensky	bd76aca9-b69d-4553-9156-818191c2a22b	The Explosion	06be5e8c-bf04-49e1-8315-f1f9aa628799	True Or False	1366374970
+Predtechensky	25302723-b24f-4d0d-ab5d-1b4ae0195ac6	Swingin' Utters		Temporary Contemporary	1366374840
+Predtechensky	69421e11-e4c3-4854-951b-ceab4972e38e	Alkaline Trio	a97d1340-7b9e-4492-abf2-e6c7a28f1e0c	Midnight Blue	1366374616
+Predtechensky		the Dead Peasants Revolt		Dear Georgie	1366374452
+Predtechensky	7e838650-ad8c-4c61-85ae-44aad79ce9fe	Rude Riot		I Have A Dream	1366374391
+Predtechensky	a54009c5-1540-4c57-904c-0e5659729414	Birds of Prey		Looking For Trouble	1366374228
+Predtechensky	019d8658-0b40-422e-8227-b5663d607564	The Silver Shine		Uldozve	1366373483
+Predtechensky	7aa46a37-686f-4258-9f24-e760f28860ac	Rotting Out	46fb4f7c-5470-4dbb-8986-2708848812c4	One More Kiss	1366373313
+Predtechensky	e4a06692-def8-4460-be33-a1af79629c2a	Anchor	eaaeafdf-c208-4943-ba8c-2572c3166c29	No Love	1366373131
+Predtechensky	e4a06692-def8-4460-be33-a1af79629c2a	Anchor	eaaeafdf-c208-4943-ba8c-2572c3166c29	No Love	1366373130
+Predtechensky		Stoic Violence		What I See	1366372867
+Predtechensky	bea53756-daed-4110-b807-f32ba357300e	NOI!SE	5263dea8-6158-44d2-ad69-356ce770c247	Brothers in Arms	1366361794
+Predtechensky	bea53756-daed-4110-b807-f32ba357300e	NOI!SE	5263dea8-6158-44d2-ad69-356ce770c247	Brothers in Arms	1366361666
+Predtechensky		Perspectives		Innocence Behind	1366359285
+Predtechensky		LA GOTERA		Bonus Track	1366359150
+Predtechensky		This Is Our Year		Life as We Know It	1366358721
+Predtechensky	740c5593-b970-4d40-b89d-82ca3072caff	The Brat Attack		Consumer Riot	1366358537
+Predtechensky	69421e11-e4c3-4854-951b-ceab4972e38e	Alkaline Trio	f3b6de13-e0df-425b-94f0-7eecf4fa4f87	Young Lovers	1366358366
+Predtechensky	a57d7a1b-b7ef-4f36-bbf6-9f5a167cd08d	UK Subs	696216cc-944d-450e-b74f-d13ad3c9e446	Angel Of Eighth Avenue	1366358142
+Predtechensky	75a8fc8b-e2f3-49df-80a4-2b857a6408f6	Changes		Безнадежность	1366357970
+Predtechensky	7aa46a37-686f-4258-9f24-e760f28860ac	Rotting Out	297f3b29-4b44-4009-bdc3-e7dd4b3446ca	A Question	1366348542
+Predtechensky		the Dead Peasants Revolt		Colonial Invasion	1366348096
+Predtechensky	69421e11-e4c3-4854-951b-ceab4972e38e	Alkaline Trio		I'm Only Here To Disappoint	1366347930
+Predtechensky	f54fbb1a-2d50-4b17-9a4c-fca03ab26015	Stigma		Free Your Mind	1366347764
+Predtechensky		RunningLate		Turn Your Head Away	1366347570
+Predtechensky	69421e11-e4c3-4854-951b-ceab4972e38e	Alkaline Trio	2c141076-8c0d-4210-b688-0ed6cfcf0137	Broken Wing	1366347414
+Predtechensky	740c5593-b970-4d40-b89d-82ca3072caff	The Brat Attack		Breathe	1366347206
+Predtechensky		Hard Side		Мои друзья	1366272833
+Predtechensky	92f5c717-83e9-4df1-9250-7964ba2bd770	Face to Face	8ded95a5-dbeb-4c75-81cf-318aa34adc83	Hardcase	1366272674
+Predtechensky	a57d7a1b-b7ef-4f36-bbf6-9f5a167cd08d	UK Subs	aff96db7-1aae-4e74-8c5b-2563c9c6bfd7	Four Strong Winds	1366272506
+Predtechensky		Crashed		This is the first time	1366272356
+Predtechensky	0743b15a-3c32-48c8-ad58-cb325350befa	blink-182		Pretty Little Girl	1366272299
+Predtechensky		Noisefight		Goodbye	1366272164
+Predtechensky	92f5c717-83e9-4df1-9250-7964ba2bd770	Face to Face	b80c7c45-7354-418d-8edf-321da42a3fc1	Bright Lights Go Down	1366262718
+Predtechensky	7e838650-ad8c-4c61-85ae-44aad79ce9fe	Rude Riot		Don't Waste Your Life	1366262531
+Predtechensky		This Is Our Year		Landmarks	1366262071
+Predtechensky	c7522f61-a735-4eb4-9201-2f28c7b6317b	Riot Brigade		Golden Cage	1366261855
+Predtechensky	2f28a21c-4b96-4246-8c8b-ddd38e8e5ad1	The Filaments		Victims (live)	1366261561
+Predtechensky	a57d7a1b-b7ef-4f36-bbf6-9f5a167cd08d	UK Subs	516c8514-f199-45ed-af41-992a4efa0aa2	The Outsider	1366261441
+Predtechensky		The Zapoy!		Сожми кулак!	1366261242
+Predtechensky	69421e11-e4c3-4854-951b-ceab4972e38e	Alkaline Trio	7d502044-bb10-45a2-8325-4443aed1d1c9	Sun Burns	1366261113
+Predtechensky	69421e11-e4c3-4854-951b-ceab4972e38e	Alkaline Trio	7d502044-bb10-45a2-8325-4443aed1d1c9	Sun Burns	1366261112
+Predtechensky	019d8658-0b40-422e-8227-b5663d607564	The Silver Shine		Megfakult Kepek	1366187508
+Predtechensky	a57d7a1b-b7ef-4f36-bbf6-9f5a167cd08d	UK Subs	dea4f4a4-d3d2-42cb-8aaf-6f6e4690f8c1	Little Black Crow	1366187346
+Predtechensky	7aa46a37-686f-4258-9f24-e760f28860ac	Rotting Out	a4bf03b6-169e-46eb-9e9b-ecc614da91d6	The Shoot Out	1366187268
+Predtechensky		Stoic Violence		Gathering Dust	1366187142
+Predtechensky	a57d7a1b-b7ef-4f36-bbf6-9f5a167cd08d	UK Subs	89623fb6-a533-4874-903c-2a6d06042955	Stormy Day	1366187093
+Predtechensky		the Dead Peasants Revolt		Keeping Them Sick	1366186989
+Predtechensky		the Dead Peasants Revolt		Oil Spills! Deep Drills !	1366186732
+Predtechensky	bea53756-daed-4110-b807-f32ba357300e	NOI!SE	16cec792-6308-490f-81ba-b7913245a222	Rising Tide	1366186517
+Predtechensky	a57d7a1b-b7ef-4f36-bbf6-9f5a167cd08d	UK Subs	99929e71-ea8d-44c3-9c0d-bf3f08718307	Monkeys	1366175787
+Predtechensky	0743b15a-3c32-48c8-ad58-cb325350befa	blink-182		Disaster	1366175620
+Predtechensky	740c5593-b970-4d40-b89d-82ca3072caff	The Brat Attack		One Lie	1366175534
+Predtechensky	93f98ae5-6436-4a7d-bdd1-fdae90f195c3	Klowns		Жизнь идет...	1366175302
+Predtechensky		This Is Our Year		Danger to the World	1366174908
+Predtechensky	740c5593-b970-4d40-b89d-82ca3072caff	The Brat Attack		Call to Action (demo)	1366174722
+Predtechensky		Noisefight		A New Day	1366174515
+Predtechensky	90910a44-7579-4730-9499-0546159fe4e3	Paint It Black	c2830aa3-ab83-477c-a80f-e415b8e9b189	Greetings, Fellow Insomniacs	1366134168
+Predtechensky		Crashed		Sober	1366133485
+Predtechensky		LA GOTERA		Quise Ser Yo	1366123120
+Predtechensky	8fedbc11-83d0-485c-8508-a9dace065ce8	AYS		Suburban Haze	1366121000
+Predtechensky	e4a06692-def8-4460-be33-a1af79629c2a	Anchor	17641746-0cd2-48b6-8b31-c1e21ca335d1	Hemingway	1366119371
+Predtechensky		Hard Side		Мои друзья	1366119018
+Predtechensky		the Dead Peasants Revolt		We are the Anti-fa!	1366099785
+Predtechensky	69421e11-e4c3-4854-951b-ceab4972e38e	Alkaline Trio	38135171-e2bb-42fd-84ea-dde6a9044df5	The Torture Doctor	1366099701
+Predtechensky	c04cd8cd-c535-4e69-b9d3-793888c70741	Terror	703e63db-bc40-438a-bc07-c8d0abd869ad	The Good Die Young	1366099458
+Predtechensky	c04cd8cd-c535-4e69-b9d3-793888c70741	Terror	703e63db-bc40-438a-bc07-c8d0abd869ad	The Good Die Young	1366099457
+Predtechensky	92f5c717-83e9-4df1-9250-7964ba2bd770	Face to Face	ae1ecec2-623b-4ca7-83e2-21a582d2e7f2	Paper Tigers With Teeth	1366098917
+Predtechensky		city saints		Our Town	1366098691
+Predtechensky	92f5c717-83e9-4df1-9250-7964ba2bd770	Face to Face	a7f43c89-2652-46bb-aa00-b76eb20c67e0	Smokestacks and Skyscrapers	1366098532
+Predtechensky		city saints		Slippery Joe	1366098344
+Predtechensky	7aa46a37-686f-4258-9f24-e760f28860ac	Rotting Out	46fb4f7c-5470-4dbb-8986-2708848812c4	One More Kiss	1366089402
+Predtechensky		This Is Our Year		Our Anthem to You	1366089271
+Predtechensky		This Is Our Year		Our Anthem to You	1366089270
+Predtechensky	7aa46a37-686f-4258-9f24-e760f28860ac	Rotting Out	fa1e487a-89b9-44c1-b0c3-1cf8293970bf	No Clue	1366089074
+Predtechensky	7aa46a37-686f-4258-9f24-e760f28860ac	Rotting Out	fa1e487a-89b9-44c1-b0c3-1cf8293970bf	No Clue	1366089073
+Predtechensky	7e838650-ad8c-4c61-85ae-44aad79ce9fe	Rude Riot		Let's Shout Rock	1366088947
+Predtechensky	7e838650-ad8c-4c61-85ae-44aad79ce9fe	Rude Riot		Let's Shout Rock	1366088946
+Predtechensky	7e838650-ad8c-4c61-85ae-44aad79ce9fe	Rude Riot		Let's Shout Rock	1366088945
+Predtechensky		city saints		This Is My Life	1366088774
+Predtechensky	f54fbb1a-2d50-4b17-9a4c-fca03ab26015	Stigma		Lost And Found	1366088601
+Predtechensky	f54fbb1a-2d50-4b17-9a4c-fca03ab26015	Stigma		Lost And Found	1366088600
+Predtechensky	f54fbb1a-2d50-4b17-9a4c-fca03ab26015	Stigma		Lost And Found	1366088599
+Predtechensky	f4c1cbaa-c393-4c3b-a68a-d13329a5e7b3	Stand Fast		Profanity	1366088371
+Predtechensky	f4c1cbaa-c393-4c3b-a68a-d13329a5e7b3	Stand Fast		Profanity	1366088370
+Predtechensky	f4c1cbaa-c393-4c3b-a68a-d13329a5e7b3	Stand Fast		Profanity	1366088369
+Predtechensky	69421e11-e4c3-4854-951b-ceab4972e38e	Alkaline Trio	2c141076-8c0d-4210-b688-0ed6cfcf0137	Broken Wing	1366014614
+Predtechensky	69421e11-e4c3-4854-951b-ceab4972e38e	Alkaline Trio	2403a7e1-6ee0-496a-aace-ac6ad804503d	Only Love	1365999924
+Predtechensky	7aa46a37-686f-4258-9f24-e760f28860ac	Rotting Out	e53d2e3a-27e9-4450-99a9-71315a7e5fd5	Three of Us	1365999651
+Predtechensky	7aa46a37-686f-4258-9f24-e760f28860ac	Rotting Out	e53d2e3a-27e9-4450-99a9-71315a7e5fd5	Three of Us	1365999650
+Predtechensky	7aa46a37-686f-4258-9f24-e760f28860ac	Rotting Out	e53d2e3a-27e9-4450-99a9-71315a7e5fd5	Three of Us	1365999649
+Predtechensky	7aa46a37-686f-4258-9f24-e760f28860ac	Rotting Out	e53d2e3a-27e9-4450-99a9-71315a7e5fd5	Three of Us	1365999648
+Predtechensky	a57d7a1b-b7ef-4f36-bbf6-9f5a167cd08d	UK Subs	96b80689-6ca7-4bb2-9410-ab14ca843332	Souls From Hell	1365999058
+Predtechensky	a57d7a1b-b7ef-4f36-bbf6-9f5a167cd08d	UK Subs	96b80689-6ca7-4bb2-9410-ab14ca843332	Souls From Hell	1365999057
+Predtechensky	a57d7a1b-b7ef-4f36-bbf6-9f5a167cd08d	UK Subs	96b80689-6ca7-4bb2-9410-ab14ca843332	Souls From Hell	1365999056
+Predtechensky	a57d7a1b-b7ef-4f36-bbf6-9f5a167cd08d	UK Subs	96b80689-6ca7-4bb2-9410-ab14ca843332	Souls From Hell	1365999055
+Predtechensky	c04cd8cd-c535-4e69-b9d3-793888c70741	Terror	2971c308-5053-4b0e-8a46-95d535875b85	Hard Lessons	1365998888
+Predtechensky	c04cd8cd-c535-4e69-b9d3-793888c70741	Terror	2971c308-5053-4b0e-8a46-95d535875b85	Hard Lessons	1365998887
+Predtechensky	c04cd8cd-c535-4e69-b9d3-793888c70741	Terror	2971c308-5053-4b0e-8a46-95d535875b85	Hard Lessons	1365998886
+Predtechensky	c04cd8cd-c535-4e69-b9d3-793888c70741	Terror	2971c308-5053-4b0e-8a46-95d535875b85	Hard Lessons	1365998885
+Predtechensky		Stoic Violence		Fight Them All	1365866648
+Predtechensky	9226f916-25fd-423a-b02d-b96ad4408ac5	Lashdown	b0d2dc53-1c7b-4eda-abe5-54b19b1e6238	Island of Hope	1365863175
+Predtechensky		city saints		Gonna Ball	1365861323
+Predtechensky		city saints		Gonna Ball	1365861129
+Predtechensky		The Zapoy!		Way of Life	1365860922
+Predtechensky		The Zapoy!		Мода	1365860382
+Predtechensky		The Zapoy!		Атлична	1365860382
+Predtechensky		The Zapoy!		Мода	1365860211
 TheKindestDemon	f37b3f31-b1f8-4b88-8cb5-b34f709b17d7	Iggy Pop	8fddfc26-8b7a-4e7f-af4f-b8be2c6c77ce	Nightclubbing	1408698888
 TheKindestDemon	fbcd7b29-455f-49e6-9c4f-8249d20a055e	Seether	43f3de8d-9a32-4f1b-a35c-0c5bf8b40fba	Rise Above This	1408698617
 TheKindestDemon	19569f2f-f908-4bb1-89d7-841565294d1a	Серебряная Свадьба	a5ba9326-66d9-4b7f-86f4-ccb1152fec2e	Визит к невропатологу	1389787427
@@ -98,6 +248,156 @@ TheKindestDemon	ee58c59f-8e7f-4430-b8ca-236c4d3745ae	Alice Cooper	b5bcde0b-373a-
 TheKindestDemon	1d4762ed-85e1-4684-8409-beeb00977d1a	Jill Tracy	de4b209b-8223-4f6a-bab7-2d99544935e0	Doomsday Serenade	1383742142
 TheKindestDemon	7ca5dce5-4b0b-4af8-8c5e-0283da2b9251	Unextraordinary Gentlemen	2a20a6f9-09bb-45dd-b05c-bb7c847b0f5d	Open Arms, Empty Air	1383741845
 TheKindestDemon	0cae4d0e-eb77-4f75-96f4-b5d7279faf38	KK & The Steampunk Orchestra		Desert Isle	1381171739
+TheKindestDemon	3941dcef-a5f6-4573-add8-6201a33a8083	Schwarzer Engel	2f508a87-2576-41e9-8bdc-dc83afa75877	Traum einer Nacht	1381171461
+TheKindestDemon		Die!		Alles in einen Topf	1381171196
+TheKindestDemon	5fe36267-877f-4b36-81c8-57dac5fa949c	Revue Noir	55b1d385-e5ff-4abc-9071-16819c3d3223	Strange Little Show	1381170976
+TheKindestDemon	03eb47c4-61a5-4334-bf03-1efc1e75dfb3	Fiddler's Green	8ceee408-a1c9-4eca-ade5-b64e4399a656	Victor And His Demons	1381170767
+TheKindestDemon	9bb36fd6-afb8-4f87-a846-70b6ea784232	Vroudenspil	390049ca-7430-40bd-b2c2-ae22fd9dc33d	Willkommen an Bord	1381170480
+TheKindestDemon	e54da459-21ee-4f0c-82c3-a7379d6937e7	Tanzwut	c0175c14-30f0-4c6f-ad34-d189f4256bc9	Augen Zu	1381170320
+TheKindestDemon	e0ab4e20-b79c-4cbb-87b6-99d0a72f68cf	Das Niveau	f8a9d955-df93-4d64-ad26-92dd470b0251	F***en	1381169916
+TheKindestDemon	070205c7-58db-4051-bc59-00c5ae37e2dd	Vermaledeyt	2e6a897b-e1c0-43d9-8468-2bcfd8c8814b	Ouvertüre	1381152866
+TheKindestDemon	e0ab4e20-b79c-4cbb-87b6-99d0a72f68cf	Das Niveau	e91ee324-e050-4da3-b73b-0719d5da0ff7	Niwowoniniwowa	1381152118
+TheKindestDemon	cf2c4381-cd6b-46bc-8dfa-9c5b20324ba9	The Clockwork Dolls	b6c4ec46-419b-4333-9d4a-fda49751de6c	Impartial (The Battle)	1381151715
+TheKindestDemon	9bb36fd6-afb8-4f87-a846-70b6ea784232	Vroudenspil	987bae89-d6a0-4bed-bdd0-4e72542e4a11	Teufelspakt	1381151506
+TheKindestDemon	03eb47c4-61a5-4334-bf03-1efc1e75dfb3	Fiddler's Green	b627699d-71df-48f4-b01d-cd160ade4d00	Bugger Off	1381151352
+TheKindestDemon	28c84c5d-a980-4821-ab5b-d08d584f71fd	Cultus Ferox	b34d5ae8-864d-4645-9189-42f44127091e	Andro	1381151063
+TheKindestDemon	45b4e7b5-0449-4ed8-b671-0096c3dc82ab	Vermillion Lies	4f9e8875-723b-401a-ae48-6bf3fe8b5c9f	I Should Fly	1381150877
+TheKindestDemon	d9d04200-fc85-4c5f-8e0d-4b3ea4939d8f	Unwoman	67bfad79-9503-499a-b1c3-c1a45191f8c2	Is She Secretly On My Side?	1381150582
+TheKindestDemon	bacfad8f-163d-4799-863d-c17dc10032f8	Zeraphine	01fc9b8d-e774-442f-b1bb-a1c22cb2e4b4	Siamesische Einsamkeit	1381150363
+TheKindestDemon	3941dcef-a5f6-4573-add8-6201a33a8083	Schwarzer Engel	12e577a8-8a5d-4b5f-bc27-cc5cee3f54c7	Geister und Dämonen	1381150150
+TheKindestDemon	070205c7-58db-4051-bc59-00c5ae37e2dd	Vermaledeyt	093fea70-02ff-441c-8726-15866a2c4a38	Tanzt!	1381149941
+TheKindestDemon	3941dcef-a5f6-4573-add8-6201a33a8083	Schwarzer Engel	59b9abac-f48b-4f9d-b00c-c6971e800a8c	In tiefster Nacht	1381149858
+TheKindestDemon	45b4e7b5-0449-4ed8-b671-0096c3dc82ab	Vermillion Lies	6d0c0966-90d0-4e58-978a-3f16c31be8a6	Circus Apocalypse	1381149681
+TheKindestDemon	cf2c4381-cd6b-46bc-8dfa-9c5b20324ba9	The Clockwork Dolls	55faef3b-c84f-4c26-9139-0214f2f9157d	The Iron Rose	1381149256
+TheKindestDemon	e0ab4e20-b79c-4cbb-87b6-99d0a72f68cf	Das Niveau	9a7e55eb-a719-4b8d-9612-1fe64e6c76e5	Beim pissen gemeuchelt	1381148899
+TheKindestDemon	107c7983-0728-46ea-8550-77e698adf690	The Dresden Dolls	05e89719-b6ef-4cf3-a5a4-80c927ba8e8e	Shores Of California	1381148680
+TheKindestDemon	68f10636-b5ff-46a5-8ed4-4c1c5f05c11e	Pretty Balanced	bb6d2900-e9d5-4e02-9a73-154232ec7765	Permanent Guest	1381148329
+TheKindestDemon	a2a0a140-48b0-4c70-ab71-13db17f5224a	Mina Harker	14fc484e-175f-4799-8532-1a0535392986	Bis zum Tod (feat. Dero)	1381148093
+TheKindestDemon	9bb36fd6-afb8-4f87-a846-70b6ea784232	Vroudenspil	701507da-7cdc-4070-b79d-f9bf129f0f18	Spilmannsweise	1381147836
+TheKindestDemon	e54da459-21ee-4f0c-82c3-a7379d6937e7	Tanzwut	1f053b8c-11b8-417d-bb2b-2e933d5f2353	Ikarus	1381147595
+TheKindestDemon	03eb47c4-61a5-4334-bf03-1efc1e75dfb3	Fiddler's Green	e485784b-ee74-4031-b38e-4a95ef70326e	Wall Of Folk	1381147383
+TheKindestDemon	070205c7-58db-4051-bc59-00c5ae37e2dd	Vermaledeyt	2b31ea13-3db9-4514-9bd1-21fa1760f387	Stacca	1381147172
+TheKindestDemon	d9d04200-fc85-4c5f-8e0d-4b3ea4939d8f	Unwoman	2583184e-7d0c-416c-b950-21b9500cefb2	Cruelty	1381146975
+TheKindestDemon	bacfad8f-163d-4799-863d-c17dc10032f8	Zeraphine	0cc82056-cc2f-4dae-86b6-17e05762339a	Wenn du gehst	1381146648
+TheKindestDemon	56d42150-9522-4a5a-b229-022c9c0c8d1a	Unzucht		Das Klavier	1381146368
+TheKindestDemon	45b4e7b5-0449-4ed8-b671-0096c3dc82ab	Vermillion Lies	1d95fbb2-a57d-45f9-bf1e-9b826451b408	Long Red Hair	1381146194
+TheKindestDemon	e0ab4e20-b79c-4cbb-87b6-99d0a72f68cf	Das Niveau	5d8f9ed3-67e8-496d-acb6-4e0094a5346a	Das Lied über die tiefe Zerrissenheit der menschlichen Seele	1381146092
+TheKindestDemon	9c297734-9629-488e-9279-0b4d7a8cb4ca	Vernian Process	45e14d68-d058-4faa-935e-cd4be6eb42a5	The Curse of Whitechapel	1381145828
+TheKindestDemon	88735355-f98f-44ea-8a40-7a8bcc56f07e	Joachim Witt	e3043f7c-45c8-4e17-91a1-21cacc7eaf61	Bataillon D'Amour	1381059436
+TheKindestDemon	36e348fe-0cbc-4343-8fa5-b91e727ce94f	Eisbrecher	5656c85a-b78b-49ee-80a3-1ca8a4e7460f	Augen unter Null	1381059194
+TheKindestDemon	c8bc9ad3-1df2-4c9b-9cf7-cf6fc60441dc	Emilie Autumn	3f667ad6-08b4-4ba0-8bb2-5862b5bf9f43	Second Hand Faith	1381058908
+TheKindestDemon	1d4762ed-85e1-4684-8409-beeb00977d1a	Jill Tracy	de4b209b-8223-4f6a-bab7-2d99544935e0	Doomsday Serenade	1381058632
+TheKindestDemon	6ffb8ea9-2370-44d8-b678-e9237bbd347b	Kings of Leon	051caac1-1f67-4733-80b5-62cb32660daa	Sex on Fire	1381058426
+TheKindestDemon	30c526fb-ccdc-4166-bcf3-a00e3ddb3753	Coppelius	d90c11ff-206d-45ff-855f-17959c050777	Viel zu viel	1381058201
+TheKindestDemon	76c9a186-75bd-436a-85c0-823e3efddb7f	Janis Joplin	7f699048-4411-4db7-87eb-7ad11e266d21	Me and Bobby McGee	1381057920
+TheKindestDemon	fbcd7b29-455f-49e6-9c4f-8249d20a055e	Seether	2200041d-4d5b-4cc0-8e3f-4aaeaae0cdd0	Gasoline	1381057747
+TheKindestDemon	854b0687-f9fc-4109-b59f-dbe84ebc5de6	Scouting for Girls	8d23a696-e0dc-475a-bdd2-687f21042fda	This Ain't a Love Song	1381057537
+TheKindestDemon	4f01fbdc-0f3d-4e87-9d2b-5c7ff9c58999	Blindspott	b2b17e36-beae-4266-960f-c159f1de46a1	Ilah (Silent War)	1381056813
+TheKindestDemon	99d128c0-2309-45c1-8262-1eb9face73d9	Black Tape for a Blue Girl	542b0816-bd65-4ba3-8291-0e0219587596	All my lovers	1381056567
+TheKindestDemon	553d8166-27b0-49fe-b8e4-89a984e2c375	The Sisters of Mercy		Vision Thing	1381056111
+TheKindestDemon	5462ea35-5684-4988-aab3-730ab7717074	Pacifier	97613896-4f72-4a95-9e99-da218ebcdb22	Just A Shadow	1381055908
+TheKindestDemon	107fe9d9-903d-4bdc-ba88-d1df3c2fa32c	Feuerschwanz	f30e8ff2-916b-4cc1-ae15-5d8fcbdd0798	Schwanzonate	1381055601
+TheKindestDemon	e5db18cb-4b1f-496d-a308-548b611090d3	Sex Pistols	ca480d48-4cfd-4c8f-9af5-0adc15e162d3	Anarchy in the U.K.	1381055352
+TheKindestDemon	f7a2f0f1-da44-40b3-8dff-ab421af08bcf	Voltaire	671ffed0-1fa4-494c-9711-64ce429b1edf	Parade	1381055110
+TheKindestDemon	5f9eda21-2257-47e0-813d-4592acfe008b	Evelyn Evelyn	ce06cf2e-f5da-4326-a4a7-aa9b970defb9	Love Will Tear Us Apart	1381054936
+TheKindestDemon	962fc231-25d6-4424-a331-693a037aeb82	Tadpole	bc4289c6-1a1a-4479-b906-d8975b0de32b	Better Days	1381054684
+TheKindestDemon	77cf7619-d032-4b59-bbde-512457bda41e	Mono Inc.	a8b38702-9541-4d28-b967-131412f4555d	In My Heart	1381054418
+TheKindestDemon	c8bc9ad3-1df2-4c9b-9cf7-cf6fc60441dc	Emilie Autumn	3f667ad6-08b4-4ba0-8bb2-5862b5bf9f43	Second Hand Faith	1379340515
+TheKindestDemon	81f8edef-a337-4588-a362-7511ef1b0fa2	Abney Park		The Wrong Side (Vernian Processed Mix)	1379340294
+TheKindestDemon	fbcd7b29-455f-49e6-9c4f-8249d20a055e	Seether	a3e98b13-c7b3-4443-a2da-9ded3d2c18a3	Truth	1379340042
+TheKindestDemon	5f9eda21-2257-47e0-813d-4592acfe008b	Evelyn Evelyn	e7b877e3-0f42-44f8-84f3-dba235fd9c7c	You Only Want Me 'Cause You Want My Sister	1379339810
+TheKindestDemon	fbcd7b29-455f-49e6-9c4f-8249d20a055e	Seether	ec113adb-be6a-4d64-b669-ef8ed07f5074	The Gift	1379339467
+TheKindestDemon	f7a2f0f1-da44-40b3-8dff-ab421af08bcf	Voltaire	b9daa329-39f8-4bc4-bc82-2b13286784f1	When You're Evil	1379339120
+TheKindestDemon	77cf7619-d032-4b59-bbde-512457bda41e	Mono Inc.	b7a401f2-6a50-4c53-91c9-6a78f2a2ba7f	Get Some Sleep	1379338848
+TheKindestDemon	2fa0d3ac-b64c-401a-b0a1-4915ba6cc157	Hoobastank	a2ffbb56-cd7b-4d85-bf93-1d53dfa56308	The Reason	1379338613
+TheKindestDemon	fad8967c-a327-4af5-a64a-d4de66ece652	Celldweller		Tainted (Deluxe Edition)	1379338337
+TheKindestDemon	88735355-f98f-44ea-8a40-7a8bcc56f07e	Joachim Witt	e3043f7c-45c8-4e17-91a1-21cacc7eaf61	Bataillon D'Amour	1379338092
+TheKindestDemon	36e348fe-0cbc-4343-8fa5-b91e727ce94f	Eisbrecher	c79e490e-2168-482b-80ec-233e6501d8fb	Eiskalt erwischt	1379337863
+TheKindestDemon	ebee61b4-bbdd-4087-9bcb-d5aa099088ec	James Blunt	7ed3406b-014b-47b9-971b-05e96ebaad0b	High	1379337617
+TheKindestDemon	5f9eda21-2257-47e0-813d-4592acfe008b	Evelyn Evelyn	ce06cf2e-f5da-4326-a4a7-aa9b970defb9	Love Will Tear Us Apart	1379337302
+TheKindestDemon	3d71689a-7571-45df-9995-b4ead9d726bd	Hannah Fury	39df4b0f-c503-4876-9a93-fc80c90195ee	Meathook	1379337164
+TheKindestDemon	c3694ddc-f7e5-40dd-9fad-90d11a2c50fa	Flogging Molly	2adcc900-cd6f-4cc4-885e-a356959b2276	Drunken Lullabies	1379336931
+TheKindestDemon	bcb95908-5c6e-453a-97fc-d69003d250ff	Bowling for Soup	640886f7-589e-47a3-891c-09ca2428cc5c	Almost	1379336716
+TheKindestDemon	553d8166-27b0-49fe-b8e4-89a984e2c375	The Sisters of Mercy		Doctor Jeep	1379336529
+TheKindestDemon	4f01fbdc-0f3d-4e87-9d2b-5c7ff9c58999	Blindspott	d91decce-0508-4c1b-9e66-76025c89a31c	Lit Up	1379336232
+TheKindestDemon	fbcd7b29-455f-49e6-9c4f-8249d20a055e	Seether	43f3de8d-9a32-4f1b-a35c-0c5bf8b40fba	Rise Above This	1379336017
+TheKindestDemon	99d128c0-2309-45c1-8262-1eb9face73d9	Black Tape for a Blue Girl	9a9ab1e3-2644-4784-9068-02074fc62556	Knock three times	1379335788
+TheKindestDemon	c995a379-60b9-404b-bd97-a7e2de0751d3	Rob Zombie	1e77bc24-3289-49c3-9fac-f2b55cf85dbc	Superbeast	1379335565
+TheKindestDemon	1d4762ed-85e1-4684-8409-beeb00977d1a	Jill Tracy	de4b209b-8223-4f6a-bab7-2d99544935e0	Doomsday Serenade	1379335289
+TheKindestDemon	f7a2f0f1-da44-40b3-8dff-ab421af08bcf	Voltaire	fd8ca72c-edbd-458c-bc5a-7f537342e972	Almost Human	1379335051
+TheKindestDemon	f2df5e26-04b0-4d34-b64f-99406e0c1e2b	Stahlmann	35e552cf-f609-43e3-99f5-0b796d966ad9	Willkommen	1379334861
+TheKindestDemon	76c9a186-75bd-436a-85c0-823e3efddb7f	Janis Joplin	b6f9ecae-29a2-4251-a885-f82dde5be7b5	Piece of My Heart	1379323696
+TheKindestDemon	5462ea35-5684-4988-aab3-730ab7717074	Pacifier	0f3d8fa7-3ada-4dec-8e3b-710e125d1304	Nothing	1379323422
+TheKindestDemon	9ba4b3a7-bf3d-4130-83b8-0600264b18b2	Hungry Lucy	5b00c691-55ab-4faa-bd24-ec23e6c1633e	Hill	1379323200
+TheKindestDemon	c9d00b47-4280-44a5-bef5-b0115ad20104	The Poodles	9dcef696-229e-418a-8d06-f83803c4a558	Shadows	1379323016
+TheKindestDemon	f7a2f0f1-da44-40b3-8dff-ab421af08bcf	Voltaire	4153c77f-8e4c-4c58-9cfe-8b557a48df95	Feathery Wings	1379277974
+TheKindestDemon	77cf7619-d032-4b59-bbde-512457bda41e	Mono Inc.	9c82a02f-b340-4e5a-a345-689684a78157	Forgiven	1379277828
+TheKindestDemon	8538e728-ca0b-4321-b7e5-cff6565dd4c0	Depeche Mode	89f3b3a8-a63f-4d62-a9a5-fe7b740181d0	Enjoy the Silence	1379277570
+TheKindestDemon	f2df5e26-04b0-4d34-b64f-99406e0c1e2b	Stahlmann	c9aae71d-771b-4a9b-8a6e-f3afa4039305	Stahlwittchen	1379277395
+TheKindestDemon	e7ffb658-723a-4e38-b260-3f7f0a799ab0	Nachtgeschrei	a5ee8329-1ddd-4807-b8fb-1979a7c8180b	Drei Lügen	1379277116
+TheKindestDemon	3a528006-1429-47f4-ae9b-2ea95343e16a	Velvet Revolver	c1c72b47-1ccd-43b1-a8e6-cc60f5b4f220	Fall to Pieces	1379276842
+TheKindestDemon	ee58c59f-8e7f-4430-b8ca-236c4d3745ae	Alice Cooper	b5bcde0b-373a-415d-90d7-b7dfd0745a77	Poison	1379276596
+TheKindestDemon	bcb95908-5c6e-453a-97fc-d69003d250ff	Bowling for Soup	33fb52b6-c9a7-4c66-93b8-603fe0ab8cb1	1985	1379276392
+TheKindestDemon	107fe9d9-903d-4bdc-ba88-d1df3c2fa32c	Feuerschwanz	e6845d54-44da-48b4-9f63-b6bfc8656417	Ich will tanzen	1379276131
+TheKindestDemon	5462ea35-5684-4988-aab3-730ab7717074	Pacifier	b5d48d35-9942-40ad-b5a3-14b24ebe3940	Walls	1379275843
+TheKindestDemon	fabb37f8-eb2a-4cc1-a72a-b56935bbb72d	Three Days Grace	5b8d4f09-68ce-4db1-8dd9-54f191734149	I Hate Everything About You	1379275598
+TheKindestDemon	342e72d6-e350-42c4-814a-3fe1801e65f5	Falconer	12a80fa6-125f-4b37-b70e-85a338f842c9	Busted To The Floor	1379275340
+TheKindestDemon	6c04cad1-bcb0-4542-a04a-14d4a7114ab2	Jace Everett	9a21e9fa-f9c8-46a2-ae1d-0f620717b3ea	Bad Things	1379275025
+TheKindestDemon	906500d0-5eaf-4b57-9faa-26ec85cadeb3	Schock	0a14a3f0-4a8f-40c3-ac6c-764ef68037af	Tanz	1379273101
+TheKindestDemon	7ca5dce5-4b0b-4af8-8c5e-0283da2b9251	Unextraordinary Gentlemen	2a20a6f9-09bb-45dd-b05c-bb7c847b0f5d	Open Arms, Empty Air	1379272803
+TheKindestDemon	f2df5e26-04b0-4d34-b64f-99406e0c1e2b	Stahlmann	4b480a47-aa4f-4294-bd32-200e0b509541	Auf Ewig	1379272571
+TheKindestDemon	f7a2f0f1-da44-40b3-8dff-ab421af08bcf	Voltaire	671ffed0-1fa4-494c-9711-64ce429b1edf	Parade	1379272330
+TheKindestDemon	5462ea35-5684-4988-aab3-730ab7717074	Pacifier	9474cc32-397f-40aa-80cc-c714630bd281	Comfort Me	1379272132
+TheKindestDemon	88be1fb5-0112-4549-9608-526591c7f415	David Garrett	0f8a79ba-6c4a-4b29-a918-a0109f45fd5b	Brahms Hungarian Dance No. 5	1379271943
+TheKindestDemon	fbcd7b29-455f-49e6-9c4f-8249d20a055e	Seether	693117f6-953d-4e11-a866-b5c6711c02fd	Remedy	1379271734
+TheKindestDemon	fa8dd489-17e2-4d18-a195-d92fcc871d61	JJ72	5b529e80-a4b7-4ef5-93af-b6463bca202c	October Swimmer	1379271543
+TheKindestDemon	76c9a186-75bd-436a-85c0-823e3efddb7f	Janis Joplin	b7450002-ca11-4854-883d-0282acaa2bc3	Mercedes Benz	1379271435
+TheKindestDemon	4f01fbdc-0f3d-4e87-9d2b-5c7ff9c58999	Blindspott	1f301757-51d9-41f8-a3bc-221b00ed9ad9	Blank	1379271097
+TheKindestDemon	77cf7619-d032-4b59-bbde-512457bda41e	Mono Inc.	a8b38702-9541-4d28-b967-131412f4555d	In My Heart	1379270831
+TheKindestDemon	107fe9d9-903d-4bdc-ba88-d1df3c2fa32c	Feuerschwanz	80101278-2beb-480a-b6d9-8ce0d2679d49	Falsche Rose	1379270621
+TheKindestDemon	6aa40207-fec8-43a7-991d-b872a42def05	Amy Macdonald	88897259-36c9-4335-93b8-100d2bcab832	This Is the Life	1379270425
+TheKindestDemon	81f8edef-a337-4588-a362-7511ef1b0fa2	Abney Park	4d5fd008-4fe5-4f60-ace1-26781761c745	Under the Radar	1379270229
+TheKindestDemon	8cf95123-5023-4257-933e-4d7ebbc5d8a2	Lord of the Lost	6e8f24c0-ce68-4e69-ac00-e647ea3bdc91	Sex On Legs	1379270031
+TheKindestDemon	36e348fe-0cbc-4343-8fa5-b91e727ce94f	Eisbrecher	5a96b1f3-4dd6-473a-a827-f90618d3b679	Tanz mit mir	1379269831
+TheKindestDemon	fad8967c-a327-4af5-a64a-d4de66ece652	Celldweller		So Long Sentiment (Deluxe Edition)	1379268970
+TheKindestDemon	906500d0-5eaf-4b57-9faa-26ec85cadeb3	Schock	f38688bf-dae3-40d0-9fd7-4ac4bbbbf7f9	Schuld	1379268714
+TheKindestDemon	d82ba5f4-da09-479a-ab18-4b1a122c4345	Oomph!	d0bc5b86-c7e2-40b1-a62c-99a7c0c44a89	Wer schön sein will muss leiden	1379268410
+TheKindestDemon	9ba4b3a7-bf3d-4130-83b8-0600264b18b2	Hungry Lucy	bb5faaa3-72b7-490c-a4e5-249386442a70	A Girl Alone	1379268192
+TheKindestDemon	a749130e-c2d8-4a7c-b740-908ea4574961	Hot Chocolate	ce215cbc-415d-4350-9954-5b3c5c6873e5	You Sexy Thing	1379267967
+TheKindestDemon	c8bc9ad3-1df2-4c9b-9cf7-cf6fc60441dc	Emilie Autumn	2dc0d462-1f46-4654-ae54-97c5cb4c893f	Juliet	1379267623
+TheKindestDemon	107fe9d9-903d-4bdc-ba88-d1df3c2fa32c	Feuerschwanz	54dc3bc0-7cad-444c-8a1a-17f0af8d31e1	Zehn kleine Ritterlein	1379267390
+TheKindestDemon	46117e96-be31-400f-b2f0-cc1674164584	Leandra	1034657e-ad90-43cf-a55a-e6c1950d1667	Lie to Me	1379267037
+TheKindestDemon	bcb95908-5c6e-453a-97fc-d69003d250ff	Bowling for Soup	2e080668-933d-4532-909f-3d4107c6692c	Li'l Red Riding Hood	1379266886
+TheKindestDemon	88be1fb5-0112-4549-9608-526591c7f415	David Garrett	983b7e15-de0e-4006-acd4-2dbeea6a908c	Smooth Criminal	1379266696
+TheKindestDemon	6ffb8ea9-2370-44d8-b678-e9237bbd347b	Kings of Leon	051caac1-1f67-4733-80b5-62cb32660daa	Sex on Fire	1379266490
+TheKindestDemon	8538e728-ca0b-4321-b7e5-cff6565dd4c0	Depeche Mode	89f3b3a8-a63f-4d62-a9a5-fe7b740181d0	Enjoy the Silence	1379266232
+TheKindestDemon	107fe9d9-903d-4bdc-ba88-d1df3c2fa32c	Feuerschwanz	96662990-1727-42f7-a1fe-0b650c20e42b	Johanna	1378836520
+TheKindestDemon	36e348fe-0cbc-4343-8fa5-b91e727ce94f	Eisbrecher	82046b3c-912a-498a-86ea-29e3d0172f32	Eisbrecher	1378836272
+TheKindestDemon	f4a31f0a-51dd-4fa7-986d-3095c40c5ed9	Evanescence	c24eb26a-04d6-4f09-9449-9bc334f78ede	Bring Me to Life	1378836027
+TheKindestDemon	3d6bbeb7-f90e-4d10-b440-e153c0d10b53	Elvenking	408162cd-ebd9-4fdf-b1e2-426a3e2ddc5d	The Divided Heart	1378835847
+TheKindestDemon	9ba4b3a7-bf3d-4130-83b8-0600264b18b2	Hungry Lucy	5b00c691-55ab-4faa-bd24-ec23e6c1633e	Hill	1378835623
+TheKindestDemon	f37b3f31-b1f8-4b88-8cb5-b34f709b17d7	Iggy Pop	62e0bb9d-fb7e-4e2a-ba42-9e625e26ae2e	Real Wild Child (Wild One)	1378835396
+TheKindestDemon	c9d00b47-4280-44a5-bef5-b0115ad20104	The Poodles	9f8d28ff-8ff4-481b-a682-47ff5a555612	Dancing With Tears In My Eyes	1378835175
+TheKindestDemon	906500d0-5eaf-4b57-9faa-26ec85cadeb3	Schock	0a14a3f0-4a8f-40c3-ac6c-764ef68037af	Tanz	1378834934
+TheKindestDemon	4f01fbdc-0f3d-4e87-9d2b-5c7ff9c58999	Blindspott	c5e68741-e38a-470c-afaf-dffd1516ff7e	Room To Breathe	1378834683
+TheKindestDemon	5f9eda21-2257-47e0-813d-4592acfe008b	Evelyn Evelyn	e7b877e3-0f42-44f8-84f3-dba235fd9c7c	You Only Want Me 'Cause You Want My Sister	1378834452
+TheKindestDemon	8cf95123-5023-4257-933e-4d7ebbc5d8a2	Lord of the Lost	6e8f24c0-ce68-4e69-ac00-e647ea3bdc91	Sex On Legs	1378834195
+TheKindestDemon	00b952be-6c97-4880-84f9-06de584b491b	Cancer Bats		Deathsmarch	1378834061
+TheKindestDemon	ff7f80cd-05c2-4068-a00e-fbfbd453d049	Schandmaul	419c496d-fd84-4e66-97d5-8a9c2b7fc5a8	Sonnenstrahl	1378833745
+TheKindestDemon	36e348fe-0cbc-4343-8fa5-b91e727ce94f	Eisbrecher	5a96b1f3-4dd6-473a-a827-f90618d3b679	Tanz mit mir	1378833545
+TheKindestDemon	107fe9d9-903d-4bdc-ba88-d1df3c2fa32c	Feuerschwanz	1f087f15-eda6-442b-850d-eda517267a93	Vampir	1378833153
+TheKindestDemon	4f01fbdc-0f3d-4e87-9d2b-5c7ff9c58999	Blindspott	136f5e40-2e1d-4a3d-b66c-38961aef3ecf	1975	1378832900
+TheKindestDemon	6ffb8ea9-2370-44d8-b678-e9237bbd347b	Kings of Leon	051caac1-1f67-4733-80b5-62cb32660daa	Sex on Fire	1378832687
+TheKindestDemon	f7a2f0f1-da44-40b3-8dff-ab421af08bcf	Voltaire	11b4b272-1d85-40f8-abfc-088fe23d8526	Zombie Prostitute	1378832487
+TheKindestDemon	107fe9d9-903d-4bdc-ba88-d1df3c2fa32c	Feuerschwanz	f30e8ff2-916b-4cc1-ae15-5d8fcbdd0798	Schwanzonate	1378832180
+TheKindestDemon	5462ea35-5684-4988-aab3-730ab7717074	Pacifier	0f3d8fa7-3ada-4dec-8e3b-710e125d1304	Nothing	1378831959
+TheKindestDemon	fbcd7b29-455f-49e6-9c4f-8249d20a055e	Seether	eb1c85fb-ad03-48aa-8d9f-bf4f10af568e	Breakdown	1378831748
+TheKindestDemon	107fe9d9-903d-4bdc-ba88-d1df3c2fa32c	Feuerschwanz	80101278-2beb-480a-b6d9-8ce0d2679d49	Falsche Rose	1378831539
+TheKindestDemon	107fe9d9-903d-4bdc-ba88-d1df3c2fa32c	Feuerschwanz	731f952c-1921-4e9e-9edf-a390789ea507	Metvernichter	1378807304
+TheKindestDemon	f7a2f0f1-da44-40b3-8dff-ab421af08bcf	Voltaire	a65e424b-2c24-4398-924d-8878465cf27c	Dead Girls	1378807041
+TheKindestDemon	fad8967c-a327-4af5-a64a-d4de66ece652	Celldweller		So Long Sentiment (Deluxe Edition)	1378806675
+TheKindestDemon	c8bc9ad3-1df2-4c9b-9cf7-cf6fc60441dc	Emilie Autumn	3f667ad6-08b4-4ba0-8bb2-5862b5bf9f43	Second Hand Faith	1378806381
+TheKindestDemon	f2df5e26-04b0-4d34-b64f-99406e0c1e2b	Stahlmann	c694fd28-9753-434e-8782-1a2130a1242a	Teufel	1378806147
 Typheem	a94a7155-c79d-4409-9fcf-220cb0e4dc3a	Talking Heads		Seen And Not Seen - 2005 Remastered Version	1424718935
 Typheem	a94a7155-c79d-4409-9fcf-220cb0e4dc3a	Talking Heads		Seen And Not Seen - 2005 Remastered Version	1424718934
 Typheem	a94a7155-c79d-4409-9fcf-220cb0e4dc3a	Talking Heads		Houses In Motion - 2005 Remastered Version	1424718661
@@ -148,6 +448,156 @@ Typheem	b7ffd2af-418f-4be2-bdd1-22f8b48613da	Nine Inch Nails	1d1bb32a-5bc6-4b6f-
 Typheem	7e54d133-2525-4bc0-ae94-65584145a386	Plaid	2368d2d2-eeb3-4d71-9b93-14a49e6a5782	Upgrade	1424622615
 Typheem	7754905b-8bf7-48e2-935a-03d566fec464	Moderat	56ac9e2f-8b30-4b67-b5ec-c24251a5cb44	Bad Kingdom	1424622356
 Typheem	b476bc5e-19ca-4e5a-82c8-1a068d601a7d	Nosaj Thing	1e5d6b57-ef76-4ba2-9ea1-784536badbcc	Aquarium	1424622176
+Typheem	d7f7f338-7715-4a67-9589-586f70957824	Lorn	58c7d943-4dd7-4906-8139-183c5deba0f6	Soft Room	1424622037
+Typheem	bae7f609-bd83-4910-b07e-57ce317d46af	Clark		The Pining pt2	1424621849
+Typheem	9b4aec00-c369-4707-807b-9229955ea3db	edIT	8d715611-5c86-45ff-bcf8-67eab5b4d2f6	Laundry	1424621508
+Typheem	5805761c-fa24-40e5-bb79-295a64195bf7	Yppah	d452bd75-54d7-4d68-835d-f33a6744a6bd	Gumball Machine Weekend	1424621272
+Typheem	66f89780-6c07-4c4b-8e4c-be4098090bf3	iTAL tEK	7405036a-801c-41f4-9211-2485bed2dcc3	White Mark	1424620982
+Typheem	da8b7ac4-8df7-4001-8a92-5e38fcc6d9d0	Ginormous		At Night, Under Artificial Light	1424620704
+Typheem	bae46981-8da8-422e-8574-9dbac11f2c7e	Starkey	6861bd7e-af10-4b8c-99eb-4a67100b2d35	Spacewalk	1424620332
+Typheem	a74b1b7f-71a5-4011-9441-d0b5e4122711	Radiohead	5afaa69b-7abd-40d8-9c38-a7ec8e9a6d05	Myxomatosis	1424620104
+Typheem	dbac84f1-c082-46c5-87f5-361d2891f0d8	Hecq		8	1424619893
+Typheem	afb29567-f40e-4ff1-8e4e-e79b9246c0bf	Working For A Nuclear Free City	1773eb43-31ea-464a-adcb-58d930e8f24a	Dead Fingers Talking	1424619687
+Typheem	d7f7f338-7715-4a67-9589-586f70957824	Lorn	acd70004-ab51-4c5c-a5f2-24f835b4b17f	Cherry Moon	1424619473
+Typheem	9be5414e-b906-4659-9c59-012ba7f7a154	Om Unit	609fdf3a-d628-4681-b5c5-12f4f5836834	The Timps	1424619213
+Typheem	a5f1a265-22b6-4db1-af7c-ab04c3367b6e	PVT	561b0d37-28aa-4029-866e-4f99d1a16cb2	In the Blood	1424618943
+Typheem	69158f97-4c07-4c4e-baf8-4e4ab1ed666e	Boards of Canada	2a72cd7b-f566-4c91-8e9b-7b33b95dfff7	Roygbiv	1424618796
+Typheem	c787a7a5-e143-4ba6-86df-fab2354dcd44	Daedelus		Order of the Golden Dawn	1424566353
+Typheem	95508331-85b3-4fff-a508-4cd7feca1093	Kaikukasti	2b9dcdc0-df71-45e5-9710-defb5db8c322	Lämpöö Ja Lempee	1424566176
+Typheem	7e5a2a59-6d9f-4a17-b7c2-e1eedb7bd222	Grimes	46ccedd5-8800-4daf-b2c6-4fcd4bf47d74	Vowels = Space and Time	1424565919
+Typheem	e3954b21-0d05-45ea-a057-e8cc4c9b1ab5	Chico Science & Nação Zumbi	f7a982f8-6d79-406b-8377-921389fbee81	A Cidade	1424565636
+Typheem	571a3166-8676-4e5d-b432-876aa98ea760	Laika	770115f4-26ac-47a9-931c-7b258f3cdeb4	Almost Sleeping	1424565225
+Typheem	44632683-c340-44de-a65d-328212559f91	Badfinger	6025824a-094a-4e45-8db2-96ea472e7532	Baby Blue	1424565013
+Typheem	be0cb2f2-71c3-4e95-a584-c19248951ff4	DANGERDOOM		Old School Rules	1424564856
+Typheem	fc7bbf00-fbaa-4736-986b-b3ac0266ca9b	alt-J	7f35b163-3abf-4622-ab87-6170edeb9df2	Left Hand Free	1424564687
+Typheem	10000730-525f-4ed5-aaa8-92888f060f5f	Bat for Lashes	662ddaa9-5647-46b1-b5d9-7ce3d1866f17	Daniel	1424564441
+Typheem	a8baaa41-50f1-4f63-979e-717c14979dfb	Beck	b74ccc48-0489-430a-96a7-dab617534ec3	Modern Guilt	1424564248
+Typheem	d43d12a1-2dc9-4257-a2fd-0a3bb1081b86	Johnny Cash	6e4e5aba-a6e3-4ecd-b26d-71b7043ac755	The Man Comes Around	1424563985
+Typheem	172e1f1a-504d-4488-b053-6344ba63e6d0	Nick Cave & The Bad Seeds		Jesus of the Moon	1424563787
+Typheem	8f6bd1e4-fbe1-4f50-aa9b-94c450ec0f11	Portishead	5efc1689-a6e8-45d3-a481-774be58e8b59	Biscuit	1424563470
+Typheem	6bf591c4-b050-478e-9d9f-167394d66c90	Sérgio Mendes & Brasil '66		Roda	1424563329
+Typheem	7e54d133-2525-4bc0-ae94-65584145a386	Plaid	429daf0a-f7d9-498d-9386-47eb8e47f2e6	Little People	1424563086
+Typheem	11c6b106-1c1f-429d-8407-b1ee155d7f72	Jurassic 5	193826e1-d84c-411e-b854-ea4c64d0fc89	The Influence	1424562854
+Typheem	f181961b-20f7-459e-89de-920ef03c7ed0	The Strokes	8eea2d35-8fe5-4142-864d-119914cfb628	Reptilia	1424562638
+Typheem	717ce3f6-847a-4749-bd54-467875812dd4	Elzhi		It Ain't Hard to Tell	1424562413
+Typheem	071cb80d-a198-4f88-b41e-f4dd9a65ec80	Kettel	bdd85743-5fd0-4603-bc7b-48d111457357	Verkens in Londen	1424562138
+Typheem	4f6dd51e-bfd7-4153-ace7-9316d1757a57	Roots Manuva	3b590dcd-7006-4d51-967c-c3384318454c	Join The Dots	1424561901
+Typheem	83f1cb07-1745-48e6-8576-428604e67aa8	Gang Gang Dance	d32aadb9-16ee-4143-9e54-e2959b8c2903	House Jam	1424561620
+Typheem	9689aa5a-4471-4fb4-9721-07cecda0fa9f	A Tribe Called Quest	21749172-7f34-4fec-924a-0761dfcc1a6d	Award Tour	1424561398
+Typheem	ea99eec5-bd72-4b4f-86e4-54c5a34f7e10	The Heavy	75b978da-d98e-45c4-838e-5c8eb712b8a0	Short Change Hero	1424561080
+Typheem	ab1b3f93-99ba-4a5b-868f-e412ab0a57fb	Ojos de Brujo		sultanas de merkaillo	1424560871
+Typheem	a74b1b7f-71a5-4011-9441-d0b5e4122711	Radiohead	3485391f-eeee-478e-b35d-50f70cb89bc3	Go to Sleep	1424560673
+Typheem	5441c29d-3602-4898-b1a1-b77fa23b8e50	David Bowie	c0829a79-4898-4954-b5b7-e35dd6e89b1d	The Stars (Are Out Tonight)	1424560440
+Typheem	3eba5e02-780b-4acd-befb-d23a0c6708dd	Dr. Octagon	a6e687b2-c20c-4eb0-8dbf-4d6b4dc02af4	Aliens	1424560261
+Typheem	e3954b21-0d05-45ea-a057-e8cc4c9b1ab5	Nação Zumbi	2ad5d2b1-5ea2-4c32-8b8e-defa9994670f	Bossa Nostra	1424560052
+Typheem	cf16d0a3-9d9c-44d4-b610-f0baccc27912	The Knife	c7360669-6d46-42f5-b62e-ae9203c6f525	Silent Shout	1424559763
+Typheem	29730ee3-e1c7-4e28-9ccd-3a0e6b0e8103	Toots and The Maytals		Louie Louie	1424559421
+Typheem	b41b38d4-ef3e-4f37-8c75-cfe9af999696	Cage the Elephant	b9d34863-bde1-4d93-b198-be00f7ef479f	Back Against the Wall	1424559197
+Typheem	b5bd9f88-962e-4730-84a7-795592ba42e8	Silversun Pickups	98b7e831-4e2e-449c-84b2-ca4fc43346ba	Melatonin	1424558956
+Typheem	a94a7155-c79d-4409-9fcf-220cb0e4dc3a	Talking Heads		Crosseyed And Painless - 2005 Remastered Version	1424558674
+Typheem	9a709693-b4f8-4da9-8cc1-038c911a61be	Bonobo	bbed3586-27e3-43c3-936d-9dabce929623	Ghost Ship	1424558436
+Typheem	4e024037-14b7-4aea-99ad-c6ace63b9620	Madvillain	70e4863b-796f-44f2-8dd3-6d835ea3734f	All Caps	1424558310
+Typheem	fefeb63b-9430-4fe8-a332-0c400351af50	Selah Sue	3191b835-95ce-413e-bf8d-7bd49be402e8	Raggamuffin	1424558154
+Typheem	b071f9fa-14b0-4217-8e97-eb41da73f598	The Rolling Stones	36228646-2c16-4a7a-9732-f4c14bb24776	Gimme Shelter	1424557887
+Typheem	b476bc5e-19ca-4e5a-82c8-1a068d601a7d	Nosaj Thing	78f5779c-88e0-420e-a7d9-294bc931c3df	Fog	1424557669
+Typheem	efa2c11a-1a35-4b60-bc1b-66d37de88511	DJ Shadow	3f02f615-80d3-48cb-9a8f-4f892c9a1f1c	Midnight in a Perfect World	1424557374
+Typheem	9e0e2b01-41db-4008-bd8b-988977d6019a	The Police		Walking On The Moon - 2003 Stereo Remastered Version	1424557078
+Typheem	6593c2bc-9327-4adf-a8b2-b315e4f5c0bb	Jeru the Damaja	0ec07787-3f3a-4ffe-8b55-0852fd6e72d2	Seinfeld	1424556864
+Typheem	8c538f11-c141-4588-8ecb-931083524186	Bloc Party	5ce2cef0-e070-429b-9f98-7f06c9ea57b9	Helicopter	1424556648
+Typheem	a3bc465f-25f4-4eed-a8e6-42255a25fd12	Boxcutter	7ef9ba47-bb51-433d-8bf3-231fba0ef8ad	Mya Rave v2	1424556402
+Typheem	a47c3aa2-7d87-475c-a2c7-1e2047dafb09	Gnarls Barkley	a344e49e-ee63-477c-a1e6-97fd3d5b24da	Who's Gonna Save My Soul	1424556210
+Typheem	752d58e6-d33f-4dcd-b40c-37acc14242f2	David Lynch	da735d83-83ab-424a-825c-2479e1d266c5	Star Dream Girl	1424556007
+Typheem	48772747-4cda-4ba8-b470-cfd5a32e05f7	Macy Gray	7405a14e-6ba1-435d-b025-e6f0a8dc8a17	I Try	1424555773
+Typheem	234bab50-2f04-4d21-8f91-df93ef554855	Mr. Scruff	b2c8037c-ded4-4d36-8069-e6aeebf0416d	Jazz Potato	1424555412
+Typheem	c3aeb863-7b26-4388-94e8-5a240f2be21b	Tom Waits	32170452-a053-4f5f-8082-feb7189c13b9	Hell Broke Luce	1424555179
+Typheem	a9d0e342-29ae-4fb6-99f3-2847caed82b2	Greenskeepers	c5c207fb-2a42-435a-8d08-595191231125	Lotion	1424554957
+Typheem	9a22fc7b-ad7f-4c70-9e0f-4d40cd7562cd	16 Horsepower	f341348f-2232-4dec-9e7e-8ffdd34437bf	Clogger	1424554752
+Typheem	d43d12a1-2dc9-4257-a2fd-0a3bb1081b86	Johnny Cash	3c28eb47-edbe-49fe-ae24-7102dbda9b96	Personal Jesus	1424554556
+Typheem	ada7a83c-e3e1-40f1-93f9-3e73dbc9298a	Arctic Monkeys	8f84da07-09a0-477b-b216-cc982dabcde1	This House Is a Circus	1424554369
+Typheem	f22942a1-6f70-4f48-866e-238cb2308fbd	Aphex Twin		CIRCLONT6A [141.98][syrobonkus mix]	1424286141
+Typheem	f22942a1-6f70-4f48-866e-238cb2308fbd	Aphex Twin		diskhat ALL prepared1mixed 13	1424285855
+Typheem	f22942a1-6f70-4f48-866e-238cb2308fbd	Aphex Twin		diskhat1	1424285735
+Typheem	f22942a1-6f70-4f48-866e-238cb2308fbd	Aphex Twin		DISKPREPT1	1424285422
+Typheem	f22942a1-6f70-4f48-866e-238cb2308fbd	Aphex Twin		DISKPREPT4	1424285300
+Typheem	f22942a1-6f70-4f48-866e-238cb2308fbd	Aphex Twin		piano un1 arpej	1424285250
+Typheem	f22942a1-6f70-4f48-866e-238cb2308fbd	Aphex Twin		diskhat ALL prepared1mixed 13	1424284890
+Typheem	5ebe0c73-b673-404a-aa5d-a9db12fe4bc5	Blakroc	7d85a975-8841-4ad0-9a67-13050b53a74f	Dollaz & Sense	1424275273
+Typheem	aba64937-3334-4c65-90a1-4e6b9d4d7ada	Aesop Rock	92afea4e-abf5-4ee7-992a-4da07be74637	Cycles To Gehenna	1424275036
+Typheem	477c1c53-0a3a-4f96-91f5-ea688295ddd5	Wu-Block		Bust Shots	1424274839
+Typheem	164f0d73-1234-4e2c-8743-d77bf2191051	Kanye West		Monster	1424274464
+Typheem	545f9a53-f816-4b59-b196-07d16d01160a	Styles of Beyond		Subculture - Upbeats Remix	1424274134
+Typheem	3eba5e02-780b-4acd-befb-d23a0c6708dd	Dr. Octagon	a6e687b2-c20c-4eb0-8dbf-4d6b4dc02af4	Aliens	1424273955
+Typheem	e9047e79-300c-4a0e-9110-621aa4a2d3bc	Antipop Consortium		Volcano	1424273734
+Typheem	89d21333-d040-4602-9dac-b565651f5a92	Two Fingers		Two Fingers	1424273569
+Typheem	8c971da3-ae4c-490d-ae1e-1a73061cf14d	Honey Claws	a2cf4709-688e-4896-a82b-b3185ac563e2	Digital Animal	1424273346
+Typheem		El-P		The Full Retard	1424273131
+Typheem	c4b933ea-dfa3-4d56-81f9-9f924e2540ec	Sepalcure		Hold On - Trevino Remix	1424125473
+Typheem	15d5df77-add9-4bea-a132-bc4499520fcb	Phon.o	9b1019f0-39eb-424e-ab31-a8d3352c037e	Nightshifts	1424125191
+Typheem	e26fa4b0-ea73-4a33-a745-44077a0d5a59	Zombie Nation	445775f4-3a1c-488c-9b4f-ad5cea827c43	Black Toys	1424124863
+Typheem	c5c2ea1c-4bde-4f4d-bd0b-47b200bf99d6	The xx	f0eab833-ff74-49d4-8207-bc973cf435a0	Crystalised (Dark Sky Remix)	1424124571
+Typheem	f03994e9-a05d-4a70-b43f-51a6f5e39c23	Darkside		A2	1424124289
+Typheem	7754905b-8bf7-48e2-935a-03d566fec464	Moderat	5d2ce680-b68e-4528-abde-5122ff045003	A New Error	1424123926
+Typheem	0b0c25f4-f31c-46a5-a4fb-ccbf53d663bd	Jon Hopkins	085ec47a-16e7-458f-9d1f-03d047e816a4	Open Eye Signal	1424123461
+Typheem	2ff63f00-0954-4b14-9007-e19b822fc8b2	Ellen Allien & Apparat	6f7840da-ff2c-4837-82aa-7a339c0b35b5	Turbo Dreams	1424123216
+Typheem	56c6ebf8-a19d-4462-913d-049f954608ed	Jazztronik	1b21da31-f29c-46f7-a9e5-01fc37ad308a	Samurai	1424122867
+Typheem	a4a3048f-3968-4848-9f53-94e3d4f88b53	Mr. Oizo	ae7bb9b2-5971-498c-b8e7-3ecf5b4cf507	Flat Beat	1424122545
+Typheem	d9f0e57f-947d-44b3-a47a-f87cf90710f6	Egyptrixx		Chrysalis Records	1424122348
+Typheem	281a03a8-0bfa-4579-ab50-7760bdd308ae	Deepchord	a25dfbd4-e986-458c-8c25-32639b6203ab	Glow	1424122026
+Typheem	9a2da736-57bd-4b0a-9d61-28712bbb7968	John Talabot		Destiny feat. Pional	1424121737
+Typheem	6f027cd7-c2e8-4569-8922-aa2c9a503e65	Stephan Bodzin	975845d0-916e-4406-b158-fd1f4677757e	Liebe ist...	1424121308
+Typheem	3869dbb7-da0c-455f-ad74-332a9d35d016	Slagsmålsklubben		Sponsored By Destiny	1424120949
+Typheem	329a39e5-1a9f-4a6a-8e68-49fc8b400a63	Martyn		Glassbeadgames - 8 Hours at Fabric Dub	1424120472
+Typheem	1ef2bd54-9610-40ba-87dd-c195828411a9	Extrawelt	c74b2bfb-6e36-4585-9b71-0e4ffe313120	Soopertrack	1424119996
+Typheem	4a3a5fc0-af4b-4990-957b-8d94f7bfe706	Mount Kimbie	767d899c-3713-4079-80f7-ecfcbf0112dd	Made to Stray (DJ Koze remix)	1424119511
+Typheem	f3e2ad21-900e-46a0-8597-2a3e457a7c27	Gui Boratto		Tipologia	1424119143
+Typheem		Burial & Four Tet		Moth	1424118851
+Typheem	fdfe676b-ad4d-416d-81d4-d7946a221f83	Piece of Shh...		Diablo Riddim - Hektagon's Shuffle	1424118531
+Typheem	df82e8e1-a572-4a9a-9b55-eb6194a677c5	Few Nolder		Doubt	1424118041
+Typheem	9940c604-2456-4193-a403-ab18420bc1e9	Booka Shade	b40de0b3-39e7-4d2c-a3ef-c8de0fd1b7dc	Donut (Interpretation)	1424117853
+Typheem	56a70482-5528-4bef-8da2-a33cf098ce9b	Minilogue	cc6d76d4-b9cc-4335-b4f7-7e9bab7dbb58	Giant Hairy Super Monster	1424117418
+Typheem	094825f4-824e-4ab9-9739-75b3d2328509	FaltyDL	5a63b482-3f4f-40aa-9287-ca8b060d39f1	Uncea	1424117156
+Typheem	fd071985-668f-4905-8ffa-35f54b3188df	Holden	99370188-3161-434d-a8a2-0345ad0d47b0	Renata	1424116803
+Typheem	4e10ebcc-cd07-4e10-9c49-e1fd6bb30abb	Doc Daneeka		No One	1424116459
+Typheem	c5c2ea1c-4bde-4f4d-bd0b-47b200bf99d6	The xx	a700b311-e75d-4d27-9af4-32a42f7774dd	VCR (Four Tet remix)	1424115942
+Typheem	c27d4389-390e-497c-9a41-dd446ace742c	Blawan	0879c61f-a5a7-4d27-9dae-db887b644dc7	What You Do With What You Have	1424115554
+Typheem	cfc1df00-4ac3-4b15-befd-65b8805ee80d	VCMG	35f84a57-645e-435e-9892-48ed21073692	Spock	1424115218
+Typheem	ec22a32b-acab-432e-a88c-ffe6ae68fa16	Noisia	c003e65e-67e1-4868-b896-59bbe77509e8	Concussion	1424114575
+Typheem	76a2eaff-b6ad-483a-a427-d3a2aa3c4f8f	Black Sun Empire		The Sun	1424114147
+Typheem	d7f9bf88-dab4-49a9-ac5a-10b38b45ff8a	Raiden	9615f0ba-5209-4079-9d8e-c059b8b54ef4	Fallin'	1424113663
+Typheem	dc86279d-b071-4a64-a08c-2a8e4f9e27ca	Stakka & Skynet		Clockwork	1424113310
+Typheem	d56bd0dd-3e2d-45aa-a808-39a35955d30f	Kraken		Side Effects - Teebee Remix	1424112937
+Typheem	50c35b52-700a-4dc9-8d36-fd656b556886	Ed Rush & Optical	9f8b52c7-a8f3-428f-a1dc-c3390ad5f435	Sick Note	1424112528
+Typheem	50c35b52-700a-4dc9-8d36-fd656b556886	Ed Rush & Optical	a3529af3-39ab-4ae9-9e5c-efa1366f1961	Wormhole	1424112121
+Typheem	ce79760f-e40d-48c0-831c-bbed84d577d3	Keaton & Hive		The Plague	1424111721
+Typheem	78e5e81c-0563-4a89-a94e-0f03b7d5f71d	Konflict	dd289520-1c6a-4b0d-8661-e88e3e160d5e	Beckoning	1424111252
+Typheem	dc86279d-b071-4a64-a08c-2a8e4f9e27ca	Stakka & Skynet		Spider Monkey	1424110796
+Typheem	dc86279d-b071-4a64-a08c-2a8e4f9e27ca	Stakka & Skynet	4f31f1de-4b30-40f7-88f8-49b1672053fc	Altitude	1424110413
+Typheem	dc86279d-b071-4a64-a08c-2a8e4f9e27ca	Stakka & Skynet	0e34dab6-b596-4cf9-8039-abe5b61cb05f	Timelines	1424109977
+Typheem	dc86279d-b071-4a64-a08c-2a8e4f9e27ca	Stakka & Skynet		Straight Jacket	1424109571
+Typheem	dc86279d-b071-4a64-a08c-2a8e4f9e27ca	Stakka & Skynet		Isolation	1424109185
+Typheem	dc86279d-b071-4a64-a08c-2a8e4f9e27ca	Stakka & Skynet		Clockwork	1424108827
+Typheem	dc86279d-b071-4a64-a08c-2a8e4f9e27ca	Stakka & Skynet	e07a8eff-95b8-43a1-874b-41840d2ed394	Bios-Fear	1424108428
+Typheem	dc86279d-b071-4a64-a08c-2a8e4f9e27ca	Stakka & Skynet		Decoy	1424108026
+Typheem	f22942a1-6f70-4f48-866e-238cb2308fbd	Aphex Twin		hat5c 0001 rec-4	1424102254
+Typheem	f22942a1-6f70-4f48-866e-238cb2308fbd	Aphex Twin		piano un10 it happened	1424102146
+Typheem	f22942a1-6f70-4f48-866e-238cb2308fbd	Aphex Twin		diskhat2	1424102107
+Typheem	f22942a1-6f70-4f48-866e-238cb2308fbd	Aphex Twin		DISKPREPT1	1424101897
+Typheem	f22942a1-6f70-4f48-866e-238cb2308fbd	Aphex Twin		disk prep calrec2 barn dance [slo]	1424101635
+Typheem	f22942a1-6f70-4f48-866e-238cb2308fbd	Aphex Twin		hat 2b 2012b	1424101514
+Typheem	f22942a1-6f70-4f48-866e-238cb2308fbd	Aphex Twin		DISKPREPT4	1424101401
+Typheem	f22942a1-6f70-4f48-866e-238cb2308fbd	Aphex Twin		piano un1 arpej	1424101351
+Typheem	f22942a1-6f70-4f48-866e-238cb2308fbd	Aphex Twin		diskhat1	1424101205
+Typheem	f22942a1-6f70-4f48-866e-238cb2308fbd	Aphex Twin		diskhat ALL prepared1mixed 13	1424100864
+Typheem	f22942a1-6f70-4f48-866e-238cb2308fbd	Aphex Twin		hat5c 0001 rec-4	1424100175
+Typheem	f22942a1-6f70-4f48-866e-238cb2308fbd	Aphex Twin		piano un10 it happened	1424100067
+Typheem	f22942a1-6f70-4f48-866e-238cb2308fbd	Aphex Twin		diskhat2	1424100029
+Typheem	f22942a1-6f70-4f48-866e-238cb2308fbd	Aphex Twin		DISKPREPT1	1424099819
+Typheem	f22942a1-6f70-4f48-866e-238cb2308fbd	Aphex Twin		disk prep calrec2 barn dance [slo]	1424099557
+Typheem	f22942a1-6f70-4f48-866e-238cb2308fbd	Aphex Twin		hat 2b 2012b	1424099436
+Typheem	f22942a1-6f70-4f48-866e-238cb2308fbd	Aphex Twin		DISKPREPT4	1424099323
+Typheem	f22942a1-6f70-4f48-866e-238cb2308fbd	Aphex Twin		piano un1 arpej	1424099273
+Typheem	f22942a1-6f70-4f48-866e-238cb2308fbd	Aphex Twin		diskhat1	1424099127
+Typheem	f22942a1-6f70-4f48-866e-238cb2308fbd	Aphex Twin		diskhat ALL prepared1mixed 13	1424098786
 aureawolf666		Kouhei Dojima		Ichibyo no Refrain	1423550765
 aureawolf666		Elisa Petrikowski		Hana no kusari	1423550666
 aureawolf666	285f0f1a-e342-4682-9810-0a213dd5e947	吉岡亜衣加		Izayoi Namida	1423550429
@@ -198,6 +648,156 @@ aureawolf666		Ai Maeda		Beautiful World	1423535480
 aureawolf666	9beefde2-0233-4419-b84c-de0d46b5faa5	ムック		Isora	1423534859
 aureawolf666	9beefde2-0233-4419-b84c-de0d46b5faa5	ムック		Media no juusei	1423534601
 aureawolf666	9beefde2-0233-4419-b84c-de0d46b5faa5	ムック	7edb45fe-ca23-42f2-a648-692887c4b46d	Gerbera	1423534379
+aureawolf666	9beefde2-0233-4419-b84c-de0d46b5faa5	ムック		Shion	1423534027
+aureawolf666	9beefde2-0233-4419-b84c-de0d46b5faa5	ムック	424c0c4b-6668-4d57-aa8b-b19e24c9f673	Ame no orchestra	1423533668
+aureawolf666	9beefde2-0233-4419-b84c-de0d46b5faa5	ムック	fcf78130-b7fd-4d4c-bbcf-7ef0a9d9583d	Akatsuki yami	1423533336
+aureawolf666	efaefde1-e09b-4d49-9d8e-b1304d2ece8d	Amorphis	5c4317b4-b0de-4b67-a4b1-a5be0f832efa	From Earth I Rose	1423030641
+aureawolf666	efaefde1-e09b-4d49-9d8e-b1304d2ece8d	Amorphis	76bb01b0-b902-40f5-87a3-350f995ba56f	Shaman	1423030346
+aureawolf666	bbfa1e12-8b61-4ed8-bc6e-52d2298f41a2	Tool	016d9643-722e-4283-85ed-2844038dc537	Parabola	1423029845
+aureawolf666	bbfa1e12-8b61-4ed8-bc6e-52d2298f41a2	Tool	9cc69146-9168-434a-a924-438305b12756	Eon Blue Apocalypse	1423029773
+aureawolf666	bbfa1e12-8b61-4ed8-bc6e-52d2298f41a2	Tool	74c6a78f-2179-4216-a0f9-e89192610245	Ticks & Leeches	1423029283
+aureawolf666	bbfa1e12-8b61-4ed8-bc6e-52d2298f41a2	Tool	74c6a78f-2179-4216-a0f9-e89192610245	Ticks & Leeches	1423028792
+aureawolf666	bbfa1e12-8b61-4ed8-bc6e-52d2298f41a2	Tool	23aeba20-9670-4d9a-9d97-c64eaed07da2	The Grudge	1423028276
+aureawolf666	bbfa1e12-8b61-4ed8-bc6e-52d2298f41a2	Tool	cf95d3b1-9b77-40e8-af1f-0e648e89b589	Disposition	1423027990
+aureawolf666	bbfa1e12-8b61-4ed8-bc6e-52d2298f41a2	Tool	c4a46de4-6a33-4813-9738-a1d84276a8b7	The Patient	1423027556
+aureawolf666	bbfa1e12-8b61-4ed8-bc6e-52d2298f41a2	Tool	6ec4fea4-b588-4bbd-bcca-a051ce6b2e0e	Parabol	1423027371
+aureawolf666	bbfa1e12-8b61-4ed8-bc6e-52d2298f41a2	Tool	6ec4fea4-b588-4bbd-bcca-a051ce6b2e0e	Parabol	1423027187
+aureawolf666	bbfa1e12-8b61-4ed8-bc6e-52d2298f41a2	Tool	45653e65-b2d0-4f94-98ca-151aa96741d9	Triad	1423026653
+aureawolf666	bbfa1e12-8b61-4ed8-bc6e-52d2298f41a2	Tool	fa8cea30-2758-4796-984c-beafc1399fee	Schism	1423026244
+aureawolf666	bbfa1e12-8b61-4ed8-bc6e-52d2298f41a2	Tool	23aeba20-9670-4d9a-9d97-c64eaed07da2	The Grudge	1423025728
+aureawolf666	a56056f7-4e47-4209-abdc-171331ff1089	Léo Delibes		Lakmé, opera: Lakmé! Lakmé! C'est toi!...Dans la forêt près de nous	1421643744
+aureawolf666	a56056f7-4e47-4209-abdc-171331ff1089	Léo Delibes		Lakmé, opera: Quand une femme est si jolie	1421643453
+aureawolf666	a56056f7-4e47-4209-abdc-171331ff1089	Léo Delibes		Lakmé, opera: Viens Mallika...Dôme épais le jasmin	1421643088
+aureawolf666	4ea2fd64-834c-4d78-8f4c-2a900c439031	Haggard		On These Endless Fields	1420769365
+aureawolf666	4ea2fd64-834c-4d78-8f4c-2a900c439031	Haggard	8676cb3b-4c0a-4e05-878a-f924fdccf713	The Observer	1420769083
+aureawolf666	4ea2fd64-834c-4d78-8f4c-2a900c439031	Haggard		Gavotta In Si - Minore	1420769023
+aureawolf666	4ea2fd64-834c-4d78-8f4c-2a900c439031	Haggard		Heavenly Damnation	1420768843
+aureawolf666	4ea2fd64-834c-4d78-8f4c-2a900c439031	Haggard		Prophecy Fullfilled / And The Dark Night Entered	1420768460
+aureawolf666	4ea2fd64-834c-4d78-8f4c-2a900c439031	Haggard		Saltorella La Manuelina	1420768403
+aureawolf666	4ea2fd64-834c-4d78-8f4c-2a900c439031	Haggard		De La Morte Noir (Live in Wacken open aire 1998)	1420767924
+aureawolf666	4ea2fd64-834c-4d78-8f4c-2a900c439031	Haggard		Herr Manneling	1420767631
+aureawolf666	4ea2fd64-834c-4d78-8f4c-2a900c439031	Haggard	2aaf69ad-6f3a-4ba9-b071-7536e4eceff2	Courante	1420767559
+aureawolf666	4ea2fd64-834c-4d78-8f4c-2a900c439031	Haggard		Chapter I: Tales Of Ithiria	1420767072
+aureawolf666	4ea2fd64-834c-4d78-8f4c-2a900c439031	Haggard	4b24405d-aa61-45d0-a098-05f40aa3a7b3	Per Aspera Ad Astra	1420766671
+aureawolf666	4ea2fd64-834c-4d78-8f4c-2a900c439031	Haggard	ffd5028f-583c-4110-b87d-e489c28bfb52	Menuett	1420766591
+aureawolf666	4ea2fd64-834c-4d78-8f4c-2a900c439031	Haggard		Rachmaninov: Choir	1420766553
+aureawolf666	4ea2fd64-834c-4d78-8f4c-2a900c439031	Haggard		Pestilencia	1420766439
+aureawolf666	4ea2fd64-834c-4d78-8f4c-2a900c439031	Haggard	a5aad784-ab9d-45e2-b7c6-3b8dd7a06ebf	Awaking the Centuries	1420765864
+aureawolf666	4ea2fd64-834c-4d78-8f4c-2a900c439031	Haggard	41da5de8-803b-4ff8-b449-b1bf4ec7ffc4	The Origin	1420765748
+aureawolf666	4ea2fd64-834c-4d78-8f4c-2a900c439031	Haggard		Chapter III: La Terra Santa	1420765451
+aureawolf666	4ea2fd64-834c-4d78-8f4c-2a900c439031	Haggard		In des Königs Hallen (Allegretto Siciliano)	1420765326
+aureawolf666	4ea2fd64-834c-4d78-8f4c-2a900c439031	Haggard	2ffe5395-14f0-4059-ade7-3b5edf711cf2	Eppur Si Muove	1420764825
+aureawolf666	4ea2fd64-834c-4d78-8f4c-2a900c439031	Haggard		Vor dem Sturme	1420764789
+aureawolf666	4ea2fd64-834c-4d78-8f4c-2a900c439031	Haggard	9d5ea121-1996-426b-a824-87c47fde60ba	In a Fullmoon Procession	1420764471
+aureawolf666	4ea2fd64-834c-4d78-8f4c-2a900c439031	Haggard	8194c7a8-fb11-4314-9be6-75be08ffeec3	Larghetto / Epilogo Adagio	1420764336
+aureawolf666	4ea2fd64-834c-4d78-8f4c-2a900c439031	Haggard		Chapter IV: The Sleeping Child	1420763965
+aureawolf666	4ea2fd64-834c-4d78-8f4c-2a900c439031	Haggard		Menuetto In Fa - Minore	1420763887
+aureawolf666	4ea2fd64-834c-4d78-8f4c-2a900c439031	Haggard	eaf6acac-af5e-4e34-8817-cf4cdfcc0335	The Final Victory	1420763645
+aureawolf666	4ea2fd64-834c-4d78-8f4c-2a900c439031	Haggard		Chapter V: The Hidden Sign	1420763261
+aureawolf666	4ea2fd64-834c-4d78-8f4c-2a900c439031	Haggard		Rachmaninov: Choir	1420763106
+aureawolf666	d1353a0c-26fb-4318-a116-defde9c7c9ad	Dido	08949860-3e17-4e8b-8a3d-58c5a4c2a9c1	Isobel	1420762690
+aureawolf666	d1353a0c-26fb-4318-a116-defde9c7c9ad	Dido	f8f4b558-0905-4ec7-8d2c-9b8c2ae6efcd	Don't Think of Me	1420762417
+aureawolf666	d1353a0c-26fb-4318-a116-defde9c7c9ad	Dido	63c67dbe-1c0e-46da-aa68-77fbc778da79	My Life	1420762227
+aureawolf666	d1353a0c-26fb-4318-a116-defde9c7c9ad	Dido	b0040bf6-48c0-4dcc-947d-7133cbcf7bab	Slide	1420761935
+aureawolf666	d1353a0c-26fb-4318-a116-defde9c7c9ad	Dido	af939ecb-17d9-4290-bb15-12b19a2af8a0	I'm No Angel	1420761700
+aureawolf666	d1353a0c-26fb-4318-a116-defde9c7c9ad	Dido	24f47ad1-d7cb-43f3-baf2-53fc2c942d18	My Lover's Gone	1420761432
+aureawolf666	d1353a0c-26fb-4318-a116-defde9c7c9ad	Dido	965632b7-3dd9-42d6-8e76-f24fd45f0a5c	Hunter	1420761195
+aureawolf666	d1353a0c-26fb-4318-a116-defde9c7c9ad	Dido	caacc723-412f-49f5-bfdc-b62d3b1ad7b0	All You Want	1420760961
+aureawolf666	d1353a0c-26fb-4318-a116-defde9c7c9ad	Dido	16b34b4d-2ee2-4459-85a1-15715b12bf89	Honestly OK	1420760682
+aureawolf666	d1353a0c-26fb-4318-a116-defde9c7c9ad	Dido	041f8bf3-bdac-4daf-86c7-731d5d6fd31e	Take My Hand	1420760279
+aureawolf666	d1353a0c-26fb-4318-a116-defde9c7c9ad	Dido	e2ce530f-c710-4376-91dd-9940ac902254	Here with Me	1420760024
+aureawolf666	d1353a0c-26fb-4318-a116-defde9c7c9ad	Dido	b5b678ec-31e9-4d3a-b707-cc4f7af619d4	Thank You	1420759805
+aureawolf666	a0a17e6e-d396-45b5-a141-b4a82ba0bb9a	Corvus Corax	56466082-d322-42cc-b98f-c7edfbfca809	Estuans Intrinsecus	1419408151
+aureawolf666	a0a17e6e-d396-45b5-a141-b4a82ba0bb9a	Corvus Corax	163792f9-5ea6-43bd-932b-5d7b0372d2ee	Avanti	1419407932
+aureawolf666	a0a17e6e-d396-45b5-a141-b4a82ba0bb9a	Corvus Corax	22b03b03-5f5e-4f99-bbed-34a0cc006b24	La Douce	1419407803
+aureawolf666	a0a17e6e-d396-45b5-a141-b4a82ba0bb9a	Corvus Corax	4fad60f6-5ceb-4049-87f9-75a14dfb1c83	In Taberna	1419407630
+aureawolf666	a0a17e6e-d396-45b5-a141-b4a82ba0bb9a	Corvus Corax	ce54fa20-7f91-469f-a6f2-0e6c9ddc87a8	Gaudalier	1419407411
+aureawolf666	a0a17e6e-d396-45b5-a141-b4a82ba0bb9a	Corvus Corax	0df3c251-2eee-4194-8bfd-7454880f8d25	Goigs De La Nostra Dona	1419407185
+aureawolf666	a0a17e6e-d396-45b5-a141-b4a82ba0bb9a	Corvus Corax	d0516169-9c3b-428a-8896-4c1590da127f	Saltatio Mortis a.D. MM	1419406967
+aureawolf666	a0a17e6e-d396-45b5-a141-b4a82ba0bb9a	Corvus Corax	2260de50-f914-455a-8bc3-5f15760fecea	Mille Anni Passi Sunt	1419406721
+aureawolf666	bd496eba-155e-49ba-9a92-56e3fdfd1ea2	Masterplan	8257de15-ccbc-4096-b2d8-15bc696d9667	Headbanger's Ballroom	1418973225
+aureawolf666	bd496eba-155e-49ba-9a92-56e3fdfd1ea2	Masterplan	191e11d9-badc-4fc1-91f1-117cd2b30ffa	Falling Sparrow	1418972884
+aureawolf666	bd496eba-155e-49ba-9a92-56e3fdfd1ea2	Masterplan	5a274228-c4fe-4e0e-a73e-30ee55dc6a20	Crystal Night	1418972565
+aureawolf666	bd496eba-155e-49ba-9a92-56e3fdfd1ea2	Masterplan	ecbabab4-fe9b-4440-870e-1b726c65eb18	Bleeding Eyes	1418972218
+aureawolf666	bd496eba-155e-49ba-9a92-56e3fdfd1ea2	Masterplan	5a3ee9a7-f2c1-4f35-933f-743b88f00e90	I'm Not Afraid	1418971886
+aureawolf666	bd496eba-155e-49ba-9a92-56e3fdfd1ea2	Masterplan	0a0f09ea-42f0-4cd4-94ee-b795ee85a47b	Heroes	1418971671
+aureawolf666	bd496eba-155e-49ba-9a92-56e3fdfd1ea2	Masterplan	0214bcf4-bafa-4af0-8134-1fbcc12ec752	After This War	1418971438
+aureawolf666	bd496eba-155e-49ba-9a92-56e3fdfd1ea2	Masterplan	06fa9f6e-bf64-4473-a132-b25aa0d62bf4	When Love Comes Close	1418971190
+aureawolf666	bd496eba-155e-49ba-9a92-56e3fdfd1ea2	Masterplan	2667996c-a025-4b36-af8b-db49eac811fb	Soulburn	1418970812
+aureawolf666	bd496eba-155e-49ba-9a92-56e3fdfd1ea2	Masterplan	798a4430-915b-41d2-ac24-0d2a403b6cbb	Spirit Never Die	1418970482
+aureawolf666	bd496eba-155e-49ba-9a92-56e3fdfd1ea2	Masterplan	074edc8a-6ec3-4af4-9d03-d73783551183	Into The Arena	1418970233
+aureawolf666	bd496eba-155e-49ba-9a92-56e3fdfd1ea2	Masterplan	b7246fde-27da-49eb-aa86-fe5481fc2d16	Enlighten Me	1418969951
+aureawolf666	bd496eba-155e-49ba-9a92-56e3fdfd1ea2	Masterplan	ebce4b79-3a33-43b7-96c4-1eda0820c06e	Crimson Rider	1418969711
+aureawolf666	bd496eba-155e-49ba-9a92-56e3fdfd1ea2	Masterplan	18719ee2-7c66-4ceb-88af-69aab647fd5d	Back For My Life	1418969460
+aureawolf666	bd496eba-155e-49ba-9a92-56e3fdfd1ea2	Masterplan	88a123e2-8fb3-44cd-a6fa-6e6c63d917f8	Wounds	1418969217
+aureawolf666		Masanori Takumi		Kusenshi	1418704643
+aureawolf666		Masanori Takumi		Hito wo Omou Koto	1418704528
+aureawolf666		Masanori Takumi		Youshiki Mono no Shukumei	1418704421
+aureawolf666		Masanori Takumi		Kakusei no Kodou	1418704336
+aureawolf666		Masanori Takumi		Sabaku to Kaze	1418704231
+aureawolf666		Masanori Takumi		Utsushiki Kariudotachi	1418704135
+aureawolf666		Masanori Takumi		Seikan Naru Tatakai	1418704008
+aureawolf666		Masanori Takumi		Shoukei	1418703902
+aureawolf666		Masanori Takumi		Den'en to Ogawa	1418703793
+aureawolf666		Masanori Takumi		Fukaki Mori no Naka	1418703677
+aureawolf666		Masanori Takumi		Erabareshi Mono	1418703568
+aureawolf666		Masanori Takumi		Kyoujin na Chikara	1418703488
+aureawolf666		Masanori Takumi		Kouya no Rakujitsu	1418703392
+aureawolf666		Masanori Takumi		Kirisaku Monotachi	1418703253
+aureawolf666		Masanori Takumi		Ginme no Majo	1418703083
+aureawolf666		Masanori Takumi		Ishidzukuri no Yanami	1418702981
+aureawolf666		Masanori Takumi		Yobikakeru Kioku	1418702822
+aureawolf666		Masanori Takumi		Bishou no Teresa	1418702709
+aureawolf666		Masanori Takumi		Youma no Okite	1418702568
+aureawolf666		Masanori Takumi		Haruka na Michinori	1418702503
+aureawolf666		Masanori Takumi		Shinpi to Shin'en	1418702403
+aureawolf666		Masanori Takumi		Souzetsu na Shitou	1418702298
+aureawolf666		Masanori Takumi		Kokoro no Kizuato	1418702162
+aureawolf666		Masanori Takumi		Hateshinaki Tabiji	1418702080
+aureawolf666		Masanori Takumi		Osoroshiki Fujin	1418702009
+aureawolf666		Masanori Takumi		Kita no Chi to Hakugin no Ou	1418701920
+aureawolf666		Masanori Takumi		Kanashiki Shukumei	1418701850
+aureawolf666		Masanori Takumi		Ooki na Ken	1418701746
+aureawolf666		Masanori Takumi		Itoshisa to Nukumori	1418701651
+aureawolf666		Masanori Takumi		Kakugo he no Midare	1418701556
+aureawolf666		Masanori Takumi		Machinami	1418701462
+aureawolf666	1e9b65c0-cbb7-46ba-b328-6a82f4a6c0db	The HAARP Machine	6e5eb07d-0afc-436b-a4cb-880dbc7357c5	From Vanity to Utility	1418097113
+aureawolf666	1e9b65c0-cbb7-46ba-b328-6a82f4a6c0db	The HAARP Machine	83abf898-7278-407d-814b-fc30b073b720	Disclosure	1418096903
+aureawolf666	1e9b65c0-cbb7-46ba-b328-6a82f4a6c0db	The HAARP Machine	afebfa52-1f5a-472c-8e37-fe115c0c3525	Extension to One	1418096660
+aureawolf666	1e9b65c0-cbb7-46ba-b328-6a82f4a6c0db	The HAARP Machine	279dc87e-1960-46c7-bb7d-e8b516d1f639	Lower The Populace	1418096364
+aureawolf666	1e9b65c0-cbb7-46ba-b328-6a82f4a6c0db	The HAARP Machine	7cd57eca-6b31-42c6-bd10-22f69a22d9a5	Machine Over	1418095994
+aureawolf666	1e9b65c0-cbb7-46ba-b328-6a82f4a6c0db	The HAARP Machine	c841d815-2e71-4718-9c65-e8dbdb09646b	Pleiadian Keys	1418095698
+aureawolf666	1e9b65c0-cbb7-46ba-b328-6a82f4a6c0db	The HAARP Machine	4e2b9783-85d0-40c9-8d76-5dab9bf95bdc	The Escapist Notion	1418095483
+aureawolf666	1e9b65c0-cbb7-46ba-b328-6a82f4a6c0db	The HAARP Machine	fd18e509-19c7-4f27-b5b9-068ae82630cf	Esoteric Agenda	1418095248
+aureawolf666	c78a77fa-507c-4c07-947a-0355029453bd	Sinéad O'Connor		Red football	1417500683
+aureawolf666	c78a77fa-507c-4c07-947a-0355029453bd	Sinéad O'Connor		My Darling Child	1417500493
+aureawolf666	c78a77fa-507c-4c07-947a-0355029453bd	Sinéad O'Connor		Tiny Grief Song	1417500378
+aureawolf666	c78a77fa-507c-4c07-947a-0355029453bd	Sinéad O'Connor		All Babies	1417500107
+aureawolf666	c78a77fa-507c-4c07-947a-0355029453bd	Sinéad O'Connor	a45a0810-2476-4dc5-bf17-1295beb04f34	John I Love You	1417499775
+aureawolf666	c78a77fa-507c-4c07-947a-0355029453bd	Sinéad O'Connor		Thank You For Hearing Me	1417499386
+aureawolf666	c78a77fa-507c-4c07-947a-0355029453bd	Sinéad O'Connor	63ae9b64-70db-490e-8784-2cb2f88bc5fe	In This Heart	1417499171
+aureawolf666	c78a77fa-507c-4c07-947a-0355029453bd	Sinéad O'Connor		Scorn Not His Simplicity	1417498904
+aureawolf666	c78a77fa-507c-4c07-947a-0355029453bd	Sinéad O'Connor	bf98d2f5-ef49-47e9-a174-ef1ef4ba9616	Famine	1417498608
+aureawolf666	c78a77fa-507c-4c07-947a-0355029453bd	Sinéad O'Connor		Fire On Babylon	1417498295
+aureawolf666	c78a77fa-507c-4c07-947a-0355029453bd	Sinéad O'Connor	dc5050a4-bc77-4c6d-bd10-d890bd6ff66a	A Perfect Indian	1417498032
+aureawolf666	c78a77fa-507c-4c07-947a-0355029453bd	Sinéad O'Connor		All Apologies	1417497874
+aureawolf666	c78a77fa-507c-4c07-947a-0355029453bd	Sinéad O'Connor		Germaine	1417497836
+aureawolf666	c6b0db5a-d750-4ed8-9caa-ddcfb75dcb0a	Therion	8e66cdf5-cb34-4fb9-99aa-c4a2bb3094ab	Helheim	1417497230
+aureawolf666	c6b0db5a-d750-4ed8-9caa-ddcfb75dcb0a	Therion	7d8b14b0-27b6-4848-a583-8f8c16332786	Vanaheim	1417496988
+aureawolf666	c6b0db5a-d750-4ed8-9caa-ddcfb75dcb0a	Therion	9ed4a4f8-c3b5-4725-92a9-48a547cca5a5	Nifelheim	1417496710
+aureawolf666	c6b0db5a-d750-4ed8-9caa-ddcfb75dcb0a	Therion		Asgard	1417496462
+aureawolf666	c6b0db5a-d750-4ed8-9caa-ddcfb75dcb0a	Therion	013ea00b-e929-444d-834c-e3416b4e35b6	Muspelheim	1417496328
+aureawolf666	c6b0db5a-d750-4ed8-9caa-ddcfb75dcb0a	Therion		Midgard	1417496032
+aureawolf666	c4fe63ab-3ecc-4611-96d7-c84503e54f3f	Samite	85fe7b0f-b633-4b31-92c8-7af428ccd978	Ekibobo	1417419730
+aureawolf666	f4b5b380-abbb-4790-a96d-a5317416908e	Creed	52b41338-cf55-4649-a1d4-c32121aa050c	With Arms Wide Open	1417419497
+aureawolf666	5a27baf7-405b-4515-8dec-591f67006189	Gold Stars		Mi Amigo Bronco	1417419393
+aureawolf666	1fb18255-eb73-4560-bbe3-fa00745d2331	Lucky Diop		Ngak	1417419089
+aureawolf666	c003f8e2-b6b5-4d10-b826-169a3eb55a3c	Kevin Nathaniel		Woza Azania	1417418852
+aureawolf666	6ff0c075-4114-4cb0-a72e-0c9e40d289c0	Danielle Licari	e0eb93c8-d482-4183-bd1f-ae09b150e76f	Concerto Pour Une Voix	1417418585
+aureawolf666	f1154997-db90-46db-b017-cc7ef8986f0c	高橋ひろ		Taiyou ga Mata Kagayaku Toki	1417418265
+aureawolf666	c003f8e2-b6b5-4d10-b826-169a3eb55a3c	Kevin Nathaniel		Tatenda	1417418061
+aureawolf666	2e9c624b-f2d6-456d-9778-8d0b004b8ffa	Ayub Ogada	02067dee-d5c0-4690-918b-62301eb9777a	Ondiek	1417417818
+aureawolf666	1fb18255-eb73-4560-bbe3-fa00745d2331	Lucky Diop		Igne	1417417556
 caitxastrophicx	70f70cf1-9162-4505-b3af-024d559a4184	星村麻衣	cb10f20b-945b-47de-a503-80f746e49ccc	Sakura Biyori	1386402767
 caitxastrophicx	e8575463-1ef4-4fc7-8d63-b8b12fe3c13b	BEAT CRUSADERS	a72b3b22-3051-4f5c-ba87-b030f9d34ba6	TONIGHT,TONIGHT,TONIGHT	1385976624
 caitxastrophicx	354e2d0f-15f7-4bbe-85db-15b3be73395e	Rie fu	5465641e-dfc7-470d-b370-7c140daf549a	Life is Like a Boat	1385975981
@@ -248,3 +848,153 @@ caitxastrophicx	c07f0676-9143-4217-8a9f-4c26bd636f13	My Chemical Romance	537a76f
 caitxastrophicx	c07f0676-9143-4217-8a9f-4c26bd636f13	My Chemical Romance	234cdfbd-4d58-417d-ab85-590e4aab1f9c	Famous Last Words	1385439007
 caitxastrophicx	c07f0676-9143-4217-8a9f-4c26bd636f13	My Chemical Romance	6fa26f6f-8afe-498b-aa52-887011414fed	The Sharpest Lives	1385438806
 caitxastrophicx	c07f0676-9143-4217-8a9f-4c26bd636f13	My Chemical Romance	2573225c-defc-4731-9fa3-929876eb3f6b	Dead!	1385438610
+caitxastrophicx	ba50f1a8-ddf4-4316-add1-ec1835d61439	The Legion of Doom		Lolita's Medicine (From Autumn to Ashes vs Dead Poetic)	1385438315
+caitxastrophicx	ba50f1a8-ddf4-4316-add1-ec1835d61439	The Legion of Doom		The Quiet Screaming	1385438102
+caitxastrophicx	14e410f5-97f2-48ba-b1f7-a3a44cbea05c	ASIAN KUNG-FU GENERATION	0dfd4820-cfcf-4274-86af-cf53954f8351	Re:Re:	1385437718
+caitxastrophicx	14e410f5-97f2-48ba-b1f7-a3a44cbea05c	ASIAN KUNG-FU GENERATION	373f2d85-abe9-45e0-b0bb-8b4c93c5161e	Blue Train	1385436971
+caitxastrophicx	14e410f5-97f2-48ba-b1f7-a3a44cbea05c	ASIAN KUNG-FU GENERATION	565a9128-8ea7-4856-be1c-a755d23feb2e	Enoshima Escar	1385436812
+caitxastrophicx	14e410f5-97f2-48ba-b1f7-a3a44cbea05c	ASIAN KUNG-FU GENERATION	9baca14b-e374-4614-88c4-2cc44e6d0924	i'm standing here	1385436554
+caitxastrophicx	14e410f5-97f2-48ba-b1f7-a3a44cbea05c	ASIAN KUNG-FU GENERATION	03e676e2-eeed-412a-ad70-f1e62867440c	Mafuyu no Dance	1385436348
+caitxastrophicx	14e410f5-97f2-48ba-b1f7-a3a44cbea05c	ASIAN KUNG-FU GENERATION		Fragments of the Future	1385436147
+caitxastrophicx	14e410f5-97f2-48ba-b1f7-a3a44cbea05c	ASIAN KUNG-FU GENERATION	f4f32fb1-0b15-4cc0-939c-35b0162f193d	NO.9	1385435448
+caitxastrophicx	14e410f5-97f2-48ba-b1f7-a3a44cbea05c	ASIAN KUNG-FU GENERATION		Shindoukaku	1385435275
+caitxastrophicx	14e410f5-97f2-48ba-b1f7-a3a44cbea05c	ASIAN KUNG-FU GENERATION		Shindoukaku	1385434702
+caitxastrophicx	14e410f5-97f2-48ba-b1f7-a3a44cbea05c	ASIAN KUNG-FU GENERATION	493900b4-e3d4-4558-bfe1-3c079e4d393b	Kimi to Iu Hana	1385433922
+caitxastrophicx	584c04d2-4acc-491b-8a0a-e63133f4bfc4	Yeah Yeah Yeahs	a4206f17-c971-4fe7-a2ab-213070dd111f	Maps	1385433516
+caitxastrophicx	ba81eb4a-0c89-489f-9982-0154b8083a28	Fatboy Slim	fdcdf46e-1621-47c2-bff1-4e7c40c60d37	The Joker	1385432525
+caitxastrophicx	190d7f5b-bad8-4835-850c-c049e9eb2c92	Fallbrooke	17e3dd0f-8ead-4c24-8560-6a8ad342ebe1	Losin' It	1385417052
+caitxastrophicx	190d7f5b-bad8-4835-850c-c049e9eb2c92	Fallbrooke	e12ef44f-fcbf-4b38-b414-7ecd100f3d3e	Can't Get You	1385416852
+caitxastrophicx	190d7f5b-bad8-4835-850c-c049e9eb2c92	Fallbrooke	17e3dd0f-8ead-4c24-8560-6a8ad342ebe1	Losin' It	1385416625
+caitxastrophicx	190d7f5b-bad8-4835-850c-c049e9eb2c92	Fallbrooke	e12ef44f-fcbf-4b38-b414-7ecd100f3d3e	Can't Get You	1385416425
+caitxastrophicx	190d7f5b-bad8-4835-850c-c049e9eb2c92	Fallbrooke	17e3dd0f-8ead-4c24-8560-6a8ad342ebe1	Losin' It	1385416213
+caitxastrophicx	516cef4d-0718-4007-9939-f9b38af3f784	Fall Out Boy		I've Got All This Ringing In My Ears	1385415959
+caitxastrophicx	516cef4d-0718-4007-9939-f9b38af3f784	Fall Out Boy		You're Crashing, But You're No Wave	1385415737
+caitxastrophicx	516cef4d-0718-4007-9939-f9b38af3f784	Fall Out Boy	7f41ed4a-889a-45ae-8101-265e01e7ac3a	Fame < Infamy	1385415550
+caitxastrophicx	516cef4d-0718-4007-9939-f9b38af3f784	Fall Out Boy	30e149f0-fcc9-4202-9c2d-3b424de88c8a	The (After) Life of the Party	1385415421
+caitxastrophicx	516cef4d-0718-4007-9939-f9b38af3f784	Fall Out Boy		Don't You Know Who I Think I Am?	1385415248
+caitxastrophicx	516cef4d-0718-4007-9939-f9b38af3f784	Fall Out Boy	b365847f-a151-40a0-bf0b-2493e1d30e0b	The Carpal Tunnel of Love	1385414988
+caitxastrophicx	516cef4d-0718-4007-9939-f9b38af3f784	Fall Out Boy	30e149f0-fcc9-4202-9c2d-3b424de88c8a	The (After) Life of the Party	1385414780
+caitxastrophicx	321fdfbb-426b-43f7-8295-fa9aca6348d9	Hollywood Undead	c07e7f5a-012a-46bc-a291-932ba65392df	Levitate	1385414191
+caitxastrophicx	321fdfbb-426b-43f7-8295-fa9aca6348d9	Hollywood Undead	c4e1655a-476f-4d66-850d-1e769309e89c	Coming Back Down	1385413930
+caitxastrophicx	588dea29-eea3-456b-a815-3ee04f75c8e7	The Doobie Brothers	3346ba63-7d36-4853-9497-b3e99559ba28	Little Darling (I Need You)	1385413518
+caitxastrophicx	db008806-16f6-48fc-8521-3d953709689d	A Day to Remember	4f22554e-392a-44ec-af7e-f5645b5a389e	Have Faith in Me	1385413288
+caitxastrophicx	db008806-16f6-48fc-8521-3d953709689d	A Day to Remember	296f3a0d-5364-48aa-987c-f0b8b72bf103	Casablanca Sucked Anyways.	1385412412
+caitxastrophicx	db008806-16f6-48fc-8521-3d953709689d	A Day to Remember	66c56d7a-2a63-4732-986a-997315f358e0	A 2nd Glance	1385412228
+caitxastrophicx	db008806-16f6-48fc-8521-3d953709689d	A Day to Remember	5dd56aea-1b5f-4082-a4cd-05b9f53ef130	Heart Less	1385412055
+caitxastrophicx	db008806-16f6-48fc-8521-3d953709689d	A Day to Remember	3ec072ef-e2d3-4bcd-8c15-76816913e7f6	Intro '05	1385412020
+caitxastrophicx	db008806-16f6-48fc-8521-3d953709689d	A Day to Remember	92ea1a7b-602a-4376-8548-88f70201da6b	If It Means a Lot to You	1385411653
+caitxastrophicx	db008806-16f6-48fc-8521-3d953709689d	A Day to Remember	7b458eed-11e8-4d80-a665-1a5a3118f0a1	Welcome to the Family	1385411403
+caitxastrophicx	db008806-16f6-48fc-8521-3d953709689d	A Day to Remember	4f22554e-392a-44ec-af7e-f5645b5a389e	Have Faith in Me	1385411214
+caitxastrophicx	39076047-fce8-44cc-a388-4f6baba4acb4	Mayday Parade	de6dfe33-5c33-4df6-a8f5-bd1b538c7bee	Without the Bitter the Sweet Isn't as Sweet	1385410965
+caitxastrophicx	39076047-fce8-44cc-a388-4f6baba4acb4	Mayday Parade	0813ed4b-f652-4968-868f-2db10adb6c36	When I Get Home, You're So Dead	1385410771
+caitxastrophicx		Various (fearless)		Further Seems Forever - Bye Bye Bye (Nsync)	1385410418
+caitxastrophicx		Various (fearless)		Yellowcard - Everywhere (Michelle Branch)	1385410106
+caitxastrophicx		Various (fearless)		Dynamite Boy - I Want It That Way (Backstreet Boys)	1385409871
+caitxastrophicx	712dbd18-d8fd-4bd0-a5b5-edb9577c493f	Tonight Alive	4f801add-fd79-419e-add2-516fd7c77a7d	Little Lion Man	1385409637
+caitxastrophicx	ba97a3ec-c6aa-4620-aef0-4ed8c062913e	This Century	d0489dba-c06f-485d-ab94-11323641611f	Paper Planes	1385409506
+caitxastrophicx	3267d5a3-c72c-4c3b-bafe-ec8a569c0b74	Sleeping with Sirens	9ad66544-565e-4b9f-9419-79b588a767f0	Fuck You	1385409288
+caitxastrophicx	3979bb32-59b4-442e-aafa-de4ae2439400	The Ready Set		Roll Up	1385409065
+caitxastrophicx	3979bb32-59b4-442e-aafa-de4ae2439400	The Ready Set	c647a161-ba7c-4ef9-b5bf-17f4145d913a	Airplanes	1385408907
+caitxastrophicx	8ed919fb-eaee-45a1-ba99-b3ede9ca5f1d	Pierce The Veil	a2311158-b507-45e4-bb60-4981b383303c	Just The Way You Are	1385408609
+caitxastrophicx	ddd38886-728c-4cc7-8593-0c42edbef734	Miss May I	3a9cb592-4082-4524-8236-c9a2765a54f4	Run This Town	1385408429
+caitxastrophicx	39076047-fce8-44cc-a388-4f6baba4acb4	Mayday Parade	669cb4a3-b718-4bd1-860b-d724a621af52	In My Head	1385408208
+caitxastrophicx	e571db0f-fcbc-4ede-b5da-57b093b263e6	I See Stars	1bad3b7e-4263-4b04-90ca-5a77a500614f	Till The World Ends	1385407945
+caitxastrophicx	569a6fb5-6eb7-47cf-a013-46e8153544f5	For All Those Sleeping	abbbcd48-65c9-4f32-a961-14e0ac2aef04	You Belong With Me	1385407775
+caitxastrophicx	64b58850-3d5d-48cb-82be-74921fb5ecdf	Family Force 5	76a68ad9-2329-46f9-83b5-0ae8abc74fb6	Bulletproof	1385407565
+caitxastrophicx	5fc21e44-d663-495a-b16a-7cc641af5deb	Lady Sovereign		I Got You Dancing...	1385145398
+caitxastrophicx	5fc21e44-d663-495a-b16a-7cc641af5deb	Lady Sovereign	233204cc-935b-4339-a0bb-d07bdf064c62	Bang Bang	1385145053
+caitxastrophicx	88d1360a-bc2d-47df-90d1-d2de285560aa	La Roux	bf3e215f-40b3-495c-b782-42bf65e5e254	Bulletproof	1385144776
+caitxastrophicx	88d1360a-bc2d-47df-90d1-d2de285560aa	La Roux	3d1b81ec-b87d-462c-9a50-1a587e32edb0	In for the Kill	1385144520
+caitxastrophicx	88d1360a-bc2d-47df-90d1-d2de285560aa	La Roux		Armour Love	1385144211
+caitxastrophicx	88d1360a-bc2d-47df-90d1-d2de285560aa	La Roux		Armour Love	1385143897
+caitxastrophicx	88d1360a-bc2d-47df-90d1-d2de285560aa	La Roux		Cover My Eyes	1385143625
+caitxastrophicx	88d1360a-bc2d-47df-90d1-d2de285560aa	La Roux	1df26358-3554-41d1-8fc4-8476701ec5d2	I'm Not Your Toy	1385143405
+caitxastrophicx	88d1360a-bc2d-47df-90d1-d2de285560aa	La Roux	caec2174-599d-4c4b-b760-0aa7809a181a	Colourless Colour	1385143230
+caitxastrophicx	88d1360a-bc2d-47df-90d1-d2de285560aa	La Roux	268c0755-1139-4c37-b873-e20b81ab97d6	Tigerlily	1385142883
+caitxastrophicx	88d1360a-bc2d-47df-90d1-d2de285560aa	La Roux	bf3e215f-40b3-495c-b782-42bf65e5e254	Bulletproof	1385142488
+caitxastrophicx	8295ee00-0096-461d-95c7-c2263d2a4c6d	Killswitch Engage	25303642-99ad-438d-9967-655317049465	When Darkness Falls	1385069706
+caitxastrophicx	8295ee00-0096-461d-95c7-c2263d2a4c6d	Killswitch Engage	ce5cd035-3c42-43ec-956a-c7a80ceab501	Take This Oath	1385069479
+caitxastrophicx	8295ee00-0096-461d-95c7-c2263d2a4c6d	Killswitch Engage	d61b950f-c5af-4fcf-b7b1-b03bc7d7c5d2	A Bid Farewell	1385069243
+caitxastrophicx	8295ee00-0096-461d-95c7-c2263d2a4c6d	Killswitch Engage	3c2a3eeb-026a-4a82-9e3c-7ea93f76d019	Holy Diver	1385068993
+caitxastrophicx	823ed9ad-3412-47dc-9caf-b7be02121fcf	Set It Off		No Control	1385068169
+caitxastrophicx	823ed9ad-3412-47dc-9caf-b7be02121fcf	Set It Off		I’ll Sleep When I’m Dead	1385067635
+caitxastrophicx	823ed9ad-3412-47dc-9caf-b7be02121fcf	Set It Off		Plastic Promises	1385067438
+caitxastrophicx	823ed9ad-3412-47dc-9caf-b7be02121fcf	Set It Off		Swan Song	1385066923
+caitxastrophicx	321fdfbb-426b-43f7-8295-fa9aca6348d9	Hollywood Undead	887da295-4c41-4449-bb13-ca50ebb03db9	S.C.A.V.A.	1385066474
+caitxastrophicx	321fdfbb-426b-43f7-8295-fa9aca6348d9	Hollywood Undead		Le Deux	1385066249
+caitxastrophicx	321fdfbb-426b-43f7-8295-fa9aca6348d9	Hollywood Undead		Lump Your Head	1385066031
+caitxastrophicx	321fdfbb-426b-43f7-8295-fa9aca6348d9	Hollywood Undead	0bce0349-d864-445f-9c9a-8a2ebe01c79e	Mother Murder	1385065782
+caitxastrophicx	321fdfbb-426b-43f7-8295-fa9aca6348d9	Hollywood Undead	10351115-fec0-4625-ae2b-7009d6db2941	Tendencies	1385065569
+caitxastrophicx	321fdfbb-426b-43f7-8295-fa9aca6348d9	Hollywood Undead	59ccbb85-600e-43d9-a142-6ea1cf8d1226	Pour Me	1385065326
+caitxastrophicx	321fdfbb-426b-43f7-8295-fa9aca6348d9	Hollywood Undead	c07e7f5a-012a-46bc-a291-932ba65392df	Levitate	1385065122
+caitxastrophicx	321fdfbb-426b-43f7-8295-fa9aca6348d9	Hollywood Undead	c4e1655a-476f-4d66-850d-1e769309e89c	Coming Back Down	1385064914
+caitxastrophicx	f4d4b515-0b74-423f-a161-db184330c37c	Gym Class Heroes	d9d00b31-1f56-41ae-afdb-241dbc7f093d	Cookie Jar	1385064495
+caitxastrophicx	f4d4b515-0b74-423f-a161-db184330c37c	Gym Class Heroes		Live Forever [Fly With Me]	1385064116
+caitxastrophicx	f4d4b515-0b74-423f-a161-db184330c37c	Gym Class Heroes		Don't Tell Me It's Over	1385063865
+caitxastrophicx	f4d4b515-0b74-423f-a161-db184330c37c	Gym Class Heroes	7f2a237f-e840-47e0-a469-745fb2e3da5e	Live a Little	1385063641
+caitxastrophicx	6ef00829-fa94-4fee-a5a6-b28e1208e96a	ONE OK ROCK	cd81782e-d45a-4baa-94fc-89eb64b572c0	Yes I am	1385063485
+caitxastrophicx	6ef00829-fa94-4fee-a5a6-b28e1208e96a	ONE OK ROCK	9d9128e7-e4b9-4b05-b5a6-2301cd43d0b3	混雑コミュニケーション	1385063286
+caitxastrophicx	6ef00829-fa94-4fee-a5a6-b28e1208e96a	ONE OK ROCK	77ab7f9a-0964-404b-9e22-65438caf2e97	完全感覚Dreamer	1385063034
+caitxastrophicx	6ef00829-fa94-4fee-a5a6-b28e1208e96a	ONE OK ROCK	8bc1f506-6edc-4db7-9608-f10cfdf51ea9	Never Let This Go	1385062776
+caitxastrophicx	6ef00829-fa94-4fee-a5a6-b28e1208e96a	ONE OK ROCK	5dfdfb62-9b05-481c-9f3a-9a3ee1592bf9	Introduction	1385062716
+caitxastrophicx	6ef00829-fa94-4fee-a5a6-b28e1208e96a	ONE OK ROCK	9381d37f-3ceb-413a-a2e4-b7d7f026d7a0	Yap	1385062548
+caitxastrophicx	6ef00829-fa94-4fee-a5a6-b28e1208e96a	ONE OK ROCK		Koubou	1385062328
+caitxastrophicx	6ef00829-fa94-4fee-a5a6-b28e1208e96a	ONE OK ROCK		Koubou	1385061359
+caitxastrophicx	1036b808-f58c-4a3e-b461-a2c4492ecf1b	Nicki Minaj	4677bae4-93b4-494f-a79a-676825f79c21	Automatic	1385059502
+caitxastrophicx	1036b808-f58c-4a3e-b461-a2c4492ecf1b	Nicki Minaj	0e3b527e-c78b-442f-8f74-1376569cc895	Whip It	1385059306
+caitxastrophicx	f4d4b515-0b74-423f-a161-db184330c37c	Gym Class Heroes	16edf188-f689-4ae7-84f9-373b5a79c0c2	Za Intro	1385059122
+caitxastrophicx	f4d4b515-0b74-423f-a161-db184330c37c	Gym Class Heroes		Stereo Hearts (feat. Adam Levine)	1385058911
+caitxastrophicx	f4d4b515-0b74-423f-a161-db184330c37c	Gym Class Heroes	0c661f17-f151-499e-933b-9939c39e69a8	Clothes Off!!	1385058644
+caitxastrophicx	f4d4b515-0b74-423f-a161-db184330c37c	Gym Class Heroes		Don't Tell Me It's Over	1385058251
+caitxastrophicx	f4d4b515-0b74-423f-a161-db184330c37c	Gym Class Heroes	7f2a237f-e840-47e0-a469-745fb2e3da5e	Live a Little	1385058028
+caitxastrophicx	f4d4b515-0b74-423f-a161-db184330c37c	Gym Class Heroes	d9d00b31-1f56-41ae-afdb-241dbc7f093d	Cookie Jar	1385057811
+caitxastrophicx	14e410f5-97f2-48ba-b1f7-a3a44cbea05c	ASIAN KUNG-FU GENERATION	493900b4-e3d4-4558-bfe1-3c079e4d393b	Kimi to Iu Hana	1385057241
+caitxastrophicx	14e410f5-97f2-48ba-b1f7-a3a44cbea05c	ASIAN KUNG-FU GENERATION	9422dae7-6fd8-4057-997d-cb92d9bc1c50	24時	1385057113
+caitxastrophicx	14e410f5-97f2-48ba-b1f7-a3a44cbea05c	ASIAN KUNG-FU GENERATION	0dfd4820-cfcf-4274-86af-cf53954f8351	Re:Re:	1385056884
+caitxastrophicx	14e410f5-97f2-48ba-b1f7-a3a44cbea05c	ASIAN KUNG-FU GENERATION	641b5542-810a-4dc0-94de-94bff0f9fba4	Siren	1385056560
+caitxastrophicx	14e410f5-97f2-48ba-b1f7-a3a44cbea05c	ASIAN KUNG-FU GENERATION	a85a5de3-2c0e-4ed4-bd83-eeb17152b3ce	Kimi no Machi Made	1385056344
+caitxastrophicx	14e410f5-97f2-48ba-b1f7-a3a44cbea05c	ASIAN KUNG-FU GENERATION	55ca5a4b-ab2b-4620-8219-d3bdfbfcb4e0	Rewrite	1385056118
+caitxastrophicx	14e410f5-97f2-48ba-b1f7-a3a44cbea05c	ASIAN KUNG-FU GENERATION		Shindoukaku	1385055876
+caitxastrophicx	14e410f5-97f2-48ba-b1f7-a3a44cbea05c	ASIAN KUNG-FU GENERATION	f090c61f-cac3-4685-8aab-fdb368215a44	No Name	1385055598
+caitxastrophicx	14e410f5-97f2-48ba-b1f7-a3a44cbea05c	ASIAN KUNG-FU GENERATION	493900b4-e3d4-4558-bfe1-3c079e4d393b	Kimi to Iu Hana	1385055262
+caitxastrophicx	daeec599-bf5d-4428-994a-e76ba5f86e2f	Passion Pit	a5b60e48-2026-4b9a-b7c6-3a2193e3e08d	Little Secrets	1385054992
+caitxastrophicx	c07f0676-9143-4217-8a9f-4c26bd636f13	My Chemical Romance	f31631cb-1bcc-452c-9838-1814a0251844	Welcome to the Black Parade	1384547669
+caitxastrophicx	c07f0676-9143-4217-8a9f-4c26bd636f13	My Chemical Romance	6fa26f6f-8afe-498b-aa52-887011414fed	The Sharpest Lives	1384547468
+caitxastrophicx	c07f0676-9143-4217-8a9f-4c26bd636f13	My Chemical Romance	ccad70a3-d587-44c6-8a14-2c8ba186420d	This Is How I Disappear	1384547229
+caitxastrophicx	c07f0676-9143-4217-8a9f-4c26bd636f13	My Chemical Romance	2573225c-defc-4731-9fa3-929876eb3f6b	Dead!	1384547033
+caitxastrophicx	c07f0676-9143-4217-8a9f-4c26bd636f13	My Chemical Romance	53828a86-56e6-4ac4-b2ce-70f69d504d36	The End.	1384546874
+caitxastrophicx	c07f0676-9143-4217-8a9f-4c26bd636f13	My Chemical Romance	6977d68f-b00c-47e8-af4d-eae307c1f264	Teenagers	1384546312
+caitxastrophicx	350bce49-c21b-4137-b50a-0766ded07e4d	Taking Back Sunday		Lonely, Lonely	1384546166
+caitxastrophicx	350bce49-c21b-4137-b50a-0766ded07e4d	Taking Back Sunday		Sink Into Me	1384545982
+caitxastrophicx	350bce49-c21b-4137-b50a-0766ded07e4d	Taking Back Sunday	6922b77e-4469-43cc-9864-af94da1ed4a4	What's It Feel Like to Be a Ghost?	1384542612
+caitxastrophicx	350bce49-c21b-4137-b50a-0766ded07e4d	Taking Back Sunday	22c907ce-07b1-4aa8-b4e7-acba114765ba	I'll Let You Live	1384542304
+caitxastrophicx	350bce49-c21b-4137-b50a-0766ded07e4d	Taking Back Sunday	6f45e5dc-33b9-4fea-9ebf-cd550f35fadd	Error: Operator	1384542132
+caitxastrophicx	350bce49-c21b-4137-b50a-0766ded07e4d	Taking Back Sunday	689fdeee-2284-41e5-8693-8a02f2b19650	Miami	1384541911
+caitxastrophicx	350bce49-c21b-4137-b50a-0766ded07e4d	Taking Back Sunday	76b64332-810d-4d25-a149-07532b65290f	Divine Intervention	1384541656
+caitxastrophicx	350bce49-c21b-4137-b50a-0766ded07e4d	Taking Back Sunday	c2c5dcf9-86ce-4b4e-b40f-6be0fdd21f36	Spin	1384541436
+caitxastrophicx	350bce49-c21b-4137-b50a-0766ded07e4d	Taking Back Sunday	2d6846fe-9efb-4dc0-869f-dc6f8340b3e9	Twenty-Twenty Surgery	1384541201
+caitxastrophicx	350bce49-c21b-4137-b50a-0766ded07e4d	Taking Back Sunday	f0e726f8-1ef5-46da-a533-0ca14bba09fd	My Blue Heaven	1384540951
+caitxastrophicx	350bce49-c21b-4137-b50a-0766ded07e4d	Taking Back Sunday	2c901739-eefd-48ac-8579-ca7d6490ecb6	Up Against (Blackout)	1384540769
+caitxastrophicx	350bce49-c21b-4137-b50a-0766ded07e4d	Taking Back Sunday	7bbba427-85c2-4e8f-9844-5b1ede847ccc	MakeDamnSure	1384540556
+caitxastrophicx	350bce49-c21b-4137-b50a-0766ded07e4d	Taking Back Sunday	23cc63f6-5eba-4075-9e5d-18d5fb71c8fd	Liar (It Takes One to Know One)	1384540367
+caitxastrophicx	350bce49-c21b-4137-b50a-0766ded07e4d	Taking Back Sunday	6922b77e-4469-43cc-9864-af94da1ed4a4	What's It Feel Like to Be a Ghost?	1384540139
+caitxastrophicx	daeec599-bf5d-4428-994a-e76ba5f86e2f	Passion Pit	a5b60e48-2026-4b9a-b7c6-3a2193e3e08d	Little Secrets	1379391564
+caitxastrophicx	91dad7e7-0bf6-47e8-bd42-ef1fac32c729	The Civil Wars	decd5903-01be-49e2-aa43-d992907d6088	Dance Me to the End of Love	1378371945
+caitxastrophicx	91dad7e7-0bf6-47e8-bd42-ef1fac32c729	The Civil Wars	c21e41ba-25df-4eb2-8628-e428de837dfd	I've Got This Friend	1378371740
+caitxastrophicx	77b29df2-056e-409e-a1b2-5e2bbfe421c4	Awolnation	527d8d0d-c2ff-4ccc-b382-aeac6e6be457	Kill Your Heroes	1378371560
+caitxastrophicx	77b29df2-056e-409e-a1b2-5e2bbfe421c4	Awolnation	fd3df41d-1df3-4152-ba7b-9cddbaa5c7c4	Sail (Unlimited Gravity Remix)	1378371243
+caitxastrophicx	77b29df2-056e-409e-a1b2-5e2bbfe421c4	Awolnation	f1be6322-f84e-4e37-bf19-58a22089a780	Guilty Filthy Soul	1378371029
+caitxastrophicx	91dad7e7-0bf6-47e8-bd42-ef1fac32c729	The Civil Wars	2c5528b3-3a66-4c90-a89b-8b7d5b5f30b9	Forget Me Not	1378370744
+caitxastrophicx	91dad7e7-0bf6-47e8-bd42-ef1fac32c729	The Civil Wars	426a5d83-9e89-46b1-9c59-9c5ac1b014de	Barton Hollow	1378370531
+caitxastrophicx	91dad7e7-0bf6-47e8-bd42-ef1fac32c729	The Civil Wars	cfa12fcf-650e-461e-a375-0660311669df	The One That Got Away	1378370318
+caitxastrophicx	91dad7e7-0bf6-47e8-bd42-ef1fac32c729	The Civil Wars	37c84c2f-618d-48e7-bc5a-74cf4c6a4c34	Dust to Dust	1378370087
+caitxastrophicx	91dad7e7-0bf6-47e8-bd42-ef1fac32c729	The Civil Wars	770e0025-5ae2-4689-a55d-9cbc890ecb1c	Disarm	1378369861
+caitxastrophicx	91dad7e7-0bf6-47e8-bd42-ef1fac32c729	The Civil Wars	704d2fd2-5452-4725-bc2e-9dd9f309064d	D'Arline	1378369673
+caitxastrophicx	91dad7e7-0bf6-47e8-bd42-ef1fac32c729	The Civil Wars	1799c1d1-5973-4076-899c-629ac775ec7e	C'est la Mort	1378369522
+caitxastrophicx	91dad7e7-0bf6-47e8-bd42-ef1fac32c729	The Civil Wars	c8840d19-e34e-443f-94c5-8921007a4787	The Violet Hour	1378369393
+caitxastrophicx	91dad7e7-0bf6-47e8-bd42-ef1fac32c729	The Civil Wars	91d7333d-a3ca-4348-91f5-1a217fa407a9	Falling	1378369155
+caitxastrophicx	91dad7e7-0bf6-47e8-bd42-ef1fac32c729	The Civil Wars	502a2004-4156-412a-bc57-d98c9028a57a	20 Years	1378368972
+caitxastrophicx	cf6375bc-76b7-405c-8d69-c08b499bce74	Jess Moskaluke		Poison and Wine - The Civil Wars(cover)	1378368240
+caitxastrophicx	cf6375bc-76b7-405c-8d69-c08b499bce74	Jess Moskaluke		Poison and Wine - The Civil Wars(cover)	1378368040
+caitxastrophicx	cf6375bc-76b7-405c-8d69-c08b499bce74	Jess Moskaluke		Poison and Wine - The Civil Wars(cover)	1378367839
+caitxastrophicx	f4d4b515-0b74-423f-a161-db184330c37c	Gym Class Heroes	d9d00b31-1f56-41ae-afdb-241dbc7f093d	Cookie Jar	1378332057

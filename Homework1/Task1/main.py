@@ -47,7 +47,7 @@ def get_user_friends(all_users, limit_user):
         helper.log_highlight("Fetching friends of user")
 
     for index, user in enumerate(user_list, start = 1):
-        user_get_friends = helper.api_user_call("getfriends", user)
+        user_get_friends = helper.api_user_call("getfriends", user, "")
 
         try:
             user_friends = user_get_friends['friends']['user']
@@ -112,7 +112,7 @@ def limit_user(all_users, min_amount_of_users, play_count, min_amount_of_artists
             print "Fetching user [" + str(index) + " of " + str(min_amount_of_users) + "]"
 
         # Get artist-history from users via LastFM-API call
-        top_artists = helper.api_user_call("gettopartists", user)
+        top_artists = helper.api_user_call("gettopartists", user, "")
 
         # Error Handling: error = User not found
         try:
@@ -225,7 +225,7 @@ def lfm_save_history_of_users(users):
         if VERBOSE:
             print "Fetch recent tracks from user [" + str(index) + " of " + str(len(users)) + "]"
 
-        recent_tracks = helper.api_user_call("getrecenttracks", user)['recenttracks']['track']
+        recent_tracks = helper.api_user_call("getrecenttracks", user, "&limit=200")['recenttracks']['track']
 
         for index, recent_track in enumerate(recent_tracks, start = 1):
             if VERBOSE and VERBOSE_DEPTH == 2:
@@ -260,7 +260,7 @@ def lfm_save_user_characteristics(users):
         if VERBOSE:
             print "Fetch user characteristics [" + str(index) + " of " + str(len(users)) + "]"
 
-        user_info   = helper.api_user_call("getinfo", user)
+        user_info   = helper.api_user_call("getinfo", user, "")
         user        = user_info['user']
         user_string = lfm_prepare_user_characteristics_string(user)
         content     += user_string + "\n"
