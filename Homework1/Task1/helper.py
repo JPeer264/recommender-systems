@@ -4,7 +4,6 @@ import json
 LASTFM_API_KEY = "8aa5abf299b1aaf6e4758f6ce3dc2fcf"
 LASTFM_API_URL = "http://ws.audioscrobbler.com/2.0/"
 
-
 def api_user_call(method, username):
     """
     triggers an api to the user api
@@ -27,9 +26,8 @@ def api_user_call(method, username):
     # load() loads JSON from a file or file-like object
     # loads() loads JSON from a given string or unicode object
     return json.loads(json_string)
-
-
 # /lfm_api_user_call
+
 def get_unique_items(iterable):
     """
     Deletes duplicates in array
@@ -48,10 +46,16 @@ def get_unique_items(iterable):
             result.append(item)
 
     return result
-
 # /get_unique_items
 
 def log_highlight(text):
+    """
+    #################
+    ## Highlightes ## any given text and print it
+    #################
+
+    :param text:
+    """
     hashes = ""
 
     for i in text:
@@ -64,3 +68,4 @@ def log_highlight(text):
     print ""
 
     return
+# /log_highlight
