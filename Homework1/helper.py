@@ -1,11 +1,9 @@
 import urllib
 import json
 
-USER_FILE = './C1ku_users_extended.csv'
-OUTPUT_DIR = './user_info/'
-
 LASTFM_API_KEY = "8aa5abf299b1aaf6e4758f6ce3dc2fcf"
 LASTFM_API_URL = "http://ws.audioscrobbler.com/2.0/"
+
 
 def api_user_call(method, username):
     """
@@ -26,9 +24,12 @@ def api_user_call(method, username):
     # Perform API-call and save (comes as String formatted as JSON)
     json_string = urllib.urlopen(url).read()
 
+    # load() loads JSON from a file or file-like object
+    # loads() loads JSON from a given string or unicode object
     return json.loads(json_string)
-# /lfm_api_user_call
 
+
+# /lfm_api_user_call
 def get_unique_items(iterable):
     """
     Deletes duplicates in array
@@ -38,7 +39,7 @@ def get_unique_items(iterable):
 
     :return: an array with no duplicates
     """
-    seen   = set()
+    seen = set()
     result = []
 
     for item in iterable:
@@ -47,4 +48,5 @@ def get_unique_items(iterable):
             result.append(item)
 
     return result
+
 # /get_unique_items
