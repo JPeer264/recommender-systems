@@ -167,12 +167,11 @@ def lfm_prepare_history_string(track, user_name):
 
     :return: creates a string with metadata combined with tabs
     """
-    for t in track:
-        artist_id   = t['artist']['mbid']
-        artist_name = t['artist']['#text']
-        track_id    = t['mbid']
-        track_name  = t['name']
-        timestamp   = t['date']['uts']
+    artist_id   = track['artist']['mbid']
+    artist_name = track['artist']['#text']
+    track_id    = track['mbid']
+    track_name  = track['name']
+    timestamp   = track['date']['uts']
 
     user_history = user_name + "\t" + artist_id + "\t" + artist_name + "\t" + track_id + "\t" + track_name + "\t" + timestamp
 
@@ -220,12 +219,13 @@ def lfm_save_history_of_users(users):
     for index, user in enumerate(users, start = 1):
 
         if VERBOSE:
-            print "Fetch recent tracks [" + str(index) + " of " + str(len(users)) + "]"
+            print "Fetch recent tracks from user [" + str(index) + " of " + str(len(users)) + "]"
 
-        recent_tracks     = helper.api_user_call("getrecenttracks", user)
-        recent_track      = recent_tracks['recenttracks']['track']
-        listening_history = lfm_prepare_history_string(recent_track, user)
-        content           += listening_history + "\n"
+        recent_tracks = helper.api_user_call("getrecenttracks", user)['recenttracks']['track']
+
+        for recent_track in recent_tracks:
+            listening_history = lfm_prepare_history_string(recent_track, user)
+            content           += listening_history + "\n"
 
     output_file = OUTPUT_DIR + '/listening_history.txt'
     text_file   = open(output_file, 'w')
