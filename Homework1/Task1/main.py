@@ -1,10 +1,11 @@
-import csv
 import helper  # helper.py
 import os
 
 import json
 import numpy as np
 
+## TODO set in txt files
+#       first row should describe the dataset
 
 USER_FILE  = '../Testfiles/C1ku_users_extended.csv'
 BASE_DIR   = './output'
@@ -15,26 +16,6 @@ USER_LISTENING_HISTORY = OUTPUT_DIR + "listening_history.txt"
 
 VERBOSE = True # set to True prints information about the current state into the console
 VERBOSE_DEPTH = 2 # describes how deep the verbose mode goes - maximum 2
-
-def read_user_file(uf):
-    """
-    Read csv-File
-    TODO delete this - discuss in team
-    """
-    users = []
-
-    # Open file - read only
-    with open(uf, 'r') as f:
-        # Read csv - Files and interprete tabs as new item
-        reader = csv.reader(f, delimiter='\t')
-
-        # Loop through reader
-        for r in reader:
-            # Append user-names only
-            users.append(r[0])
-
-        return users
-# /read_user_file
 
 def get_user_friends(all_users, limit_user):
     all_user_friends      = []
@@ -292,11 +273,11 @@ def lfm_save_user_characteristics(users):
 
 # Main
 if __name__ == "__main__":
-    users = read_user_file(USER_FILE)
+    users = helper.read_csv(USER_FILE)
 
     get_user_friends(users, 100)
 
-    user_list     = read_user_file(USER_LIST_FILE)
+    user_list     = helper.read_csv(USER_LIST_FILE)
     limited_users = limit_user(user_list, 500, 500, 10, 50)
     # limited_users = limit_user(user_list, 500, 500, 10, 50)
 
