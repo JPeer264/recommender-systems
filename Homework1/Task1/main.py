@@ -102,14 +102,13 @@ def limit_user(all_users, min_amount_of_users, play_count, min_amount_of_artists
     limited_users    = []
     all_artist_names = []
     user_list        = iter(all_users)
+    counter          = 1
 
     if VERBOSE:
         helper.log_highlight("Limit users - data cleansing")
 
     # Loop through list of all users
     for index, user in enumerate(user_list, start = 1):
-        if VERBOSE:
-            print "Fetching user [" + str(index) + " of " + str(min_amount_of_users) + "]"
 
         # Get artist-history from users via LastFM-API call
         top_artists = helper.api_user_call("gettopartists", user, "")
@@ -141,8 +140,12 @@ def limit_user(all_users, min_amount_of_users, play_count, min_amount_of_artists
 
         # Data cleansing: only add users with more than 10 unique artists
         if artist_counter > min_amount_of_artists_user:
+            if VERBOSE:
+                print "Fetched satisfying user [" + str(counter) + " of " + str(min_amount_of_users) + "]"
+
             # Fill list with users
             limited_users.append(user)
+            counter += 1
 
             # Delete duplicates from all_artist_names and save to new list all_artist_names
             all_artist_names = helper.get_unique_items(all_artist_names)
@@ -212,6 +215,7 @@ def lfm_save_history_of_users(users):
     :param users: an array of users
     """
     content = ""
+    user_iter = iter(users)
 
     if VERBOSE:
         helper.log_highlight("Saving listening history")
@@ -220,19 +224,23 @@ def lfm_save_history_of_users(users):
     if not os.path.exists(OUTPUT_DIR):
         os.makedirs(OUTPUT_DIR)
 
-    for index, user in enumerate(users, start = 1):
+    for index, user in enumerate(user_iter, start = 1):
 
-        if VERBOSE:
-            print "Fetch recent tracks from user [" + str(index) + " of " + str(len(users)) + "]"
+        try:
+            if VERBOSE:
+                print "Fetch recent tracks from user [" + str(index) + " of " + str(len(users)) + "]"
 
-        recent_tracks = helper.api_user_call("getrecenttracks", user, "&limit=200")['recenttracks']['track']
+            recent_tracks = helper.api_user_call("getrecenttracks", user, "&limit=200")['recenttracks']['track']
 
-        for index, recent_track in enumerate(recent_tracks, start = 1):
-            if VERBOSE and VERBOSE_DEPTH == 2:
-                print "    Fetch recent track [" + str(index) + " of " + str(len(recent_tracks)) + "]"
+            for index, recent_track in enumerate(recent_tracks, start = 1):
+                if VERBOSE and VERBOSE_DEPTH == 2:
+                    print "    Fetch recent track [" + str(index) + " of " + str(len(recent_tracks)) + "]"
 
-            listening_history = lfm_prepare_history_string(recent_track, user)
-            content           += listening_history + "\n"
+                listening_history = lfm_prepare_history_string(recent_track, user)
+                content           += listening_history + "\n"
+        except:
+            print "EXCEPTION lfm_save_history_of_users"
+            next(user_iter)
 
     text_file   = open(USER_LISTENING_HISTORY, 'w')
 
@@ -248,6 +256,7 @@ def lfm_save_history_of_users(users):
 
 def lfm_save_user_characteristics(users):
     content = ""
+    users_iter = iter(users)
 
     if VERBOSE:
         helper.log_highlight("Saving user characteristics")
@@ -256,14 +265,19 @@ def lfm_save_user_characteristics(users):
     if not os.path.exists(OUTPUT_DIR):
         os.makedirs(OUTPUT_DIR)
 
-    for index, user in enumerate(users,start=1):
-        if VERBOSE:
-            print "Fetch user characteristics [" + str(index) + " of " + str(len(users)) + "]"
+    for index, user in enumerate(users_iter, start = 1):
+        try:
+            if VERBOSE:
+                print "Fetch user characteristics [" + str(index) + " of " + str(len(users)) + "]"
 
-        user_info   = helper.api_user_call("getinfo", user, "")
-        user        = user_info['user']
-        user_string = lfm_prepare_user_characteristics_string(user)
-        content     += user_string + "\n"
+            user_info   = helper.api_user_call("getinfo", user, "")
+            user        = user_info['user']
+            user_string = lfm_prepare_user_characteristics_string(user)
+            content     += user_string + "\n"
+
+        except:
+            print "EXCEPTION lfm_save_user_characteristics"
+            next(users_iter)
 
     text_file   = open(USER_CHARACTERISTICS_FILE, 'w')
 
@@ -280,10 +294,10 @@ def lfm_save_user_characteristics(users):
 if __name__ == "__main__":
     users = read_user_file(USER_FILE)
 
-    get_user_friends(users, 10)
+    get_user_friends(users, 100)
 
     user_list     = read_user_file(USER_LIST_FILE)
-    limited_users = limit_user(user_list, 5, 5, 2, 1)
+    limited_users = limit_user(user_list, 500, 500, 10, 50)
     # limited_users = limit_user(user_list, 500, 500, 10, 50)
 
     lfm_save_history_of_users(limited_users)
