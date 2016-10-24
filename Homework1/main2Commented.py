@@ -1,7 +1,11 @@
 import csv
+import traceback
 import helper  # helper.py
-import json
 import numpy as np
+import sys
+
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 USER_FILE = './Testfiles/C1ku_users_extended.csv'
 USER_LIST = './user_list.csv'
@@ -27,17 +31,15 @@ def read_user_file(uf):
 
         return users
 
-def get_user_friends(all_users):
 
+def get_user_friends(all_users):
     all_user_friends = []
-    all_users_and_friends = []
-    all_unique_users =  []
     user_list = iter(all_users)
     list = all_users
-    counter = 0
+    user_counter = 0
 
     for user in user_list:
-        counter += 1
+        user_counter += 1
         user_get_friends = helper.api_user_call("getfriends", user)
 
         try:
@@ -48,10 +50,17 @@ def get_user_friends(all_users):
                 all_user_friends.append(friend_name)
 
                 print ""
-                print "Counter: " + str(counter)
-                print "all_user_friends: " +  str(len(all_user_friends))
-        except:
+                print "Counter: " + str(user_counter)
+                print "all_user_friends: " + str(len(all_user_friends))
+        except KeyError:
+            user_counter -= 1
+            print ""
+            print "SKIP: User has no friends"
             next(user_list)
+        except Exception:
+            print ""
+            print "ERROR: "
+            print(traceback.format_exc())
 
     all_users_and_friends = list + all_user_friends
     all_unique_users = helper.get_unique_items(all_users_and_friends)
@@ -89,6 +98,7 @@ def limit_user(all_users, min_amount_of_users, play_count, min_amount_of_artists
     for user in user_list:
 
         user_count += 1
+        print ""
         print "Usercount: " + str(user_count)
 
         # Get artist-history from users via LastFM-API call
@@ -98,9 +108,15 @@ def limit_user(all_users, min_amount_of_users, play_count, min_amount_of_artists
         try:
             artists = top_artists['topartists']['artist']
             artist_counter = 0
-        except:
-            print "EXCEPTION"
+        except KeyError:
+            user_count -= 1
+            print ""
+            print "SKIP: User has no artists"
             next(user_list)
+        except Exception:
+            print ""
+            print "ERROR:"
+            print(traceback.format_exc())
 
         # Loop through artists-list and evaluate playcount
         for artist in artists:
@@ -115,6 +131,7 @@ def limit_user(all_users, min_amount_of_users, play_count, min_amount_of_artists
                 artist_name = artist['name']
                 all_artist_names.append(artist_name)
 
+        print ""
         print "Artist names (not unique): " + str(len(all_artist_names))
 
         # Data cleansing: only add users with more than 10 unique artists
@@ -122,19 +139,25 @@ def limit_user(all_users, min_amount_of_users, play_count, min_amount_of_artists
 
             # Fill list with users
             limited_users.append(user)
-            print "ADDED USER: " +  str(user_count)
+            print ""
+            print"-------------------------------------------"
+            print "Limited users: " + str(len(limited_users))
 
             # Delete duplicates from all_artist_names and save to new list all_artist_names
             all_artist_names = helper.get_unique_items(all_artist_names)
 
             print "Artist names (unique): " + str(len(all_artist_names))
+            print"-------------------------------------------"
+            print ""
 
             # Limit amount of unique artists for all users to a defined minimum (min_amount_of_unique_artists_all_users)
             # and limit amount of all users to a defined minimum (min_amount_of_users)
             # If true - stop for loop and return users (limited_users)
             if len(all_artist_names) >= min_amount_of_unique_artists_all_users and len(
                     limited_users) >= min_amount_of_users:
-                return limited_users
+                np.savetxt("limited_user_list.csv", limited_users, delimiter=",", fmt='%s')
+                np.savetxt("all_artist_names.csv", all_artist_names, delimiter=",", fmt='%s')
+                return limited_users, all_artist_names
 
 
 # /limit_user
@@ -145,7 +168,7 @@ def lfm_prepare_history_string(track, user):
     :param track: an object with tracks
     :param user: an user object with id and name
 
-    :return: creates a string with metadata combined with tabs
+    :return: creates a string with metadata
     """
     user_id = "USER_ID"
     user_name = "USER_NAME"
@@ -192,8 +215,8 @@ if __name__ == "__main__":
     # :param min_amount_of_unique_artists_all_users: min. amount of unique artists for all users
     limited_users = limit_user(user_list, 500, 500, 10, 50)
 
-    #print limited_users
-    #lfm_save_history_of_users(limited_users)
+    # print limited_users
+    # lfm_save_history_of_users(limited_users)
 
 
 
