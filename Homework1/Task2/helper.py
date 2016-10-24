@@ -65,10 +65,10 @@ def number_to_text(number):
     :return: a string
     """
     return {
-        1: 'first',
+        1: 'first ',
         2: 'second',
-        3: 'third',
+        3: 'third ',
         4: 'fourth',
-        5: 'fifth'
+        5: 'fifth '
     }.get(number, '')
 # /number_to_text

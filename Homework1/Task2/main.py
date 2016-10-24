@@ -9,8 +9,8 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-VERBOSE = True
-VERBOSE_DEPTH = 1
+VERBOSE = True # set to True prints information about the current state into the console
+VERBOSE_DEPTH = 3  # describes how deep the verbose mode goes - maximum 4 - recommended 3
 
 # Parameters
 LE_FILE      = "../Task1/output/user_info/listening_history.txt"
@@ -18,7 +18,6 @@ OUTPUT_DIR   = './output'
 UAM_FILE     = OUTPUT_DIR + "/UAM.txt"           # user-artist-matrix (UAM)
 ARTISTS_FILE = OUTPUT_DIR + "/UAM_artists_5.txt" # artist names for UAM
 USERS_FILE   = OUTPUT_DIR + "/UAM_users_5.txt"   # user names for UAM
-
 
 K = 4  # Neighbors
 
@@ -43,7 +42,7 @@ def save_artists_for_two_users(user_one, user_two):
             user   = row[0]
             artist = row[2]
 
-            if (user == 'Typheem'):
+            if (user == user_one):
                 artists_user_one.append(artist.encode('utf-8'))
 
             if (user == user_two):
@@ -70,9 +69,9 @@ def recommend_random_artists_RB(target_user):
 
     # this will return new artists the target_user never heard about
     return np.setdiff1d(artists_user_two, artists_user_one)
-# /recomment_random_artists_RB
+# /recommend_random_artists_RB
 
-def recommend_CF(UAM, user_id, user_name):
+def recommend_CF(UAM, user_id, user):
     """
     Function that implements a CF recommender. It takes as input the UAM, metadata (artists and users),
     the index of the seed user (to make predictions for) and the indices of the seed user's training artists.
@@ -83,6 +82,11 @@ def recommend_CF(UAM, user_id, user_name):
 
     :return: a list of recommended artist indices
     """
+    user_name = user[user_id]
+
+    if VERBOSE:
+        print 'CF recommendation for user [' + str(user_id + 1) + ' of ' + str(len(user)) + ']'
+
     # get playcount vector for current user u
     pc_vec = UAM[u,:]
 
@@ -104,8 +108,11 @@ def recommend_CF(UAM, user_id, user_name):
     artists_obj[user_name]['id'] = user_id
     artists_obj[user_name]['neighbors_CF'] = {}
 
-    for index, neighbor in enumerate(neighbor_array, start = 1):
-        a_neighbor = neighbor_array[-(index)]
+    for neighbor_index, neighbor in enumerate(neighbor_array, start = 1):
+        a_neighbor = neighbor_array[-(neighbor_index)]
+
+        if VERBOSE and VERBOSE_DEPTH == 2:
+            print '    The ' + helper.number_to_text(neighbor_index) + ' closest user to ' + user_name + ' is ' + users[a_neighbor]
         # print "The closest user to user " + str(u) + " is " + str(a_neighbor) + "."
         # print "The closest user to user " + users[u] + " is user " + users[a_neighbor] + "."
 
@@ -120,18 +127,22 @@ def recommend_CF(UAM, user_id, user_name):
         # np.nonzero returns a tuple of arrays, so we need to take the first element only when computing the set difference
         recommended_artists_idx = np.setdiff1d(artist_idx_n[0], artist_idx_u[0])
 
-        # Output recommendations
-        # artist indices
-        # print "Indices of the " + str(len(recommended_artists_idx)) + " recommended artists: ", recommended_artists_idx
-
         # artist names
         artist = np.asarray(artists)   # convert list of artists to array of artists (for convenient indexing)
-        artists_obj[user_name]['neighbors_CF'][index] = artist[recommended_artists_idx]
+        artists_obj[user_name]['neighbors_CF'][neighbor_index] = artist[recommended_artists_idx]
         artists_array.append(artists_obj)
         # print "Names of the " + str(len(recommended_artists_idx)) + " recommended artists: ", artist[recommended_artists_idx]
 
+        if VERBOSE and VERBOSE_DEPTH == 3:
+            print '        Recommended artists for the ' + helper.number_to_text(neighbor_index) + ' neighbor [' + str(len(artist[recommended_artists_idx]))  + ']'
+
+            if VERBOSE and VERBOSE_DEPTH == 4:
+                for value in artist[recommended_artists_idx]:
+                    print '          ' + value
+
     # Return list of recommended artist indices
     return artists_obj
+# /recommend_CF
 
 # Main program
 if __name__ == '__main__':
@@ -141,16 +152,29 @@ if __name__ == '__main__':
     #    UAM     = []   # user-artist-matrix
 
     # Load metadata from provided files into lists
-    artists = helper.read_csv(ARTISTS_FILE)
-    users   = helper.read_csv(USERS_FILE)
-#    print users
-#    print artists
-
-    # Load UAM - Konstruiert Matrix aus einem File
-    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)
+    artists           = helper.read_csv(ARTISTS_FILE)
+    users             = helper.read_csv(USERS_FILE)
     recommender_users = {}
 
+    # Load UAM - Konstruiert Matrix aus einem File
+    if VERBOSE:
+        helper.log_highlight('Loading UAM')
+
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)
+
+    if VERBOSE:
+        print '\nSuccessfully read UAM\n'
+
     # For all users
+    if VERBOSE:
+        helper.log_highlight('Initialize CF recommendation for users')
+
     for u in range(0, UAM.shape[0]):
-        recommender = recommend_CF(UAM, u, users[u])
+        recommender = recommend_CF(UAM, u, users)
         recommender_users[users[u]] = recommender[users[u]]
+
+    if VERBOSE:
+        print '\nCF recommendation complete\n'
+        helper.log_highlight('Initialize RB recommendation for Sam00')
+
+        print recommend_random_artists_RB('Sam00')
