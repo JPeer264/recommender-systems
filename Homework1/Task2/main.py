@@ -26,8 +26,6 @@ artists_user_two = []
 
 def save_artists_for_two_users(user_one, user_two):
     """
-    TODO implement user_one into if
-
     fills artists_user_one and artists_user_two global arrays with data
 
     :param user_one: username of the first person
