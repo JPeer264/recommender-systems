@@ -31,6 +31,7 @@ def calc_artists_of_users():
     TODO docblock
     """
     artists_file = {}
+    artist_object = {}
 
     with open(LE_FILE, 'r') as f:
         reader  = csv.reader(f, delimiter='\t')      # create reader
@@ -41,13 +42,27 @@ def calc_artists_of_users():
             artist = row[2]
 
             try:
-                all_artists_count[user][artist] += 1
+                artist_object[user][artist] += 1
             except:
                 try:
-                    all_artists_count[user][artist] = 1
+                    artist_object[user][artist] = 1
                 except:
-                    all_artists_count[user] = {}
-                    all_artists_count[user][artist] = 1
+                    artist_object[user] = {}
+                    artist_object[user][artist] = 1
+
+        for user in artist_object:
+            for artist in artist_object[user]:
+                try:
+                    all_artists_count[user].append({
+                        'artist_name': artist,
+                        'play_count': artist_object[user][artist]
+                    })
+                except:
+                    all_artists_count[user] = []
+                    all_artists_count[user].append({
+                        'artist_name': artist,
+                        'play_count': artist_object[user][artist]
+                    })
 # /calc_artists_of_users
 
 def clean_all_artists_count(max_values_in_object):
@@ -55,18 +70,21 @@ def clean_all_artists_count(max_values_in_object):
     TODO docblock
     """
     for index, user_name in enumerate(all_artists_count):
-        # all_artists_count[user_name].sort(key=lambda x: x.count, reverse=True)
+
         sort_artists_by_listening_count(all_artists_count[user_name], user_name)
 # /clean_all_artists_count
 
 def sort_artists_by_listening_count(artists, user_name):
     for index, artist in enumerate(artists):
-        if artists[artist] > artists[artists.keys()[0]]:
-            new_artists = artists
-            new_artists[artist] = artists[artists.keys()[0]]
-            new_artists[artists.keys()[0]] = artists[artist]
+        # if artists[artist] > artists[artists.keys()[0]]:
+        #     new_artists = artists
 
-            sort_artists_by_listening_count(new_artists, user_name)
+        #     new_artists[artist] = artists[artists.keys()[0]]
+        #     new_artists[artists.keys()[0]] = artists[artist]
+
+
+        #     sort_artists_by_listening_count(new_artists, user_name)
+
     all_artists_count[user_name] = artists
     return
 
