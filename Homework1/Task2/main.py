@@ -75,18 +75,10 @@ def clean_all_artists_count(max_values_in_object):
 # /clean_all_artists_count
 
 def sort_artists_by_listening_count(artists, user_name):
-    for index, artist in enumerate(artists):
-        # if artists[artist] > artists[artists.keys()[0]]:
-        #     new_artists = artists
 
-        #     new_artists[artist] = artists[artists.keys()[0]]
-        #     new_artists[artists.keys()[0]] = artists[artist]
+    sorted_artists = sorted(artists, key=lambda x: x['play_count'], reverse=True)
 
-
-        #     sort_artists_by_listening_count(new_artists, user_name)
-
-    all_artists_count[user_name] = artists
-    return
+    all_artists_count[user_name] = sorted_artists
 
         #     print artist
 
