@@ -24,12 +24,14 @@ K = 4  # Neighbors
 artists_user_one = []
 artists_user_two = []
 
-all_artists_count = {}
 
-def calc_artists_of_users():
+def get_user_artist_playcounts():
     """
-    TODO docblock
+    calculates and sorts the playcounts of each user and its artist
+
+    :return: a sorted array of all artists with given playcounts
     """
+    all_artists_count = {}
     artists_file = {}
     artist_object = {}
 
@@ -63,24 +65,12 @@ def calc_artists_of_users():
                         'artist_name': artist,
                         'play_count': artist_object[user][artist]
                     })
-# /calc_artists_of_users
-
-def clean_all_artists_count(max_values_in_object):
-    """
-    TODO docblock
-    """
     for index, user_name in enumerate(all_artists_count):
+        sorted_artists = sorted(all_artists_count[user_name], key=lambda x: x['play_count'], reverse=True)
+        all_artists_count[user_name] = sorted_artists
 
-        sort_artists_by_listening_count(all_artists_count[user_name], user_name)
-# /clean_all_artists_count
-
-def sort_artists_by_listening_count(artists, user_name):
-
-    sorted_artists = sorted(artists, key=lambda x: x['play_count'], reverse=True)
-
-    all_artists_count[user_name] = sorted_artists
-
-        #     print artist
+    return all_artists_count
+# /calc_artists_of_users
 
 
 def save_artists_for_two_users(user_one, user_two):
@@ -105,6 +95,14 @@ def save_artists_for_two_users(user_one, user_two):
             if (user == user_two):
                 artists_user_two.append(artist.encode('utf-8'))
 # /save_artists_for_two_users
+
+def temp(user_name_array):
+
+    for user_name in user_name_array:
+        all_artists_count[user_name]
+
+
+    return
 
 def recommend_random_artists_RB(target_user):
     """
@@ -207,8 +205,7 @@ if __name__ == '__main__':
     #    artists = []   # artists
     #    users   = []   # users
     #    UAM     = []   # user-artist-matrix
-    calc_artists_of_users()
-    clean_all_artists_count(1)
+    all_artists_count = get_user_artist_playcounts()
 
     print all_artists_count['Sim00']
 
@@ -236,6 +233,6 @@ if __name__ == '__main__':
 
     # if VERBOSE:
     #     print '\nCF recommendation complete\n'
-    #     helper.log_highlight('Initialize RB recommendation for Sam00')
+    #     hexlper.log_highlight('Initialize RB recommendation for Sam00')
 
     #     print recommend_random_artists_RB('Sam00')
