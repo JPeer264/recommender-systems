@@ -53,8 +53,15 @@ def get_user_friends(all_users, limit_user):
 
                     return
 
-        except:
+        except KeyError:
+            print ""
+            print "SKIP: User has no friends"
             next(user_list)
+
+        except Exception:
+            print ""
+            print "ERROR: "
+            print(traceback.format_exc())
 
     all_users_and_friends = list + all_user_friends
     all_unique_users      = helper.get_unique_items(all_users_and_friends)
@@ -98,9 +105,16 @@ def limit_user(all_users, min_amount_of_users, play_count, min_amount_of_artists
         try:
             artists        = top_artists['topartists']['artist']
             artist_counter = 0
-        except:
-            print "EXCEPTION limit_user"
+
+        except KeyError:
+            print ""
+            print "SKIP: User has no artists"
             next(user_list)
+
+        except Exception:
+            print ""
+            print "ERROR:"
+            print(traceback.format_exc())
 
         # Loop through artists-list and evaluate playcount
         for artist in artists:
@@ -114,7 +128,7 @@ def limit_user(all_users, min_amount_of_users, play_count, min_amount_of_artists
                 artist_counter += 1
                 artist_name    = artist['name']
 
-                all_artist_names.append(artist_name)
+                all_artist_names.append(artist_name.encode('utf-8'))
 
         if VERBOSE and VERBOSE_DEPTH == 2:
             print "    Artists (not unique): " + str(len(all_artist_names))
@@ -139,6 +153,9 @@ def limit_user(all_users, min_amount_of_users, play_count, min_amount_of_artists
             # If true - stop for loop and return users (limited_users)
             if  len(all_artist_names) >= min_amount_of_unique_artists_all_users \
                 and len(limited_users) >= min_amount_of_users:
+
+                np.savetxt(OUTPUT_DIR + "/limited_user_list.csv", limited_users, delimiter=",", fmt='%s')
+                np.savetxt(OUTPUT_DIR + "/all_artist_names.csv", all_artist_names, delimiter=",", fmt='%s')
 
                 if VERBOSE:
                     print "\nData cleansing successful\n"
@@ -275,10 +292,10 @@ def lfm_save_user_characteristics(users):
 if __name__ == "__main__":
     users = helper.read_csv(USER_FILE)
 
-    get_user_friends(users, 100)
+    get_user_friends(users, 2)
 
     user_list     = helper.read_csv(USER_LIST_FILE)
-    limited_users = limit_user(user_list, 500, 500, 10, 50)
+    limited_users = limit_user(user_list, 5, 5, 5, 10)
     # limited_users = limit_user(user_list, 500, 500, 10, 50)
 
     lfm_save_history_of_users(limited_users)
