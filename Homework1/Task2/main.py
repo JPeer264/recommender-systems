@@ -72,6 +72,29 @@ def get_user_artist_playcounts():
     return all_artists_count
 # /calc_artists_of_users
 
+# TODO method to combine the predictions for the same artists among the set of nearest neighbors
+# def predict_artist(user_name_array, all_artists_count):
+#     """
+#     TODO: 
+#     1. search for all artists that Target and neigbors have listend to
+#     2. search for all artists that all Neigbors have Listened to but Target not
+#     3. normalize playcounts on all artists between 0-1
+#     4. calculate the prdiction for the artists that Target have not listened to yet
+#     """
+
+#     #1
+#     # for user_name in user_name_array:
+#     relation_artists(all_artists_count[user_name_array[0]], all_artists_count[user_name_array[1]])
+#     #return artist
+
+# def relation_artists(user_one_artists, user_two_artists):
+#     relation_artists = {}
+
+#     for user_one_artist in user_one_artists:
+#         for user_two_artist in user_two_artists:
+#             if (user_one_artists[user_one_artist] == user_two_artists[user_two_artist]):
+#                 print user_one_artist
+
 
 def save_artists_for_two_users(user_one, user_two):
     """
@@ -96,13 +119,6 @@ def save_artists_for_two_users(user_one, user_two):
                 artists_user_two.append(artist.encode('utf-8'))
 # /save_artists_for_two_users
 
-def temp(user_name_array):
-
-    for user_name in user_name_array:
-        all_artists_count[user_name]
-
-
-    return
 
 def recommend_random_artists_RB(target_user):
     """
@@ -205,34 +221,31 @@ if __name__ == '__main__':
     #    artists = []   # artists
     #    users   = []   # users
     #    UAM     = []   # user-artist-matrix
-    all_artists_count = get_user_artist_playcounts()
 
-    print all_artists_count['Sim00']
+    # Load metadata from provided files into lists
+    artists           = helper.read_csv(ARTISTS_FILE)
+    users             = helper.read_csv(USERS_FILE)
+    recommender_users = {}
 
-    # # Load metadata from provided files into lists
-    # artists           = helper.read_csv(ARTISTS_FILE)
-    # users             = helper.read_csv(USERS_FILE)
-    # recommender_users = {}
+    # Load UAM - Konstruiert Matrix aus einem File
+    if VERBOSE:
+        helper.log_highlight('Loading UAM')
 
-    # # Load UAM - Konstruiert Matrix aus einem File
-    # if VERBOSE:
-    #     helper.log_highlight('Loading UAM')
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)
 
-    # UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)
+    if VERBOSE:
+        print '\nSuccessfully read UAM\n'
 
-    # if VERBOSE:
-    #     print '\nSuccessfully read UAM\n'
+    # For all users
+    if VERBOSE:
+        helper.log_highlight('Initialize CF recommendation for users')
 
-    # # For all users
-    # if VERBOSE:
-    #     helper.log_highlight('Initialize CF recommendation for users')
+    for u in range(0, UAM.shape[0]):
+        recommender = recommend_CF(UAM, u, users)
+        recommender_users[users[u]] = recommender[users[u]]
 
-    # for u in range(0, UAM.shape[0]):
-    #     recommender = recommend_CF(UAM, u, users)
-    #     recommender_users[users[u]] = recommender[users[u]]
+    if VERBOSE:
+        print '\nCF recommendation complete\n'
+        helper.log_highlight('Initialize RB recommendation for Sam00')
 
-    # if VERBOSE:
-    #     print '\nCF recommendation complete\n'
-    #     hexlper.log_highlight('Initialize RB recommendation for Sam00')
-
-    #     print recommend_random_artists_RB('Sam00')
+        print recommend_random_artists_RB('Sam00')
