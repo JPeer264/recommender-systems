@@ -292,7 +292,7 @@ def lfm_save_user_characteristics(users):
 if __name__ == "__main__":
     users = helper.read_csv(USER_FILE)
 
-    get_user_friends(users, 2)
+    get_user_friends(users, 10)
 
     user_list     = helper.read_csv(USER_LIST_FILE)
     limited_users = limit_user(user_list, 5, 5, 5, 10)

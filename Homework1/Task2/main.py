@@ -24,6 +24,55 @@ K = 4  # Neighbors
 artists_user_one = []
 artists_user_two = []
 
+all_artists_count = {}
+
+def calc_artists_of_users():
+    """
+    TODO docblock
+    """
+    artists_file = {}
+
+    with open(LE_FILE, 'r') as f:
+        reader  = csv.reader(f, delimiter='\t')      # create reader
+        headers = reader.next()                     # skip header
+
+        for row in reader:
+            user   = row[0]
+            artist = row[2]
+
+            try:
+                all_artists_count[user][artist] += 1
+            except:
+                try:
+                    all_artists_count[user][artist] = 1
+                except:
+                    all_artists_count[user] = {}
+                    all_artists_count[user][artist] = 1
+# /calc_artists_of_users
+
+def clean_all_artists_count(max_values_in_object):
+    """
+    TODO docblock
+    """
+    for index, user_name in enumerate(all_artists_count):
+        # all_artists_count[user_name].sort(key=lambda x: x.count, reverse=True)
+        sort_artists_by_listening_count(all_artists_count[user_name], user_name)
+# /clean_all_artists_count
+
+def sort_artists_by_listening_count(artists, user_name):
+    for index, artist in enumerate(artists):
+        if artists[artist] > artists[artists.keys()[0]]:
+            new_artists = artists
+            new_artists[artist] = artists[artists.keys()[0]]
+            new_artists[artists.keys()[0]] = artists[artist]
+
+            sort_artists_by_listening_count(new_artists, user_name)
+    all_artists_count[user_name] = artists
+    return
+
+        #     print artist
+
+
 def save_artists_for_two_users(user_one, user_two):
     """
     fills artists_user_one and artists_user_two global arrays with data
@@ -148,31 +197,35 @@ if __name__ == '__main__':
     #    artists = []   # artists
     #    users   = []   # users
     #    UAM     = []   # user-artist-matrix
+    calc_artists_of_users()
+    clean_all_artists_count(1)
 
-    # Load metadata from provided files into lists
-    artists           = helper.read_csv(ARTISTS_FILE)
-    users             = helper.read_csv(USERS_FILE)
-    recommender_users = {}
+    print all_artists_count['Sim00']
 
-    # Load UAM - Konstruiert Matrix aus einem File
-    if VERBOSE:
-        helper.log_highlight('Loading UAM')
+    # # Load metadata from provided files into lists
+    # artists           = helper.read_csv(ARTISTS_FILE)
+    # users             = helper.read_csv(USERS_FILE)
+    # recommender_users = {}
 
-    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)
+    # # Load UAM - Konstruiert Matrix aus einem File
+    # if VERBOSE:
+    #     helper.log_highlight('Loading UAM')
 
-    if VERBOSE:
-        print '\nSuccessfully read UAM\n'
+    # UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)
 
-    # For all users
-    if VERBOSE:
-        helper.log_highlight('Initialize CF recommendation for users')
+    # if VERBOSE:
+    #     print '\nSuccessfully read UAM\n'
 
-    for u in range(0, UAM.shape[0]):
-        recommender = recommend_CF(UAM, u, users)
-        recommender_users[users[u]] = recommender[users[u]]
+    # # For all users
+    # if VERBOSE:
+    #     helper.log_highlight('Initialize CF recommendation for users')
 
-    if VERBOSE:
-        print '\nCF recommendation complete\n'
-        helper.log_highlight('Initialize RB recommendation for Sam00')
+    # for u in range(0, UAM.shape[0]):
+    #     recommender = recommend_CF(UAM, u, users)
+    #     recommender_users[users[u]] = recommender[users[u]]
 
-        print recommend_random_artists_RB('Sam00')
+    # if VERBOSE:
+    #     print '\nCF recommendation complete\n'
+    #     helper.log_highlight('Initialize RB recommendation for Sam00')
+
+    #     print recommend_random_artists_RB('Sam00')
