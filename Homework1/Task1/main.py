@@ -17,6 +17,9 @@ USER_LISTENING_HISTORY = OUTPUT_DIR + "listening_history.txt"
 VERBOSE = True # set to True prints information about the current state into the console
 VERBOSE_DEPTH = 2 # describes how deep the verbose mode goes - maximum 2
 
+MAX_RECENT_TRACK_PER_PAGE = 200 # maximum is 200
+MAX_RECENT_TRACK_PAGES = 6
+
 def get_user_friends(all_users, limit_user):
     all_user_friends      = []
     all_users_and_friends = []
@@ -222,21 +225,22 @@ def lfm_save_history_of_users(users):
     if not os.path.exists(OUTPUT_DIR):
         os.makedirs(OUTPUT_DIR)
 
-    for index, user in enumerate(user_iter, start = 1):
 
+    for index, user in enumerate(user_iter, start = 1):
         try:
             if VERBOSE:
                 print "Fetch recent tracks from user [" + str(index) + " of " + str(len(users)) + "]"
 
-            recent_tracks = helper.api_user_call("getrecenttracks", user, "&limit=200")['recenttracks']['track']
+            for page_number in range(1, (MAX_RECENT_TRACK_PAGES + 1)):
+                recent_tracks = helper.api_user_call("getrecenttracks", user, "&limit=" + str(MAX_RECENT_TRACK_PER_PAGE) + "&page=" + str(page_number))['recenttracks']['track']
 
-            for index, recent_track in enumerate(recent_tracks, start = 1):
-                if VERBOSE and VERBOSE_DEPTH == 2:
-                    print "    Fetch recent track [" + str(index) + " of " + str(len(recent_tracks)) + "]"
+                for index, recent_track in enumerate(recent_tracks, start = 1):
+                    if VERBOSE and VERBOSE_DEPTH == 2:
+                        print "    Fetch recent track [" + str(index * page_number) + " of " + str(len(recent_tracks) * MAX_RECENT_TRACK_PAGES) + "]"
 
-                listening_history = lfm_prepare_history_string(recent_track, user)
-                content           += listening_history + "\n"
-        except:
+                    listening_history = lfm_prepare_history_string(recent_track, user)
+                    content           += listening_history + "\n"
+        except Exception:
             print "EXCEPTION lfm_save_history_of_users"
             next(user_iter)
 
