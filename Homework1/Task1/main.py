@@ -296,10 +296,10 @@ def lfm_save_user_characteristics(users):
 if __name__ == "__main__":
     users = helper.read_csv(USER_FILE)
 
-    get_user_friends(users, 10)
+    get_user_friends(users, len(users))
 
     user_list     = helper.read_csv(USER_LIST_FILE)
-    limited_users = limit_user(user_list, 5, 5, 5, 10)
+    limited_users = limit_user(user_list, 500, 500, 10, 5000)
     # limited_users = limit_user(user_list, 500, 500, 10, 50)
 
     lfm_save_history_of_users(limited_users)
