@@ -66,11 +66,16 @@ def number_to_text(number):
     :return: a string
     """
     return {
-        1: 'first ',
-        2: 'second',
-        3: 'third ',
-        4: 'fourth',
-        5: 'fifth '
+        1: 'first   ',
+        2: 'second  ',
+        3: 'third   ',
+        4: 'fourth  ',
+        5: 'fifth   ',
+        6: 'sixth   ',
+        7: 'seventh ',
+        8: 'eigth   ',
+        9: 'nineth  ',
+        10: 'tenth   ',
     }.get(number, '')
 # /number_to_text
 
