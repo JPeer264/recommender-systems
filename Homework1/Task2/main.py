@@ -32,8 +32,8 @@ def get_user_artist_playcounts():
     :return: a sorted array of all artists with given playcounts
     """
     all_artists_count = {}
-    artists_file = {}
-    artist_object = {}
+    artist_object     = {}
+    result = {}
 
     with open(LE_FILE, 'r') as f:
         reader  = csv.reader(f, delimiter='\t')      # create reader
@@ -69,32 +69,23 @@ def get_user_artist_playcounts():
         sorted_artists = sorted(all_artists_count[user_name], key=lambda x: x['play_count'], reverse=True)
         all_artists_count[user_name] = sorted_artists
 
+    # for index, user in enumerate(all_artists_count, start=1):
+    #     for test in all_artists_count[user]:
+    #         try:
+    #             result[user][test['artist_name']] = test['play_count']
+    #         except:
+    #             result[user] = {}
+    #             result[user][test['artist_name']] = test['play_count']
+    #             # result[user]
+                
+            
+    #         # result[user]
+            # result[[user]['artist_name']] = test[user]['play_count']
+        # for artist in all_artists_count[user]
+        #     print artist
+
     return all_artists_count
 # /calc_artists_of_users
-
-# TODO method to combine the predictions for the same artists among the set of nearest neighbors
-# def predict_artist(user_name_array, all_artists_count):
-#     """
-#     TODO:
-#     1. search for all artists that Target and neigbors have listend to
-#     2. search for all artists that all Neigbors have Listened to but Target not
-#     3. normalize playcounts on all artists between 0-1
-#     4. calculate the prdiction for the artists that Target have not listened to yet
-#     """
-
-#     #1
-#     # for user_name in user_name_array:
-#     relation_artists(all_artists_count[user_name_array[0]], all_artists_count[user_name_array[1]])
-#     #return artist
-
-# def relation_artists(user_one_artists, user_two_artists):
-#     relation_artists = {}
-
-#     for user_one_artist in user_one_artists:
-#         for user_two_artist in user_two_artists:
-#             if (user_one_artists[user_one_artist] == user_two_artists[user_two_artist]):
-#                 print user_one_artist
-
 
 def save_artists_for_two_users(user_one, user_two):
     """
@@ -155,9 +146,47 @@ def recommend_CF(UAM, user_id, user):
     """
     user_name = user[user_id]
 
-    if VERBOSE:
-        print 'CF recommendation for user [' + str(user_id + 1) + ' of ' + str(len(user)) + ']'
+    users                                  = helper.read_csv(USERS_FILE)
+    users_playcounts                       = get_user_artist_playcounts()
+    artists                                = helper.read_csv(ARTISTS_FILE)
+    artists_obj                            = {}
+    artists_array                          = []
+    artists_obj[user_name]                 = {}
+    artists_obj[user_name]['id']           = user_id
+    artists_obj[user_name]['neighbors_CF'] = {}
+    neighbor_array                         = get_user_neighbors(UAM, user_id)['neighbor_array']
+    sim_users                              = get_user_neighbors(UAM, user_id)['sim_users']
+    artist_idx_u                           = np.nonzero(UAM[u,:]) # indices of artists user u listened to
+    total_artist_rating                    = {}
 
+    for neighbor_index, neighbor in enumerate(neighbor_array, start = 1):
+        a_neighbor = neighbor_array[-(neighbor_index)]
+
+        if VERBOSE and VERBOSE_DEPTH == 2:
+            print '    The ' + helper.number_to_text(neighbor_index) + ' closest user to ' + user_name + ' is ' + users[a_neighbor]
+
+        artist_idx_n  = np.nonzero(UAM[a_neighbor,:]) # indices of artists user u's neighbor listened to
+        artists_array += artist_idx_n[0].tolist()
+
+    artists_unique = helper.get_unique_items(artists_array)
+
+    for artist in artists_unique:
+        artist_count_of_neighbors = 0
+
+        for neighbor_index, neighbor in enumerate(neighbor_array, start = 1):
+            playcount_of_user = UAM[neighbor, artist]
+            rating = playcount_of_user * sim_users[neighbor]
+
+            if artist in total_artist_rating:
+                total_artist_rating[artist] += rating
+            else:
+                total_artist_rating[artist] = rating
+
+    # Return list of 10 recommended artist indices
+    return sorted(total_artist_rating, key=total_artist_rating.__getitem__, reverse=True)[:10]
+# /recommend_CF
+
+def get_user_neighbors(UAM, user_id):
     # get playcount vector for current user u
     pc_vec = UAM[u,:]
 
@@ -172,48 +201,12 @@ def recommend_CF(UAM, user_id, user):
     # Select the closest neighbor to seed user u (which is the last but one; last one is user u herself!)
     # neighbor_idx = sort_idx[k:-1][0] k definiert anzahl der nachbarn
     neighbor_array = sort_idx[-(K + 1):-1]
-    artists_array = []
-    artists_obj = {}
 
-    artists_obj[user_name] = {}
-    artists_obj[user_name]['id'] = user_id
-    artists_obj[user_name]['neighbors_CF'] = {}
-
-    for neighbor_index, neighbor in enumerate(neighbor_array, start = 1):
-        a_neighbor = neighbor_array[-(neighbor_index)]
-
-        if VERBOSE and VERBOSE_DEPTH == 2:
-            print '    The ' + helper.number_to_text(neighbor_index) + ' closest user to ' + user_name + ' is ' + users[a_neighbor]
-        # print "The closest user to user " + str(u) + " is " + str(a_neighbor) + "."
-        # print "The closest user to user " + users[u] + " is user " + users[a_neighbor] + "."
-
-        # Get np.argsort(sim_users)l artist indices user u and her closest neighbor listened to, i.e., element with non-zero entries in UAM
-        artist_idx_u = np.nonzero(UAM[u,:])                 # indices of artists user u listened to
-        artist_idx_n = np.nonzero(UAM[a_neighbor,:])     # indices of artists user u's neighbor listened to
-
-        # Compute the set difference between u's neighbor and u,
-        # i.e., artists listened to by the neighbor, but not by u.
-        # These artists can be recommended to u.
-
-        # np.nonzero returns a tuple of arrays, so we need to take the first element only when computing the set difference
-        recommended_artists_idx = np.setdiff1d(artist_idx_n[0], artist_idx_u[0])
-
-        # artist names
-        artist = np.asarray(artists)   # convert list of artists to array of artists (for convenient indexing)
-        artists_obj[user_name]['neighbors_CF'][neighbor_index] = artist[recommended_artists_idx]
-        artists_array.append(artists_obj)
-        # print "Names of the " + str(len(recommended_artists_idx)) + " recommended artists: ", artist[recommended_artists_idx]
-
-        if VERBOSE and VERBOSE_DEPTH == 3:
-            print '        Recommended artists for the ' + helper.number_to_text(neighbor_index) + ' neighbor [' + str(len(artist[recommended_artists_idx]))  + ']'
-
-            if VERBOSE and VERBOSE_DEPTH == 4:
-                for value in artist[recommended_artists_idx]:
-                    print '          ' + value
-
-    # Return list of recommended artist indices
-    return artists_obj
-# /recommend_CF
+    return {
+        'neighbor_array': neighbor_array,
+        'sim_users': sim_users
+    }
+# /get_user_neighbors
 
 # Main program
 if __name__ == '__main__':
@@ -242,10 +235,10 @@ if __name__ == '__main__':
 
     for u in range(0, UAM.shape[0]):
         recommender = recommend_CF(UAM, u, users)
-        recommender_users[users[u]] = recommender[users[u]]
 
-    if VERBOSE:
-        print '\nCF recommendation complete\n'
-        helper.log_highlight('Initialize RB recommendation for Sam00')
+        if VERBOSE:
+            helper.log_highlight('Recommendation for ' + users[u] + ' [' + str(u + 1) + ' of ' + str(UAM.shape[0]) + ']')
 
-        print recommend_random_artists_RB('Sam00')
+        for i, r in enumerate(recommender, start = 1):
+            if VERBOSE:
+                print "The " + helper.number_to_text(i) + " is " + artists[r]
