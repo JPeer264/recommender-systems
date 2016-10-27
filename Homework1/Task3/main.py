@@ -101,19 +101,28 @@ def f1_measure(precision, recall):
     return 2 * ((precision * recall) / (precision + recall))
 
 
-def calc_precission_recall(uam_file):
-
+# Main program
+if __name__ == '__main__':
     # Initialize variables to hold performance measures
     avg_prec = 0;  # mean precision
     avg_rec = 0;  # mean recall
 
+    # Load metadata from provided files into lists
+    artists = read_from_file(ARTISTS_FILE)
+    users = read_from_file(USERS_FILE)
+
+    # Load UAM
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)  # For all users in our data (UAM)
+
     # For all users in our data (UAM)
-    no_users = uam_file.shape[0]
+    no_users = UAM.shape[0]
+
     for u in range(0, no_users):
 
         try:
+
             # Get seed user's artists listened to
-            u_aidx = np.nonzero(uam_file[u, :])[0]
+            u_aidx = np.nonzero(UAM[u, :])[0]
 
             # Split user's artists into train and test set for cross-fold (CV) validation
             fold = 0
@@ -123,7 +132,7 @@ def calc_precission_recall(uam_file):
                 print "User: " + str(u) + ", Fold: " + str(fold) + ", Training items: " + str(
                     len(train_aidx)) + ", Test items: " + str(len(test_aidx)),  # the comma at the end avoids line break
                 # Call recommend function
-                copy_UAM = uam_file.copy()  # we need to create a copy of the UAM, otherwise modifications within recommend function will effect the variable
+                copy_UAM = UAM.copy()  # we need to create a copy of the UAM, otherwise modifications within recommend function will effect the variable
                 rec_aidx = recommend_CF(copy_UAM, u, u_aidx[train_aidx])
                 #            print "Recommended items: ", len(rec_aidx)
 
@@ -162,15 +171,10 @@ def calc_precission_recall(uam_file):
                 avg_rec += rec / (NF * no_users)
 
                 # Output precision and recall of current fold
-
                 print ("\tPrecision: %.2f, Recall:  %.2f" % (prec, rec))
 
                 # Increase fold counter
                 fold += 1
-
-            # Output mean average precision and recall
-            precision_recall = [avg_prec, avg_rec]
-            return precision_recall
 
         except ValueError:
             print ""
@@ -182,34 +186,10 @@ def calc_precission_recall(uam_file):
             print ""
             print "ERROR:"
             print(traceback.format_exc())
-            print ""
 
-
-# Main program
-if __name__ == '__main__':
-
-    # Load metadata from provided files into lists
-    artists = read_from_file(ARTISTS_FILE)
-    users = read_from_file(USERS_FILE)
-
-    # Load UAM
-    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)
-
-    precission_recall = calc_precission_recall(UAM)
+    # Output mean average precision and recall
     print ""
-    print "**************************************"
-    print "* DONE EVALUATING PRECISION & RECALL!*"
-    print "**************************************"
-    print ""
-    avg_precission = precission_recall[0]
-    avg_recall = precission_recall[1]
-    print "Average Precission: " + str(avg_precission)
-    print "Average Recall: " + str(avg_recall)
+    print ("\nMAP: %.2f, MAR: %.2f" % (avg_prec, avg_rec))
 
     print ""
-    print "*****************************"
-    print "*DONE EVALUATING F1 MEASURE!*"
-    print "*****************************"
-    print ""
-    print "F1 Measure DONE!"
-    print str(f1_measure(avg_precission, avg_recall))
+    print f1_measure(avg_prec, avg_rec)
