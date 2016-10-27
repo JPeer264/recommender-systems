@@ -87,31 +87,7 @@ def get_user_artist_playcounts():
     return all_artists_count
 # /calc_artists_of_users
 
-def save_artists_for_two_users(user_one, user_two):
-    """
-    fills artists_user_one and artists_user_two global arrays with data
-
-    :param user_one: username of the first person
-    :param user_two: username of the second person
-    """
-    # Read listening events from provided file
-    with open(LE_FILE, 'r') as f:
-        reader  = csv.reader(f, delimiter='\t')      # create reader
-        headers = reader.next()                     # skip header
-
-        for row in reader:
-            user   = row[0]
-            artist = row[2]
-
-            if (user == user_one):
-                artists_user_one.append(artist.encode('utf-8'))
-
-            if (user == user_two):
-                artists_user_two.append(artist.encode('utf-8'))
-# /save_artists_for_two_users
-
-
-def recommend_random_artists_RB(target_user):
+def recommend_random_artists_RB(UAM, u_idx):
     """
     randomly generates a list of artists which the target_user never heard.
     It will compare the artists by a random generated user
@@ -120,17 +96,18 @@ def recommend_random_artists_RB(target_user):
 
     :return: an array with new artists
     """
-    users       = helper.read_csv(USERS_FILE)
-    random_user = random.sample(users, 1)[0]
+    users       = range(0, UAM.shape[0])
+    random_u_idx = random.sample(users, 1)[0]
 
     # cannot generate the own user
-    if random_user == target_user:
-        recommend_random_artists_RB(target_user)
+    if random_u_idx == u_idx:
+        recommend_random_artists_RB(UAM, u_idx)
 
-    save_artists_for_two_users(target_user, random_user)
+    u_aidx = np.nonzero(UAM[u_idx,:])[0].tolist()
+    random_u_aidx = np.nonzero(UAM[random_u_idx,:])[0].tolist()
 
     # this will return new artists the target_user never heard about
-    return np.setdiff1d(artists_user_two, artists_user_one)
+    return np.setdiff1d(random_u_aidx, u_aidx)
 # /recommend_random_artists_RB
 
 def recommend_CF(UAM, user_id, user):
@@ -234,11 +211,13 @@ if __name__ == '__main__':
         helper.log_highlight('Initialize CF recommendation for users')
 
     for u in range(0, UAM.shape[0]):
-        recommender = recommend_CF(UAM, u, users)
+        if u < 1:
+            print recommend_random_artists_RB(UAM, u)
+        # recommender = recommend_CF(UAM, u, users)
 
-        if VERBOSE:
-            helper.log_highlight('Recommendation for ' + users[u] + ' [' + str(u + 1) + ' of ' + str(UAM.shape[0]) + ']')
+        # if VERBOSE:
+        #     helper.log_highlight('Recommendation for ' + users[u] + ' [' + str(u + 1) + ' of ' + str(UAM.shape[0]) + ']')
 
-        for i, r in enumerate(recommender, start = 1):
-            if VERBOSE:
-                print "The " + helper.number_to_text(i) + " is " + artists[r]
+        # for i, r in enumerate(recommender, start = 1):
+        #     if VERBOSE:
+        #         print "The " + helper.number_to_text(i) + " is " + artists[r]

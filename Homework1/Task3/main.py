@@ -116,76 +116,78 @@ if __name__ == '__main__':
 
     # For all users in our data (UAM)
     no_users = UAM.shape[0]
+    AMOUNT_OF_USER = [1,5,10,20,50,100]
 
-    for u in range(0, no_users):
+    for idx in AMOUNT_OF_USER:
+        for u in range(0, idx):
+            try:
 
-        try:
+                # Get seed user's artists listened to
+                u_aidx = np.nonzero(UAM[u, :])[0]
 
-            # Get seed user's artists listened to
-            u_aidx = np.nonzero(UAM[u, :])[0]
+                # Split user's artists into train and test set for cross-fold (CV) validation
+                fold = 0
+                kf = cross_validation.KFold(len(u_aidx), n_folds=NF)  # create folds (splits) for 5-fold CV
+                for train_aidx, test_aidx in kf:  # for all folds
+                    # Show progress
+                    # print "User: " + str(u) + ", Fold: " + str(fold) + ", Training items: " + str(
+                        # len(train_aidx)) + ", Test items: " + str(len(test_aidx)),  # the comma at the end avoids line break
+                    # Call recommend function
+                    copy_UAM = UAM.copy()  # we need to create a copy of the UAM, otherwise modifications within recommend function will effect the variable
+                    rec_aidx = recommend_CF(copy_UAM, u, u_aidx[train_aidx])
+                    print rec_aidx
+                    #            print "Recommended items: ", len(rec_aidx)
 
-            # Split user's artists into train and test set for cross-fold (CV) validation
-            fold = 0
-            kf = cross_validation.KFold(len(u_aidx), n_folds=NF)  # create folds (splits) for 5-fold CV
-            for train_aidx, test_aidx in kf:  # for all folds
-                # Show progress
-                print "User: " + str(u) + ", Fold: " + str(fold) + ", Training items: " + str(
-                    len(train_aidx)) + ", Test items: " + str(len(test_aidx)),  # the comma at the end avoids line break
-                # Call recommend function
-                copy_UAM = UAM.copy()  # we need to create a copy of the UAM, otherwise modifications within recommend function will effect the variable
-                rec_aidx = recommend_CF(copy_UAM, u, u_aidx[train_aidx])
-                #            print "Recommended items: ", len(rec_aidx)
+                    # For random recommendation, exclude items that the user already knows, i.e. the ones in the training set
+                    #            all_aidx = range(0, UAM.shape[1])
+                    #            rec_aidx = recommend_RB(np.setdiff1d(all_aidx, u_aidx[train_aidx]), len(test_aidx))       # select the number of recommended items as the number of items in the test set
 
-                # For random recommendation, exclude items that the user already knows, i.e. the ones in the training set
-                #            all_aidx = range(0, UAM.shape[1])
-                #            rec_aidx = recommend_RB(np.setdiff1d(all_aidx, u_aidx[train_aidx]), len(test_aidx))       # select the number of recommended items as the number of items in the test set
+                    # print "Recommended items: ", len(rec_aidx)
 
-                print "Recommended items: ", len(rec_aidx)
+                    # Compute performance measures
+                    correct_aidx = np.intersect1d(u_aidx[test_aidx], rec_aidx)  # correctly predicted artists
+                    #            print 'Recommended artist-ids: ', rec_aidx
+                    #            print 'True artist-ids: ', u_aidx[test_aidx]
 
-                # Compute performance measures
-                correct_aidx = np.intersect1d(u_aidx[test_aidx], rec_aidx)  # correctly predicted artists
-                #            print 'Recommended artist-ids: ', rec_aidx
-                #            print 'True artist-ids: ', u_aidx[test_aidx]
+                    # True Positives is amount of overlap in recommended artists and test artists
+                    TP = len(correct_aidx)
+                    # False Positives is recommended artists minus correctly predicted ones
+                    FP = len(np.setdiff1d(rec_aidx, correct_aidx))
 
-                # True Positives is amount of overlap in recommended artists and test artists
-                TP = len(correct_aidx)
-                # False Positives is recommended artists minus correctly predicted ones
-                FP = len(np.setdiff1d(rec_aidx, correct_aidx))
+                    # Precision is percentage of correctly predicted among predicted
+                    # Handle special case that not a single artist could be recommended -> by definition, precision = 100%
+                    if len(rec_aidx) == 0:
+                        prec = 100.0
+                    else:
+                        prec = 100.0 * TP / len(rec_aidx)
 
-                # Precision is percentage of correctly predicted among predicted
-                # Handle special case that not a single artist could be recommended -> by definition, precision = 100%
-                if len(rec_aidx) == 0:
-                    prec = 100.0
-                else:
-                    prec = 100.0 * TP / len(rec_aidx)
+                    # Recall is percentage of correctly predicted among all listened to
+                    # Handle special case that there is no single artist in the test set -> by definition, recall = 100%
+                    if len(test_aidx) == 0:
+                        rec = 100.0
+                    else:
+                        rec = 100.0 * TP / len(test_aidx)
 
-                # Recall is percentage of correctly predicted among all listened to
-                # Handle special case that there is no single artist in the test set -> by definition, recall = 100%
-                if len(test_aidx) == 0:
-                    rec = 100.0
-                else:
-                    rec = 100.0 * TP / len(test_aidx)
+                    # add precision and recall for current user and fold to aggregate variables
+                    avg_prec += prec / (NF * no_users)
+                    avg_rec += rec / (NF * no_users)
 
-                # add precision and recall for current user and fold to aggregate variables
-                avg_prec += prec / (NF * no_users)
-                avg_rec += rec / (NF * no_users)
+                    # Output precision and recall of current fold
+                    # print ("\tPrecision: %.2f, Recall:  %.2f" % (prec, rec))
 
-                # Output precision and recall of current fold
-                print ("\tPrecision: %.2f, Recall:  %.2f" % (prec, rec))
+                    # Increase fold counter
+                    fold += 1
 
-                # Increase fold counter
-                fold += 1
+            except ValueError:
+                print ""
+                print "USER SKIPPED!"
+                print ""
+                continue
 
-        except ValueError:
-            print ""
-            print "USER SKIPPED!"
-            print ""
-            continue
-
-        except Exception:
-            print ""
-            print "ERROR:"
-            print(traceback.format_exc())
+            except Exception:
+                print ""
+                print "ERROR:"
+                print(traceback.format_exc())
 
     # Output mean average precision and recall
     print ""
