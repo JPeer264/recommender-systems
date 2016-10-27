@@ -4,7 +4,7 @@ __author__ = 'mms'
 # Load required modules
 import csv
 import numpy as np
-import os
+import helper # helper.py
 
 # Parameters
 OUTPUT_DIR = './output'
@@ -99,9 +99,7 @@ if __name__ == '__main__':
     # Inform user
     print "UAM created. Users: " + str(UAM.shape[0]) + ", Artists: " + str(UAM.shape[1])
 
-    # mkdir in py
-    if not os.path.exists(OUTPUT_DIR):
-        os.makedirs(OUTPUT_DIR)
+    helper.ensure_dir(OUTPUT_DIR)
 
     # Write everything to text file (artist names, user names, UAM)
     # Write artists to text file
