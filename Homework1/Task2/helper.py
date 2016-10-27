@@ -1,4 +1,5 @@
 import csv
+import os
 
 def read_csv(file):
     data = []
@@ -72,3 +73,14 @@ def number_to_text(number):
         5: 'fifth '
     }.get(number, '')
 # /number_to_text
+
+def ensure_dir(directory):
+    """
+    Ensures that the directory exists. If the directory structure does not exist, it is created.
+
+    :param directory: any path as string
+    """
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+# /ensure_dir
+

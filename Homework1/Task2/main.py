@@ -75,7 +75,7 @@ def get_user_artist_playcounts():
 # TODO method to combine the predictions for the same artists among the set of nearest neighbors
 # def predict_artist(user_name_array, all_artists_count):
 #     """
-#     TODO: 
+#     TODO:
 #     1. search for all artists that Target and neigbors have listend to
 #     2. search for all artists that all Neigbors have Listened to but Target not
 #     3. normalize playcounts on all artists between 0-1
