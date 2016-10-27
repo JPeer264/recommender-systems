@@ -4,6 +4,7 @@ __author__ = 'mms'
 # Load required modules
 import csv
 import numpy as np
+import helper # helper.py
 
 # Parameters
 OUTPUT_DIR = './output'
