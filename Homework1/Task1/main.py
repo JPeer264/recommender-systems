@@ -1,7 +1,5 @@
 import helper  # helper.py
-import os
-
-import json
+import traceback
 import numpy as np
 
 ## TODO set in txt files
