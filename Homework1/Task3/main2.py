@@ -17,6 +17,7 @@ NF = 10              # number of folds to perform in cross-validation
 K = 5
 VERBOSE = True
 VERBOSE_DEPTH = 2
+MAX_ARTIST = 1
 
 
 # Function to read metadata (users or artists)
@@ -91,7 +92,12 @@ def recommend_random_artists_RB(UAM, u_idx, train_aidx):
     random_u_aidx = np.nonzero(UAM[random_u_idx,:])[0]
 
     # this will return new artists the target_user never heard about
-    return np.setdiff1d(random_u_aidx, u_aidx)
+    result = np.setdiff1d(random_u_aidx, u_aidx)
+
+    if len(result) > MAX_ARTIST:
+        result = result[:MAX_ARTIST]
+
+    return result
 # /recommend_random_artists_RB
 
 def recommend_CF_our(UAM, user_id, artists):
@@ -261,14 +267,12 @@ if __name__ == '__main__':
             # Call recommend function
             #rec_aidx = recommend_CF(copy_UAM, u, u_aidx[train_aidx])
 
-            # K = 1
-            # K = 3
-            # K = 5
+            #K = 1
+            #K = 3
+            #K = 5
             # K = 10
-            # K = 20
+            #K = 20
             #rec_aidx = recommend_CF_our(copy_UAM, u, u_aidx[train_aidx])
-
-            #rec_aidx = recommend_random_artists_RB(copy_UAM, u, u_aidx[test_aidx])
 
             # For random recommendation, exclude items that the user already knows, i.e. the ones in the training set
             all_aidx = range(0, UAM.shape[1])
@@ -276,8 +280,17 @@ if __name__ == '__main__':
             #rec_aidx = recommend_RB(np.setdiff1d(all_aidx, u_aidx[train_aidx]), 5)
             #rec_aidx = recommend_RB(np.setdiff1d(all_aidx, u_aidx[train_aidx]), 10)
             #rec_aidx = recommend_RB(np.setdiff1d(all_aidx, u_aidx[train_aidx]), 20)
-            rec_aidx = recommend_RB(np.setdiff1d(all_aidx, u_aidx[train_aidx]), 50)
+            #rec_aidx = recommend_RB(np.setdiff1d(all_aidx, u_aidx[train_aidx]), 50)
             #rec_aidx = recommend_RB(np.setdiff1d(all_aidx, u_aidx[train_aidx]), 100)
+
+            #MAX_ARTIST = 1
+            MAX_ARTIST = 5
+            #MAX_ARTIST = 10
+            #MAX_ARTIST = 20
+            #MAX_ARTIST = 50
+            #MAX_ARTIST = 100
+
+            rec_aidx = recommend_random_artists_RB(copy_UAM, u, u_aidx[test_aidx])
 
             print "Recommended items: ", len(rec_aidx)
 
