@@ -1,5 +1,7 @@
 import helper  # helper.py
-import traceback
+import os
+
+import json
 import numpy as np
 
 ## TODO set in txt files
@@ -219,9 +221,12 @@ def lfm_save_history_of_users(users):
     if VERBOSE:
         helper.log_highlight("Saving listening history")
 
-    helper.ensure_dir(OUTPUT_DIR)
+    # mkdir in py
+    if not os.path.exists(OUTPUT_DIR):
+        os.makedirs(OUTPUT_DIR)
 
     for index, user in enumerate(user_iter, start = 1):
+
         try:
             if VERBOSE:
                 print "Fetch recent tracks from user [" + str(index) + " of " + str(len(users)) + "]"
@@ -239,7 +244,7 @@ def lfm_save_history_of_users(users):
             print "EXCEPTION lfm_save_history_of_users"
             next(user_iter)
 
-    text_file = open(USER_LISTENING_HISTORY, 'w')
+    text_file   = open(USER_LISTENING_HISTORY, 'w')
 
     text_file.write(content)
     text_file.close()
@@ -248,6 +253,7 @@ def lfm_save_history_of_users(users):
         print "\nSuccessfully created " + USER_LISTENING_HISTORY + "\n"
 
     return
+
 # /lfm_save_history_of_users
 
 def lfm_save_user_characteristics(users):
@@ -258,7 +264,8 @@ def lfm_save_user_characteristics(users):
         helper.log_highlight("Saving user characteristics")
 
     # mkdir in py
-    helper.ensure_dir(OUTPUT_DIR)
+    if not os.path.exists(OUTPUT_DIR):
+        os.makedirs(OUTPUT_DIR)
 
     for index, user in enumerate(users_iter, start = 1):
         try:
@@ -274,7 +281,7 @@ def lfm_save_user_characteristics(users):
             print "EXCEPTION lfm_save_user_characteristics"
             next(users_iter)
 
-    text_file = open(USER_CHARACTERISTICS_FILE, 'w')
+    text_file   = open(USER_CHARACTERISTICS_FILE, 'w')
 
     text_file.write(content)
     text_file.close()
@@ -289,11 +296,11 @@ def lfm_save_user_characteristics(users):
 if __name__ == "__main__":
     users = helper.read_csv(USER_FILE)
 
-    get_user_friends(users, len(users))
+    get_user_friends(users, 10)
 
     user_list     = helper.read_csv(USER_LIST_FILE)
-    limited_users = limit_user(user_list, 500, 500, 10, 5000)
-    # limited_users = limit_user(user_list, 10, 10, 5, 10)
+    limited_users = limit_user(user_list, 5, 5, 5, 10)
+    # limited_users = limit_user(user_list, 500, 500, 10, 50)
 
     lfm_save_history_of_users(limited_users)
     lfm_save_user_characteristics(limited_users)
