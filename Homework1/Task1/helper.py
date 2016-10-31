@@ -1,6 +1,7 @@
 import urllib
 import json
 import csv
+import os
 
 LASTFM_API_KEY = "8aa5abf299b1aaf6e4758f6ce3dc2fcf"
 LASTFM_API_URL = "http://ws.audioscrobbler.com/2.0/"
@@ -84,3 +85,13 @@ def log_highlight(text):
 
     return
 # /log_highlight
+
+def ensure_dir(directory):
+    """
+    Ensures that the directory exists. If the directory structure does not exist, it is created.
+
+    :param directory: any path as string
+    """
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+# /ensure_dir

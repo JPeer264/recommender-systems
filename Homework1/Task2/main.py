@@ -125,6 +125,7 @@ def recommend_random_artists_RB(target_user):
     randomly generates a list of artists which the target_user never heard.
     It will compare the artists by a random generated user
 
+
     :param target_user: the username of the targetuser
 
     :return: an array with new artists
@@ -159,11 +160,10 @@ def recommend_CF(UAM, user_id, user):
         print 'CF recommendation for user [' + str(user_id + 1) + ' of ' + str(len(user)) + ']'
 
     # get playcount vector for current user u
-    pc_vec = UAM[u,:]
+    pc_vec = UAM[user_id,:]
 
     # Compute similarities as inner product between pc_vec of user and all users via UAM (assuming that UAM is already normalized)
     sim_users = np.inner(pc_vec, UAM)     # similarities between u and other users
-    # print sim_users
 
     # Sort similarities to all others
     sort_idx = np.argsort(sim_users)        # sort in ascending order
@@ -188,7 +188,7 @@ def recommend_CF(UAM, user_id, user):
         # print "The closest user to user " + users[u] + " is user " + users[a_neighbor] + "."
 
         # Get np.argsort(sim_users)l artist indices user u and her closest neighbor listened to, i.e., element with non-zero entries in UAM
-        artist_idx_u = np.nonzero(UAM[u,:])                 # indices of artists user u listened to
+        artist_idx_u = np.nonzero(UAM[user_id,:])                 # indices of artists user u listened to
         artist_idx_n = np.nonzero(UAM[a_neighbor,:])     # indices of artists user u's neighbor listened to
 
         # Compute the set difference between u's neighbor and u,
