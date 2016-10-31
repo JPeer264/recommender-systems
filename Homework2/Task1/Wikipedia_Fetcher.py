@@ -1,10 +1,10 @@
 # Wikipedia fetcher to download "music context" data for an artist list.
-__author__ = 'mms'
 
 # Load required modules
 import os
 import urllib
 import csv
+import re
 
 
 # Parameters
@@ -13,8 +13,8 @@ WIKIPEDIA_URL_SS = "http://en.wikipedia.org/wiki/Special:Search/"
 
 #ARTISTS_FILE = "./UAM_100u_artists.txt"          # text file containing Last.fm user names
 #OUTPUT_DIRECTORY = "./crawls_wikipedia_100u"     # directory to write output to
-ARTISTS_FILE = "./UAM_artists.txt"          # text file containing Last.fm user names
-OUTPUT_DIRECTORY = "./crawls_wikipedia"     # directory to write output to
+ARTISTS_FILE = "../testfiles/UAM_artists.txt"          # text file containing Last.fm user names
+OUTPUT_DIRECTORY = "./output/crawls_wikipedia"     # directory to write output to
 
 USE_INDEX_IN_OUTPUT_FILE = True             # use [index].html as output file name (if set to False, the url-encoded artist name is used)
 SKIP_EXISTING_FILES = True                  # skip files already retrieved
@@ -40,8 +40,13 @@ def fetch_wikipedia_page(query):
     try:
         print "Retrieving data from " + url
         content = urllib.urlopen(url).read()
-        return content
-    except IOError:                     # return empty content in case some IO / socket error occurred
+        regexp_1 = re.compile(r'h1.*firstHeading.*Search result.*/h1')  # check if it only retrieves the search page
+        regexp_2 = re.compile(r'div.*mw-content-text.*may refer to:')   # check if it only retrieves the "may refer to" page
+        if (regexp_1.search(content) is None) and (regexp_2.search(content) is None):
+            return content
+        else:
+            return ""
+    except IOError:                # return empty content in case some IO / socket error occurred
         return ""
 
 
@@ -66,10 +71,19 @@ if __name__ == '__main__':
                 continue
             # otherwise, fetch HTML content
             html_content = fetch_wikipedia_page(artists[i])
+
             # write to output file
             print "Storing content to " + html_fn
             with open(html_fn, 'w') as f:
                 f.write(html_content)
+
+            # if html_content != "":
+            #     # write to output file
+            #     print "Storing content to " + html_fn
+            #     with open(html_fn, 'w') as f:
+            #         f.write(html_content)
+            # else:
+            #     print "No data available. File skipped."
     else:
         # Or use url-encoded artist name
         for a in artists:
