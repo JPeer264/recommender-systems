@@ -1,0 +1,15 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1504
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;\csgray\c100000;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Als Datenquelle f\'fcr unseren CB haben wir uns f\'fcr einerseits Wikipedia als Artist\'e4hnlichkeit und andererseits f\'fcr Musixmatch f\'fcr die Lyrics\'e4hnlichkeit geeinigt. Bevor wir starten haben wir alle Artists aus dem C1ku_artists genommen und alle IDs der jeweiligen Artists herausgefiltert, sodass nur die reinen Artistsnamen \'fcberbleiben. Dies erleichtert uns das Arbeiten f\'fcr die n\'e4chsten Schritte.\
+\
+Wir verwenden f\'fcr die Lyrics als auch f\'fcr Wikipedia Stop Words, zum Einen Stop Words, die Google verwendet, und zum Anderen zus\'e4tzliche Stop Words, welche wir herausfiltern. Diese zus\'e4tzlichen Stop Words Filter u.a. Wikipedia heraus.\
+\
+Wikipedia:\
+\
+F\'fcr unseren Wikipediafetcher lesen wir alle Artists in unserem generierten File heraus und speichern diese in ein Array. \'dcber dieses Array iterieren wir und lesen uns den Source Code eines jeden Artists von Wikipedia. F\'fcr die Suche verwenden wir die URL https://en.wikipedia.org/wiki und erweitern die URL mit dem Artistnamen. Dieser Source Code wird in ein eigenes File gespeichert. Einige Artists haben keine eigene Seite und Wikipedia verweist auf zwei verschieden Seiten. Bei der ersten Variante hat Wikipedia einen Beitrag mit einem \'e4hnlichen Namen gefunden und verweist auf eine \'93May refer to\'94 Seite. Bei der zweiten Variante hat Wikipedia keinen \'e4hnlichen Beitrag gefunden und verweist somit auf eine Suchseite. In beiden F\'e4llen verwenden wir eine Regular Expression (Regex) und filtert genau diese Seiten aus und speichert ein leeres HTML File. Dies verhindert, dass wir verf\'e4lschte Daten in unsere Termliste bekommen, die wir sp\'e4ter f\'fcr die Auswertung ben\'f6tigen. Nachdem wir alle Artists auf Wikipedia gesucht haben und in ein separates Artists-HTML File gespeichert haben, k\'f6nnen wir jedes einzelne File auslesen und bereinigen. Das HTML File hat unn\'f6tige Informationen wie den HEAD oder einzelne HTML Tags. Diese werden aus dem Datenstring geworfen. Des Weiteren werden wir alle \'fcbrig gebliebenen Strings lowercase transformieren. Es werden nun alle W\'f6rter, welche mit einem Leerzeichen getrennt wurden, in ein Array gespeichert. Diese W\'f6rter in diesem Array sind unsere Terms, welche wir f\'fcr die \
+}
