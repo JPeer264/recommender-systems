@@ -1,13 +1,6 @@
 .DS_STORE
-Homework1/.idea/Homework1.iml
-Homework1/.idea/misc.xml
-Homework1/.idea/modules.xml
-Homework1/.idea/workspace.xml
-Homework1/.idea/inspectionProfiles/profiles_settings.xml
-Homework1/.idea/inspectionProfiles/Project_Default.xml
-.idea/misc.xml
-.idea/recommender-systems.iml
-.idea/workspace.xml
+**/.idea/**
+**/*.pyc/**
 
 PartA
 PartB
