@@ -10,6 +10,7 @@ APIKEY_1 = 'a12b038ac3676f2943c701c4c1758f55'
 APIKEY_2 = '96cc93f38f26db6650e40916f4380270'
 APIKEY_3 = '192df0c0daaac4722a6f1e2c00b30f5d'
 APIKEY_4 = '2b659ad7e0c7a554fc58294d93e68c06'
+APIKEY_5 = 'c5327d2f4272ef5b51a87985a7f83a3f'
 
 OUTPUT_DIR = './output/'
 OUTPUT_DIR_MUSIXMATCH = OUTPUT_DIR + 'musixmatch/'
@@ -29,8 +30,7 @@ NUMBER_OF_ALBUMS      = 3
 NUMBER_OF_MAX_TRACKS  = 10
 MAX_API_QUERIES = 2000
 
-API_COUNTER = 600
-MAX = 8000
+API_COUNTER = 0
 
 def fetch_musixmatch_basic(method, additionalstring):
     global API_COUNTER
@@ -42,8 +42,10 @@ def fetch_musixmatch_basic(method, additionalstring):
         key = APIKEY_2
     elif API_COUNTER < MAX_API_QUERIES * 3:
         key = APIKEY_3
-    else:
+    elif API_COUNTER < MAX_API_QUERIES * 4:
         key = APIKEY_4
+    else:
+        key = APIKEY_5
 
     API_COUNTER += 1
 
