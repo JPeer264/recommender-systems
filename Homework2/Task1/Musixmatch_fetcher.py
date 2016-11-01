@@ -2,26 +2,48 @@ import helper # helper.py
 import numpy as np
 import urllib
 import json
+import csv
 import re
 
 # apicalls limited to 2000 a day
 APIKEY_1 = 'a12b038ac3676f2943c701c4c1758f55'
 APIKEY_2 = '96cc93f38f26db6650e40916f4380270'
+APIKEY_3 = '192df0c0daaac4722a6f1e2c00b30f5d'
+APIKEY_4 = '2b659ad7e0c7a554fc58294d93e68c06'
 
-OUTPUT_DIR = './output/musixmatch/'
+OUTPUT_DIR = './output/'
+OUTPUT_DIR_MUSIXMATCH = OUTPUT_DIR + 'musixmatch/'
+ARTIST_FILE = OUTPUT_DIR + 'artists.txt'
+GENERATED_ARTISTS_FILE   = OUTPUT_DIR_MUSIXMATCH + 'artist_ids.txt'
+GENERATED_ALBUM_IDS_FILE = OUTPUT_DIR_MUSIXMATCH + 'album_ids.txt'
+GENERATED_TRACKS_FILE    = OUTPUT_DIR_MUSIXMATCH + 'album_tracks.txt'
+GENERATED_LYRICS_FILE    = OUTPUT_DIR_MUSIXMATCH + 'lyrics.json'
 
 MUSIXMATCH_URL = 'http://api.musixmatch.com/ws/1.1/'
 FORMAT = 'json'
 
 VERBOSE = True
 
+NUMBER_OF_MAX_ARTISTS = 1000
+NUMBER_OF_ALBUMS      = 3
+NUMBER_OF_MAX_TRACKS  = 10
+MAX_API_QUERIES = 2000
+
+API_COUNTER = 600
+MAX = 8000
+
 def fetch_musixmatch_basic(method, additionalstring):
-    API_COUNTER = 0
+    global API_COUNTER
+
     # change APIKEY
-    if API_COUNTER < 2000:
+    if API_COUNTER < MAX_API_QUERIES:
         key = APIKEY_1
-    else:
+    elif API_COUNTER < MAX_API_QUERIES * 2:
         key = APIKEY_2
+    elif API_COUNTER < MAX_API_QUERIES * 3:
+        key = APIKEY_3
+    else:
+        key = APIKEY_4
 
     API_COUNTER += 1
 
@@ -58,32 +80,42 @@ def get_artist_ids(artist_name_array):
     if VERBOSE:
         helper.log_highlight('Fetching Artist IDs')
 
-    for artist_name in artist_name_array:
+    for index, artist_name in enumerate(artist_name_array, start = 1):
         response    = fetch_artist_by_term(artist_name)
-        header      = response["message"]["header"]
-        status_code = header["status_code"]
+        header      = response['message']['header']
+        status_code = header['status_code']
 
         if VERBOSE:
-            print "Fetching"
+            print 'Fetching ' + artist_name + ' [' + str(index) + ' of ' + str(NUMBER_OF_MAX_ARTISTS) + ']'
 
-        if status_code is 200:
+        if status_code is 200 and len(response['message']['body']['artist_list']) > 0:
             # always get the first artist
             chosen_artist    = response['message']['body']['artist_list'][0]['artist']
             chosen_artist_id = chosen_artist['artist_id']
             artists_with_id[chosen_artist_id] = artist_name
+        else:
+            if VERBOSE:
+                print artist_name + ' not found'
 
     return artists_with_id
 # /get_artist_ids
 
 def get_artist_albums(artist_name_object, number_of_albums):
     artist_album_ids = {}
+    counter = 1
+
+    if VERBOSE:
+        helper.log_highlight('Fetching albums of artists')
 
     for artist_id, artist_name in artist_name_object.items():
         response    = fetch_artist_albums(artist_id)
-        header      = response["message"]["header"]
-        status_code = header["status_code"]
+        header      = response['message']['header']
+        status_code = header['status_code']
 
-        if status_code is 200:
+        if VERBOSE:
+            print 'Fetching albums of ' + str(artist_id) + ' [' + str(counter) + ' of ' + str(len(artist_name_object)) + ']'
+
+        if status_code is 200 and len(response['message']['body']['album_list']) > 0:
             albums = response['message']['body']['album_list']
 
             for index, album in enumerate(albums, start = 0):
@@ -95,20 +127,35 @@ def get_artist_albums(artist_name_object, number_of_albums):
                     except:
                         artist_album_ids[artist_id] = []
                         artist_album_ids[artist_id].append(album_id)
+        else:
+            if VERBOSE:
+                'Album ' + str(counter) + ' of ' + str(artist_id) + ' not found'
+
+        counter += 1
 
     return artist_album_ids
 # /get_artist_albums
 
 def get_artist_album_tracks(artist_album_object, number_of_tracks_per_album):
     artist_album_tracks = {}
+    counter = 1
+
+    if VERBOSE:
+        helper.log_highlight('Fetching tracks of albums')
 
     for artist_id, album_array in artist_album_object.items():
-        for album_id in album_array:
-            response    = fetch_artist_album_tracks(album_id)
-            header      = response["message"]["header"]
-            status_code = header["status_code"]
+        if VERBOSE:
+            print 'Fetching albums of artist ' + str(artist_id) + ' [' + str(counter) + ' of ' + str(len(artist_album_object)) + ']'
 
-            if status_code is 200:
+        for index, album_id in enumerate(album_array, start = 1):
+            response    = fetch_artist_album_tracks(album_id)
+            header      = response['message']['header']
+            status_code = header['status_code']
+
+            if VERBOSE:
+                print '    Fetching tracks of album ' + str(album_id) + ' [' + str(index) + ' of ' + str(len(album_array)) + ']'
+
+            if status_code is 200 and len(response['message']['body']['track_list']) > 0:
                 tracks = response['message']['body']['track_list']
 
                 for index, track in enumerate(tracks, start = 0):
@@ -120,19 +167,35 @@ def get_artist_album_tracks(artist_album_object, number_of_tracks_per_album):
                         except:
                             artist_album_tracks[artist_id] = []
                             artist_album_tracks[artist_id].append(track_id)
+            else:
+                if VERBOSE:
+                    print '    Tracks of album ' + str(album_id) + ' not found'
+
+        counter +=1
 
     return artist_album_tracks
 # /get_artist_album_tracks
 
 def get_lyrics_by_tracks(artist_tracks_id_object):
     artist_tracks_object = {}
+    counter = 1
     musixmatch_regex = re.compile(r'\*.*\*\s*$') # this will delete **** This Lyrics is NOT... *** at the end of the string
 
+    if VERBOSE:
+        helper.log_highlight('Fetching lyrics of tracks')
+
     for artist_id, tracks in artist_tracks_id_object.items():
-        for track_id in tracks:
+        if VERBOSE:
+            print 'Fetching tracks of artist ' + str(artist_id) + ' [' + str(counter) + ' of ' + str(len(artist_tracks_id_object)) + ']'
+
+
+        for index, track_id in enumerate(tracks, start = 1):
             response    = fetch_lyrics_by_track_id(track_id)
-            header      = response["message"]["header"]
-            status_code = header["status_code"]
+            header      = response['message']['header']
+            status_code = header['status_code']
+
+            if VERBOSE:
+                print '    Fetching lyrics of track ' + str(track_id) + ' [' + str(index) + ' of ' + str(len(tracks)) + ']'
 
             if status_code is 200:
                 lyrics = response['message']['body']['lyrics']['lyrics_body']
@@ -149,7 +212,7 @@ def get_lyrics_by_tracks(artist_tracks_id_object):
 # /get_lyrics_by_tracks
 
 def save_txt(objects, filename):
-    text = ""
+    text = ''
 
     for key, value in objects.items():
         if type(value) is list:
@@ -160,7 +223,7 @@ def save_txt(objects, filename):
             text += str(key) + '\t' + str(value) + '\n'
 
 
-    text_file   = open(OUTPUT_DIR + filename, 'w')
+    text_file = open(OUTPUT_DIR_MUSIXMATCH + filename, 'w')
 
     text_file.write(text)
     text_file.close()
@@ -168,36 +231,71 @@ def save_txt(objects, filename):
 
 def save_json(objects, filename):
     content   = json.dumps(objects, indent=4, sort_keys=True)
-    json_file = open(OUTPUT_DIR + filename, 'w')
+    json_file = open(OUTPUT_DIR_MUSIXMATCH + filename, 'w')
 
     json_file.write(content)
     json_file.close()
 # /save_json
 
+def read_txt(filename, multiple_values=False):
+    file_contents = {}
+
+    with open(filename, 'r') as f:
+        reader  = csv.reader(f, delimiter='\t')      # create reader
+        headers = reader.next()                     # skip header
+
+        for row in reader:
+            key   = row[0]
+            value = row[1]
+
+            if multiple_values:
+                try:
+                    file_contents[key].append(value)
+                except:
+                    file_contents[key] = []
+                    file_contents[key].append(value)
+            else:
+                file_contents[key] = value
+
+    return file_contents
+# /read_file
+
 # Main program
 if __name__ == '__main__':
-    artists = [
-        'eminem',
-        'metallica',
-        'prodigy',
-        'sdp'
-    ]
+    artists = helper.read_csv(ARTIST_FILE)
 
-    helper.ensure_dir(OUTPUT_DIR)
+    if type(NUMBER_OF_MAX_ARTISTS) is bool and NUMBER_OF_MAX_ARTISTS is True:
+        NUMBER_OF_MAX_ARTISTS = len(artists)
 
-    fetched_artist_ids          = get_artist_ids(artists)
-    fetched_artist_album_ids    = get_artist_albums(fetched_artist_ids, 2)
-    fetched_artist_album_tracks = get_artist_album_tracks(fetched_artist_album_ids, 1)
-    fetched_lyrics              = get_lyrics_by_tracks(fetched_artist_album_tracks)
+    artists           = artists[:NUMBER_OF_MAX_ARTISTS]
+    number_of_fetches = NUMBER_OF_MAX_ARTISTS * 2 + (NUMBER_OF_MAX_ARTISTS * NUMBER_OF_ALBUMS) * (1 + NUMBER_OF_MAX_TRACKS)
 
-    # mock data
-    # fetched_artist_ids          = {64: 'metallica', 13816: 'prodigy', 426: 'eminem'} #get_artist_ids(artists)
-    # fetched_artist_album_ids    = {64: [20484539, 10380391], 426: [13169182, 10485240]} #get_artist_albums(fetched_artist_ids, 2)
-    # fetched_artist_album_tracks = {64: [80519275, 16237402], 426: [17638929, 3253605]} #get_artist_album_tracks(fetched_artist_album_ids, 1)
-    # fetched_lyrics              = {64: u"My life suffocates\nPlanting seeds of hate\nI've loved, turned to hate\nTrapped far beyond my fate\n\nI give, you take\nThis life that I forsake\nBeen cheated of my youth\nYou turned this lie to truth\nAnger, misery\nYou'll suffer unto me\n\nHarvester of sorrow\nLanguage of the mad\n\nHarvester of sorrow\n...\n\nI've got somethin' to say\nI killed your baby today and it\nDoesn't matter much to me\nAs long as it's dead\n\nI've got somethin' to say\nI raped your mother today and it\nDoesn't matter much to me\nAs long as she spread\n...\n\n", 426: u"Now I don't really care what you call me\nYou can even call me cold\nThese bitches knew as soon as they saw me\nIt's never me they'll get the privilege to know\nI roll like a desperado, now I never know where I'm gonna go\nStill I ball like there's no tomorrow\nUntil it's over and that's all she wrote\nYou're starin' straight into a barrel of hate, terrible fate\nNot even a slim chance to make a narrow escape\n\nCupid shot his arrow and missed, wait Sarah you're late\nYour train left; mascara and eggs smeared on your face\n\nNight's over, good bye ho I thought that I told ya\n\nThat spilled nut ain't nothing to cry over\nNever should've came within range of my Rover\nShould've known I was trouble soon as I rolled up\nAny chick who's dumb enough after I blindfold her\nTo still come back to the crib\nMust want me to mess with her mind, hold up\nShe mistook me for some high roller, well I won't buy her soda\nUnless it's Rock & Rye Cola (Faygo's cheaper)\nBuy you a bag of Fritos?\nI wouldn't let you eat the fuckin' chip on my shoulder\n...\n\nStep by step, heart to heart\nLeft right left, we all fall down\n\nStep by step, heart to heart, left right left\nWe all fall down like toy soldiers\nBit by bit, torn apart, we never win\nBut the battle wages on for toy soldiers\n\nI'm supposed to be the soldier who never blows his composure\nEven though I hold the weight of the whole world on my shoulders\nI am never supposed to show it, my crew ain't supposed to know it\nEven if it means goin' toe to toe with a Benzino it don't matter\n\nI'd never drag them in battles that I can handle unless\nI absolutely have to I'm supposed to set an example\nI need to be the leader, my crew looks for me to guide 'em\nIf some shit ever just pop off, I'm supposed to be beside 'em\n\nThat Ja shit I tried to squash it, it was too late to stop it\nThere's a certain line you just don't cross and he crossed it\nI heard him say Hailie`s name on a song and I just lost it\nIt was crazy, this shit went way beyond some Jay-Z and nas shit\n\nAnd even though the battle was won, I feel like we lost it\nI spent too much energy on it, honestly I'm exhausted\nAnd I'm so caught in it I almost feel I'm the one who caused it\nThis ain't what I'm in hip-hop for, it's not why I got in it\n\nThat was never my object for someone to get killed\nWhy would I wanna destroy something I help build\nIt wasn't my intentions, my intentions was good\nI went through my whole career without ever mentionin'\n...\n\n"} #get_lyrics_by_tracks(fetched_artist_album_tracks)
+    if VERBOSE:
+        helper.log_highlight('You will have ' + str(number_of_fetches) + ' queries to the musixmatch api')
+        print ''
+        print 'Artist queries: ' + str(NUMBER_OF_MAX_ARTISTS)
+        print 'Album queries:  ' +  str(NUMBER_OF_MAX_ARTISTS)
+        print 'Track queries:  ' + str(NUMBER_OF_MAX_ARTISTS * NUMBER_OF_ALBUMS)
+        print 'Lyrics queries: ' + str((NUMBER_OF_MAX_ARTISTS * NUMBER_OF_ALBUMS) * NUMBER_OF_MAX_TRACKS)
+        print ''
+        print 'These numbers can vary if an artists has less albums, tracks or tracks with lyrics'
+        print ''
 
+    helper.ensure_dir(OUTPUT_DIR_MUSIXMATCH)
 
-    save_txt(fetched_artist_ids, 'artist_ids.txt')
-    save_txt(fetched_artist_album_ids, 'album_ids.txt')
-    save_txt(fetched_artist_album_tracks, 'album_tracks.txt')
-    save_json(fetched_lyrics, 'lyrics.json')
+    # live fetching
+    # fetched_artist_ids          = get_artist_ids(artists)
+    # fetched_artist_album_ids    = get_artist_albums(fetched_artist_ids, NUMBER_OF_ALBUMS)
+    # fetched_artist_album_tracks = get_artist_album_tracks(fetched_artist_album_ids, NUMBER_OF_MAX_TRACKS)
+    # fetched_lyrics              = get_lyrics_by_tracks(fetched_artist_album_tracks)
+
+    # fetching with stored data
+    fetched_artist_ids          = read_txt(GENERATED_ARTISTS_FILE)
+    fetched_artist_album_ids    = read_txt(GENERATED_ALBUM_IDS_FILE, True)
+    fetched_artist_album_tracks = read_txt(GENERATED_TRACKS_FILE, True)
+    # fetched_lyrics              = get_lyrics_by_tracks(fetched_artist_album_tracks)
+
+    # save_txt(fetched_artist_ids, 'artist_ids.txt')
+    # save_txt(fetched_artist_album_ids, 'album_ids.txt')
+    # save_txt(fetched_artist_album_tracks, 'album_tracks.txt')
+    # save_json(fetched_lyrics, 'lyrics.json')
