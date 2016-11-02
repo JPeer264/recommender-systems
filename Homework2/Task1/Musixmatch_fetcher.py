@@ -11,9 +11,11 @@ APIKEY_2 = '96cc93f38f26db6650e40916f4380270'
 APIKEY_3 = '192df0c0daaac4722a6f1e2c00b30f5d'
 APIKEY_4 = '2b659ad7e0c7a554fc58294d93e68c06'
 APIKEY_5 = 'c5327d2f4272ef5b51a87985a7f83a3f'
+APIKEY_6 = 'd5a7afb790a9602da75b8f62a7019a4b'
 
 OUTPUT_DIR = './output/'
 OUTPUT_DIR_MUSIXMATCH = OUTPUT_DIR + 'musixmatch/'
+OUTPUT_DIR_MUSIXMATCH_HTML = OUTPUT_DIR_MUSIXMATCH + 'lyrics_html/'
 ARTIST_FILE = OUTPUT_DIR + 'artists.txt'
 GENERATED_ARTISTS_FILE   = OUTPUT_DIR_MUSIXMATCH + 'artist_ids.txt'
 GENERATED_ALBUM_IDS_FILE = OUTPUT_DIR_MUSIXMATCH + 'album_ids.txt'
@@ -44,8 +46,10 @@ def fetch_musixmatch_basic(method, additionalstring):
         key = APIKEY_3
     elif API_COUNTER < MAX_API_QUERIES * 4:
         key = APIKEY_4
-    else:
+    elif API_COUNTER < MAX_API_QUERIES * 5:
         key = APIKEY_5
+    else:
+        key = APIKEY_6
 
     API_COUNTER += 1
 
@@ -74,6 +78,10 @@ def fetch_artist_album_tracks(album_id):
 
 def fetch_lyrics_by_track_id(track_id):
     return fetch_musixmatch_basic('track.lyrics.get', 'track_id=' + str(track_id))
+# /fetch_lyrics_by_track_id
+
+def fetch_html_lyrics_by_track_id(track_id):
+    return fetch_musixmatch_basic('track.get', 'track_id=' + str(track_id))
 # /fetch_lyrics_by_track_id
 
 def get_artist_ids(artist_name_array):
@@ -213,6 +221,50 @@ def get_lyrics_by_tracks(artist_tracks_id_object):
     return artist_tracks_object
 # /get_lyrics_by_tracks
 
+def get_html_by_tracks(artist_tracks_id_object):
+    artist_tracks_object = {}
+    counter = 1
+    musixmatch_regex = re.compile(r'\*.*\*\s*$') # this will delete **** This Lyrics is NOT... *** at the end of the string
+
+    if VERBOSE:
+        helper.log_highlight('Fetching lyrics HTML of tracks')
+
+    helper.ensure_dir(OUTPUT_DIR_MUSIXMATCH_HTML)
+
+    for artist_id, tracks in artist_tracks_id_object.items():
+        if VERBOSE:
+            print 'Fetching tracks of artist ' + str(artist_id) + ' [' + str(counter) + ' of ' + str(len(artist_tracks_id_object)) + ']'
+
+
+        for index, track_id in enumerate(tracks, start = 1):
+            response    = fetch_html_lyrics_by_track_id(track_id)
+            header      = response['message']['header']
+            status_code = header['status_code']
+            has_lyrics = response['message']['body']['track']['has_lyrics']
+
+            if VERBOSE:
+                print '    Fetching lyrics of track ' + str(track_id) + ' [' + str(index) + ' of ' + str(len(tracks)) + ']'
+
+            if status_code is 200 and int(has_lyrics) > 0:
+                track_url = response['message']['body']['track']['track_share_url']
+                filename  = OUTPUT_DIR_MUSIXMATCH_HTML + str(artist_id) + '_' + str(track_id) + '.html'
+
+                try:
+                    if VERBOSE:
+                        print "    Storing and retrieving data from " + track_url
+
+                    content = urllib.urlopen(track_url).read()
+
+                    with open(filename, 'w') as f:
+                        f.write(content)
+
+                except IOError:                # return empty content in case some IO / socket error occurred
+                    if VERBOSE:
+                        print "    Cannot retrieve data from " + track_url
+
+# /get_html_by_tracks
+
+
 def save_txt(objects, filename):
     text = ''
 
@@ -295,7 +347,7 @@ if __name__ == '__main__':
     fetched_artist_ids          = read_txt(GENERATED_ARTISTS_FILE)
     fetched_artist_album_ids    = read_txt(GENERATED_ALBUM_IDS_FILE, True)
     fetched_artist_album_tracks = read_txt(GENERATED_TRACKS_FILE, True)
-    # fetched_lyrics              = get_lyrics_by_tracks(fetched_artist_album_tracks)
+    fetched_lyrics              = get_html_by_tracks(fetched_artist_album_tracks)
 
     # save_txt(fetched_artist_ids, 'artist_ids.txt')
     # save_txt(fetched_artist_album_ids, 'album_ids.txt')
