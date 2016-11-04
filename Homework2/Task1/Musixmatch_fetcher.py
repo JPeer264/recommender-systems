@@ -278,7 +278,7 @@ def get_html_by_tracks(artist_tracks_id_object):
 # /get_html_by_tracks
 
 
-def save_txt(objects, filename):
+def save_txt(objects, filename, output = OUTPUT_DIR_MUSIXMATCH):
     text = ''
 
     for key, value in objects.items():
@@ -290,7 +290,7 @@ def save_txt(objects, filename):
             text += str(key) + '\t' + str(value) + '\n'
 
 
-    text_file = open(OUTPUT_DIR_MUSIXMATCH + filename, 'w')
+    text_file = open(output + filename, 'w')
 
     text_file.write(text)
     text_file.close()
