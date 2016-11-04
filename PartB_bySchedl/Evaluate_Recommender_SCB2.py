@@ -132,16 +132,30 @@ def recommend_CB(AAM, seed_aidx_train, K):
     # Now, we find the positions of each unique neighbor in neighbor_idx.
     for nidx in uniq_neighbor_idx:
         mask = np.where(neighbor_idx == nidx)
-        print mask
+        #print mask
         # Apply this mask to corresponding similarities and compute average similarity
         avg_sim = np.mean(sims_neighbors_idx[mask])
         # Store artist index and corresponding aggregated similarity in dictionary of artists to recommend
         dict_recommended_artists_idx[nidx] = avg_sim
     #########################################
 
+    nn_count = np.bincount(neighbor_idx.flatten())
+    threshold = np.int(np.round(len(seed_aidx_train) * 0.9))
+    selected_artists_idx = np.where(nn_count > threshold)[0]
+    recommended_artists_idx = np.setdiff1d(selected_artists_idx, dict_recommended_artists_idx)
     # Remove all artists that are in the training set of seed user
-    for aidx in seed_aidx_train:
+    for aidx in recommended_artists_idx:
         dict_recommended_artists_idx.pop(aidx, None)            # drop (key, value) from dictionary if key (i.e., aidx) exists; otherwise return None
+
+    #print "###"
+    #print dict_recommended_artists_idx
+    #print "###"
+
+
+
+    #print "###"
+    #print recommended_artists_idx
+    #print "###"
 
     # Return dictionary of recommended artist indices (and scores)
     return dict_recommended_artists_idx
@@ -299,9 +313,4 @@ if __name__ == '__main__':
             print (str(K_CF) + ","),
             run()
 
-    if METHOD == "RB":
-        print METHOD
-        for K_RB in range(1, 100):
-            print (str(K_RB) + ","),
-            run()
 
