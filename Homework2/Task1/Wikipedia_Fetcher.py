@@ -13,7 +13,7 @@ WIKIPEDIA_URL_SS = "http://en.wikipedia.org/wiki/Special:Search/"
 
 #ARTISTS_FILE = "./UAM_100u_artists.txt"          # text file containing Last.fm user names
 #OUTPUT_DIRECTORY = "./crawls_wikipedia_100u"     # directory to write output to
-ARTISTS_FILE = "../testfiles/UAM_artists.txt"          # text file containing Last.fm user names
+ARTISTS_FILE = "./output/artists.txt"          # text file containing Last.fm user names
 OUTPUT_DIRECTORY = "./output/crawls_wikipedia"     # directory to write output to
 
 USE_INDEX_IN_OUTPUT_FILE = True             # use [index].html as output file name (if set to False, the url-encoded artist name is used)
@@ -58,7 +58,7 @@ if __name__ == '__main__':
         os.makedirs(OUTPUT_DIRECTORY)
 
     # Read artist list
-    artists = read_file(ARTISTS_FILE)
+    artists = read_file(ARTISTS_FILE)[:2000]
 
     # Retrieve Wikipedia pages for all artists
     # Either use index as output file name
@@ -87,14 +87,15 @@ if __name__ == '__main__':
     else:
         # Or use url-encoded artist name
         for a in artists:
-            html_fn = OUTPUT_DIRECTORY + "/" + urllib.quote(a) + ".html"     # target file name
-            # check if file already exists
-            if os.path.exists(html_fn) & SKIP_EXISTING_FILES:       # if so and it should be skipped, skip the file
-                print "File already fetched: " + html_fn
-                continue
-            # otherwise, fetch HTML content
-            html_content = fetch_wikipedia_page(a)
-            # write to output file
-            print "Storing content to " + html_fn
-            with open(html_fn, 'w') as f:
-                f.write(html_content)
+            print a
+            # html_fn = OUTPUT_DIRECTORY + "/" + urllib.quote(a) + ".html"     # target file name
+            # # check if file already exists
+            # if os.path.exists(html_fn) & SKIP_EXISTING_FILES:       # if so and it should be skipped, skip the file
+            #     print "File already fetched: " + html_fn
+            #     continue
+            # # otherwise, fetch HTML content
+            # html_content = fetch_wikipedia_page(a)
+            # # write to output file
+            # print "Storing content to " + html_fn
+            # # with open(html_fn, 'w') as f:
+            # #     f.write(html_content)

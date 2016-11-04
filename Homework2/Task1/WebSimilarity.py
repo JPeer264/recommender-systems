@@ -9,12 +9,22 @@ import Wikipedia_Fetcher
 
 
 # Parameters
-#OUTPUT_TFIDF_FILE = "./tfidfs_100u.txt"            # file to store term weights
-#OUTPUT_TERMS_FILE = "./terms_100u.txt"             # file to store list of terms (for easy interpretation of term weights)
-#OUTPUT_SIMS_FILE = "./AAM_100u.txt"               # file to store similarities between items
-OUTPUT_TFIDF_FILE = "./output/tfidfs.txt"            # file to store term weights
-OUTPUT_TERMS_FILE = "./output/terms.txt"             # file to store list of terms (for easy interpretation of term weights)
-OUTPUT_SIMS_FILE = "./output/AAM.txt"               # file to store similarities between items
+#WIKIPEDIA_TFIDFS = "./tfidfs_100u.txt"            # file to store term weights
+#WIKIPEDIA_TERMS = "./terms_100u.txt"             # file to store list of terms (for easy interpretation of term weights)
+#WIKIPEDIA_AAM = "./AAM_100u.txt"               # file to store similarities between items
+OUTPUT_DIR = './output/'
+WIKIPEDIA_OUTPUT = OUTPUT_DIR + 'wikipedia/'
+WIKIPEDIA_TFIDFS = WIKIPEDIA_OUTPUT + "tfidfs.txt"            # file to store term weights
+WIKIPEDIA_TERMS = WIKIPEDIA_OUTPUT + "terms.txt"             # file to store list of terms (for easy interpretation of term weights)
+WIKIPEDIA_AAM = WIKIPEDIA_OUTPUT + "AAM.txt"               # file to store similarities between items
+
+MUSIXMATCH_OUTPUT = OUTPUT_DIR + 'musixmatch/'
+MUSIXMATCH_TFIDFS = MUSIXMATCH_OUTPUT + "tfidfs.txt"            # file to store term weights
+MUSIXMATCH_TERMS = MUSIXMATCH_OUTPUT + "terms.txt"             # file to store list of terms (for easy interpretation of term weights)
+MUSIXMATCH_AAM = MUSIXMATCH_OUTPUT + "AAM.txt"               # file to store similarities between items
+MUSIXMATCH_AAM_ARTIST_ID = "artist_id_aam.txt"
+MUSIXMATCH_ARTISTS_ID = MUSIXMATCH_OUTPUT + 'artist_ids.txt'
+
 
 # Stop words used by Google
 STOP_WORDS = ["a", "about", "above", "above", "across", "after", "afterwards", "again", "against", "all", "almost",
@@ -67,6 +77,147 @@ def remove_html_markup(s):
     # return stripped string
     return out
 
+def generate_wikipedia_AAM():
+        html_contents = {}
+        # dictionary to hold document frequency of each term in corpus
+        terms_df = {}
+        # list of all terms
+        term_list = []
+
+        # read artist names from file
+        artists = Wikipedia_Fetcher.read_file(Wikipedia_Fetcher.ARTISTS_FILE)   # using functions and parameters defined in Wikipedia_Fetcher.py
+
+        helper.ensure_dir(WIKIPEDIA_OUTPUT)
+
+        # for all artists
+        for i in range(0, len(artists)):
+            # construct file name to fetched HTML page for current artist, depending on parameter settings in Wikipedia_Fetcher.py
+            if Wikipedia_Fetcher.USE_INDEX_IN_OUTPUT_FILE:
+                html_fn = Wikipedia_Fetcher.OUTPUT_DIRECTORY + "/" + str(i) + ".html"     # target file name
+            elif not Wikipedia_Fetcher.USE_INDEX_IN_OUTPUT_FILE:
+                html_fn = Wikipedia_Fetcher.OUTPUT_DIRECTORY + "/" + urllib.quote(artists[i]) + ".html"     # target file name
+
+            # Load fetched HTML content if target file exists
+            if os.path.exists(html_fn):
+                # Read entire file
+                html_content = open(html_fn, 'r').read()
+
+                # Next we perform some text processing:
+                # Strip content off HTML tags
+                content_tags_removed = remove_html_markup(html_content)
+                # Perform case-folding, i.e., convert to lower case
+                content_casefolded = content_tags_removed.lower()
+                # Tokenize stripped content at white space characters
+                tokens = content_casefolded.split()
+                # Remove all tokens containing non-alphanumeric characters; using a simple lambda function (i.e., anonymous function, can be used as parameter to other function)
+                tokens_filtered = filter(lambda t: t.isalnum(), tokens)
+                # Remove words in the stop word list
+                tokens_filtered_stopped = filter(lambda t: t not in STOP_WORDS, tokens_filtered)
+                # Store remaining tokens of current artist in dictionary for further processing
+                html_contents[i] = tokens_filtered_stopped
+                print "File " + html_fn + " --- total tokens: " + str(len(tokens)) + "; after filtering and stopping: " + str(len(tokens_filtered_stopped))
+            else:           # Inform user if target file does not exist
+                print "Target file " + html_fn + " does not exist!"
+
+        print html_contents
+        # Start computing term weights, in particular, document frequencies and term frequencies.
+
+        # Iterate over all (key, value) tuples from dictionary just created to determine document frequency (DF) of all terms
+        for aid, terms in html_contents.items():
+            # convert list of terms to set of terms ("uniquify" words for each artist/document)
+            for t in set(terms):                         # and iterate over all terms in this set
+                # update number of artists/documents in which current term t occurs
+                if t not in terms_df:
+                    terms_df[t] = 1
+                else:
+                    terms_df[t] += 1
+
+        # Compute number of artists/documents and terms
+        no_artists = len(html_contents.items())
+        no_terms = len(terms_df)
+        print "Number of artists in corpus: " + str(no_artists)
+        print "Number of terms in corpus: " + str(no_terms)
+
+        # You may want (or need) to perform some kind of dimensionality reduction here, e.g., filtering all terms
+        # with a very small document frequency.
+        # ...
+
+
+        # Dictionary is unordered, so we store all terms in a list to fix their order, before computing the TF-IDF matrix
+        for t in terms_df.keys():
+            term_list.append(t)
+
+
+        # Create IDF vector using logarithmic IDF formulation
+        idf = np.zeros(no_terms, dtype=np.float32)
+        for i in range(0, no_terms):
+            idf[i] = np.log(no_artists / terms_df[term_list[i]])
+    #        print term_list[i] + ": " + str(idf[i])
+
+        # Initialize matrix to hold term frequencies (and eventually TF-IDF weights) for all artists for which we fetched HTML content
+        tfidf = np.zeros(shape=(no_artists, no_terms), dtype=np.float32)
+
+        # Iterate over all (artist, terms) tuples to determine all term frequencies TF_{artist,term}
+        terms_index_lookup = {}         # lookup table for indices (for higher efficiency)
+        for a_idx, terms in html_contents.items():
+            print "Computing term weights for artist " + str(a_idx)
+            # You may want (or need) to make the following more efficient.
+            for t in terms:                     # iterate over all terms of current artist
+                if t in terms_index_lookup:
+                    t_idx = terms_index_lookup[t]
+                else:
+                    t_idx = term_list.index(t)      # get index of term t in (ordered) list of terms
+                    terms_index_lookup[t] = t_idx
+                tfidf[a_idx, t_idx] += 1        # increase TF value for every encounter of a term t within a document of the current artist
+
+        # Replace TF values in tfidf by TF-IDF values:
+        # copy and reshape IDF vector and point-wise multiply it with the TF values
+        tfidf = np.log1p(tfidf) * np.tile(idf, no_artists).reshape(no_artists, no_terms)
+
+        # Storing TF-IDF weights and term list
+        print "Saving TF-IDF matrix to " + WIKIPEDIA_TFIDFS + "."
+        np.savetxt(WIKIPEDIA_TFIDFS, tfidf, fmt='%0.6f', delimiter='\t', newline='\n')
+
+        print "Saving term list to " + WIKIPEDIA_TERMS + "."
+        with open(WIKIPEDIA_TERMS, 'w') as f:
+            for t in term_list:
+                f.write(t + "\n")
+
+        # Computing cosine similarities and store them
+    #    print "Computing cosine similarities between artists."
+        # Initialize similarity matrix
+        sims = np.zeros(shape=(no_artists, no_artists), dtype=np.float32)
+        # Compute pairwise similarities between artists
+        for i in range(0, no_artists):
+            print "Computing similarities for artist " + str(i)
+            for j in range(i, no_artists):
+                cossim = 1.0 - scidist.cosine(tfidf[i], tfidf[j])
+
+                # If either TF-IDF vector (of i or j) only contains zeros, cosine similarity is not defined (NaN: not a number).
+                # In this case, similarity between i and j is set to zero (or left at zero, in our case).
+                if not np.isnan(cossim):
+                    sims[i,j] = cossim
+                    sims[j,i] = cossim
+
+        print "Saving cosine similarities to " + WIKIPEDIA_AAM + "."
+        np.savetxt(WIKIPEDIA_AAM, sims, fmt='%0.6f', delimiter='\t', newline='\n')
+
+def generate_musixmatch_AAM():
+    ps = PorterStemmer()
+    lyrics_contents  = {}
+    artist_id_object = {}
+    terms_df         = {}
+    term_list        = []
+
+    musixmatch_artists = mf.read_txt(mf.GENERATED_ARTISTS_FILE)
+
+    counter = 0
+    artist_counter = 0
+
+    # filtering words
+    for artist_id, artist_name in musixmatch_artists.items():
+        if (counter < 10):
+            file = mf.OUTPUT_DIR_MUSIXMATCH_JSON + str(artist_id) + '.json'
 
 # Main program
 if __name__ == '__main__':
@@ -189,5 +340,26 @@ if __name__ == '__main__':
                 sims[i,j] = cossim
                 sims[j,i] = cossim
 
-    print "Saving cosine similarities to " + OUTPUT_SIMS_FILE + "."
-    np.savetxt(OUTPUT_SIMS_FILE, sims, fmt='%0.6f', delimiter='\t', newline='\n')
+    print "Saving cosine similarities to " + MUSIXMATCH_AAM + "."
+    np.savetxt(WIKIPEDIA_AAM, sims, fmt='%0.6f', delimiter='\t', newline='\n')
+
+    print "Saving AAM artist id to " + MUSIXMATCH_AAM_ARTIST_ID + "."
+
+    mf.save_txt(artist_id_object, MUSIXMATCH_AAM_ARTIST_ID, MUSIXMATCH_OUTPUT)
+# /generate_musixmatch_AAM
+
+def generate_musixmatch_artist_artists():
+    mm_artists = mf.read_txt(MUSIXMATCH_ARTISTS_ID)
+    aam_artists = mf.read_txt(MUSIXMATCH_OUTPUT + MUSIXMATCH_AAM_ARTIST_ID)
+
+    for aam_id, aam_mm_id in aam_artists.items():
+        print aam_mm_id
+# /generate_musixmatch_artist_artists
+
+
+# Main program
+if __name__ == '__main__':
+    # dictionary to hold tokenized HTML content of each artist
+    #generate_wikipedia_AAM()
+    # generate_musixmatch_AAM()
+    generate_musixmatch_artist_artists()
