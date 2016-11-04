@@ -16,6 +16,7 @@ APIKEY_6 = 'd5a7afb790a9602da75b8f62a7019a4b'
 OUTPUT_DIR = './output/'
 OUTPUT_DIR_MUSIXMATCH = OUTPUT_DIR + 'musixmatch/'
 OUTPUT_DIR_MUSIXMATCH_HTML = OUTPUT_DIR_MUSIXMATCH + 'lyrics_html/'
+OUTPUT_DIR_MUSIXMATCH_JSON = OUTPUT_DIR_MUSIXMATCH + 'lyrics_json/'
 ARTIST_FILE = OUTPUT_DIR + 'artists.txt'
 GENERATED_ARTISTS_FILE   = OUTPUT_DIR_MUSIXMATCH + 'artist_ids.txt'
 GENERATED_ALBUM_IDS_FILE = OUTPUT_DIR_MUSIXMATCH + 'album_ids.txt'
@@ -32,7 +33,7 @@ NUMBER_OF_ALBUMS      = 3
 NUMBER_OF_MAX_TRACKS  = 10
 MAX_API_QUERIES = 2000
 
-API_COUNTER = 0
+API_COUNTER = 500
 
 def fetch_musixmatch_basic(method, additionalstring):
     global API_COUNTER
@@ -191,10 +192,15 @@ def get_lyrics_by_tracks(artist_tracks_id_object):
     counter = 1
     musixmatch_regex = re.compile(r'\*.*\*\s*$') # this will delete **** This Lyrics is NOT... *** at the end of the string
 
+    helper.ensure_dir(OUTPUT_DIR_MUSIXMATCH_JSON)
+
     if VERBOSE:
         helper.log_highlight('Fetching lyrics of tracks')
 
     for artist_id, tracks in artist_tracks_id_object.items():
+        artist_tracks = {}
+        artist_tracks[artist_id] = []
+
         if VERBOSE:
             print 'Fetching tracks of artist ' + str(artist_id) + ' [' + str(counter) + ' of ' + str(len(artist_tracks_id_object)) + ']'
 
@@ -212,11 +218,18 @@ def get_lyrics_by_tracks(artist_tracks_id_object):
 
                 lyrics_replaced = re.sub(r'\*.*\*\s*$', '', lyrics)
 
+                artist_tracks[artist_id].append(lyrics_replaced)
+
                 try:
                     artist_tracks_object[artist_id] += lyrics_replaced
                 except:
                     artist_tracks_object[artist_id] = ''
                     artist_tracks_object[artist_id] += lyrics_replaced
+
+
+        if VERBOSE:
+            print '    Save JSON with lyrics'
+        save_json(artist_tracks, OUTPUT_DIR_MUSIXMATCH_JSON + artist_id + '.json')
 
     return artist_tracks_object
 # /get_lyrics_by_tracks
@@ -251,7 +264,7 @@ def get_html_by_tracks(artist_tracks_id_object):
 
                 try:
                     if VERBOSE:
-                        print "    Storing and retrieving data from " + track_url
+                        print '    Storing and retrieving data from ' + track_url
 
                     content = urllib.urlopen(track_url).read()
 
@@ -260,7 +273,7 @@ def get_html_by_tracks(artist_tracks_id_object):
 
                 except IOError:                # return empty content in case some IO / socket error occurred
                     if VERBOSE:
-                        print "    Cannot retrieve data from " + track_url
+                        print '    Cannot retrieve data from ' + track_url
 
 # /get_html_by_tracks
 
@@ -283,9 +296,9 @@ def save_txt(objects, filename):
     text_file.close()
 # /save_txt
 
-def save_json(objects, filename):
+def save_json(objects, filepath):
     content   = json.dumps(objects, indent=4, sort_keys=True)
-    json_file = open(OUTPUT_DIR_MUSIXMATCH + filename, 'w')
+    json_file = open(filepath, 'w')
 
     json_file.write(content)
     json_file.close()
@@ -347,7 +360,7 @@ if __name__ == '__main__':
     fetched_artist_ids          = read_txt(GENERATED_ARTISTS_FILE)
     fetched_artist_album_ids    = read_txt(GENERATED_ALBUM_IDS_FILE, True)
     fetched_artist_album_tracks = read_txt(GENERATED_TRACKS_FILE, True)
-    fetched_lyrics              = get_html_by_tracks(fetched_artist_album_tracks)
+    fetched_lyrics              = get_lyrics_by_tracks(fetched_artist_album_tracks)
 
     # save_txt(fetched_artist_ids, 'artist_ids.txt')
     # save_txt(fetched_artist_album_ids, 'album_ids.txt')
