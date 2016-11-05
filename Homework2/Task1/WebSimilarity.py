@@ -32,6 +32,8 @@ MUSIXMATCH_TERMS         = MUSIXMATCH_OUTPUT + "terms.txt"             # file to
 MUSIXMATCH_AAM           = MUSIXMATCH_OUTPUT + "AAM.txt"               # file to store similarities between items
 MUSIXMATCH_ARTISTS_ID    = MUSIXMATCH_OUTPUT + 'artist_ids.txt'
 
+VERBOSE = True
+
 # Stop words used by Google
 STOP_WORDS = ["a", "able", "about", "above", "abroad", "according", "accordingly", "across", "actually", "adj", "after", "afterwards", "again", "against", "ago", "ahead", "ain't", "all",
     "allow", "allows", "almost", "alone", "along", "alongside", "already", "also", "although", "always", "am", "amid", "amidst", "among", "amongst", "an", "and", "another", "any", "anybody",
@@ -228,11 +230,17 @@ def generate_musixmatch_AAM():
     ## keep artist structure ##
     ###########################
 
+    if VERBOSE:
+        helper.log_highlight('Generate lyrics content')
+
     # iterate over the same artist file and check
     # if the values are in the same order
     # so the later generated AAM is still in the same order
     for index, artist_name in enumerate(artists_file, start = 0):
         # make it short for debugging
+        if VERBOSE:
+            print 'Get lyrics of ' + artist_name + ' [' + str(index + 1) + ' of ' + str(len(artists_file)) + ']'
+
         if index < MAX_ARTISTS:
             for artist_mm_id, artist_mm_name in musixmatch_artists.items():
                 # if the name is in the musixmatch array
@@ -240,6 +248,7 @@ def generate_musixmatch_AAM():
                 if artist_name == artist_mm_name:
                     # check the lyrics and sort everything
                     file = mf.OUTPUT_DIR_MUSIXMATCH_JSON + str(artist_mm_id) + '.json'
+
 
                     try:
                         with open(file, 'r') as f:
@@ -307,9 +316,16 @@ def generate_musixmatch_AAM():
             lyrics_contents[index] = ''
 
 
+    if VERBOSE:
+        print 'Stored lyrics into "lyrics_contents" object\n'
+
+
     #######################
     ## termslist counter ##
     #######################
+
+    if VERBOSE:
+        helper.log_highlight('Get termsweight of fetched lyrics')
 
     # get terms list
     # Iterate over all (key, value) tuples from dictionary just created to determine document frequency (DF) of all terms
@@ -322,11 +338,20 @@ def generate_musixmatch_AAM():
             else:
                 terms_df[t] += 1
 
+    if VERBOSE:
+        print 'Terms weighted'
+
+
+    if VERBOSE:
+        helper.log_highlight('Some meta data')
+
     # Compute number of artists/documents and terms
     no_artists = len(lyrics_contents.items())
-    no_terms = len(terms_df)
-    print "Number of artists in corpus: " + str(no_artists)
-    print "Number of terms in corpus: " + str(no_terms)
+    no_terms   = len(terms_df)
+
+    if VERBOSE:
+        print "Number of artists in corpus: " + str(no_artists)
+        print "Number of terms in corpus: " + str(no_terms)
 
     ###################
     ## TF-IDF MATRIX ##
@@ -340,61 +365,57 @@ def generate_musixmatch_AAM():
         term_list.append(t)
 
     # Create IDF vector using logarithmic IDF formulation
-    idf = np.zeros(no_terms, dtype=np.float32)
+    idf = np.zeros(no_terms, dtype = np.float32)
+
     for i in range(0, no_terms):
         idf[i] = np.log(no_artists / terms_df[term_list[i]])
 
     # Initialize matrix to hold term frequencies (and eventually TF-IDF weights) for all artists for which we fetched HTML content
-    tfidf = np.zeros(shape=(no_artists, no_terms), dtype=np.float32)
+    tfidf = np.zeros(shape = (no_artists, no_terms), dtype = np.float32)
 
     # Iterate over all (artist, terms) tuples to determine all term frequencies TF_{artist,term}
     terms_index_lookup = {}         # lookup table for indices (for higher efficiency)
+
+    if VERBOSE:
+        helper.log_highlight('Computing term weights for artist')
+
     for a_idx, terms in lyrics_contents.items():
-        print "Computing term weights for artist " + str(a_idx)
+        if VERBOSE:
+            print 'Artist ' + str(a_idx) + ' of ' + str(len(lyrics_contents.items()))
+
         # You may want (or need) to make the following more efficient.
-        for t in terms:                     # iterate over all terms of current artist
+        # iterate over all terms of current artist
+        for t in terms:
             if t in terms_index_lookup:
                 t_idx = terms_index_lookup[t]
+
             else:
-                t_idx = term_list.index(t)      # get index of term t in (ordered) list of terms
+                t_idx                 = term_list.index(t) # get index of term t in (ordered) list of terms
                 terms_index_lookup[t] = t_idx
-            tfidf[a_idx, t_idx] += 1        # increase TF value for every encounter of a term t within a document of the current artist
+
+            tfidf[a_idx, t_idx] += 1 # increase TF value for every encounter of a term t within a document of the current artist
 
     # Replace TF values in tfidf by TF-IDF values:
     # copy and reshape IDF vector and point-wise multiply it with the TF values
     tfidf = np.log1p(tfidf) * np.tile(idf, no_artists).reshape(no_artists, no_terms)
 
+    ##############################
+    ## Preparation for AAM file ##
+    ##############################
 
-    ################
-    ## Save Files ##
-    ################
-
-    ## ------------
-    ## TFIDF Matrix
-    ## ------------
-
-    # Storing TF-IDF weights and term list
-    print "Saving TF-IDF matrix to " + MUSIXMATCH_TFIDFS + "."
-    np.savetxt(MUSIXMATCH_TFIDFS, tfidf, fmt='%0.6f', delimiter='\t', newline='\n')
-
-    print "Saving term list to " + MUSIXMATCH_TERMS + "."
-    with open(MUSIXMATCH_TERMS, 'w') as f:
-        f.write("terms\n")
-        for t in term_list:
-            f.write(t.encode('utf-8') + "\n")
-
-
-    ## ----------
-    ## AAM Matrix
-    ## ----------
+    if VERBOSE:
+        helper.log_highlight('Prepare similarities for AAM file')
 
     # Computing cosine similarities and store them
-#    print "Computing cosine similarities between artists."
+    # print "Computing cosine similarities between artists."
     # Initialize similarity matrix
     sims = np.zeros(shape=(no_artists, no_artists), dtype=np.float32)
+
     # Compute pairwise similarities between artists
     for i in range(0, no_artists):
-        print "Computing similarities for artist " + str(i)
+        if VERBOSE:
+            print "Computing similarities for artist " + str(i)
+
         for j in range(i, no_artists):
             cossim = 1.0 - scidist.cosine(tfidf[i], tfidf[j])
 
@@ -404,7 +425,37 @@ def generate_musixmatch_AAM():
                 sims[i,j] = cossim
                 sims[j,i] = cossim
 
-    print "Saving cosine similarities to " + MUSIXMATCH_AAM + "."
+    ################
+    ## Save Files ##
+    ################
+    if VERBOSE:
+        helper.log_highlight('Saving files')
+
+    ## ------------
+    ## TFIDF Matrix
+    ## ------------
+    if VERBOSE:
+        print "Saving TF-IDF matrix to " + MUSIXMATCH_TFIDFS + "."
+
+    np.savetxt(MUSIXMATCH_TFIDFS, tfidf, fmt='%0.6f', delimiter='\t', newline='\n')
+
+    ## ----------
+    ## Terms list
+    ## ----------
+    if VERBOSE:
+        print "Saving term list to " + MUSIXMATCH_TERMS + "."
+
+    with open(MUSIXMATCH_TERMS, 'w') as f:
+        f.write("terms\n")
+        for t in term_list:
+            f.write(t.encode('utf-8') + "\n")
+
+    ## ----------
+    ## AAM Matrix
+    ## ----------
+    if VERBOSE:
+        print "Saving cosine similarities to " + MUSIXMATCH_AAM + "."
+
     np.savetxt(MUSIXMATCH_AAM, sims, fmt='%0.6f', delimiter='\t', newline='\n')
 # /generate_musixmatch_AAM
 
