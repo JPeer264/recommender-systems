@@ -14,7 +14,7 @@ WIKIPEDIA_URL_SS = "http://en.wikipedia.org/wiki/Special:Search/"
 #ARTISTS_FILE = "./UAM_100u_artists.txt"          # text file containing Last.fm user names
 #OUTPUT_DIRECTORY = "./crawls_wikipedia_100u"     # directory to write output to
 ARTISTS_FILE = "./output/artists.txt"          # text file containing Last.fm user names
-OUTPUT_DIRECTORY = "./output/crawls_wikipedia"     # directory to write output to
+OUTPUT_DIRECTORY = "./output/wikipedia/crawls_wikipedia"     # directory to write output to
 
 USE_INDEX_IN_OUTPUT_FILE = True             # use [index].html as output file name (if set to False, the url-encoded artist name is used)
 SKIP_EXISTING_FILES = True                  # skip files already retrieved

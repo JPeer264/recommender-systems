@@ -21,7 +21,6 @@ ARTIST_FILE = OUTPUT_DIR + 'artists.txt'
 GENERATED_ARTISTS_FILE   = OUTPUT_DIR_MUSIXMATCH + 'artist_ids.txt'
 GENERATED_ALBUM_IDS_FILE = OUTPUT_DIR_MUSIXMATCH + 'album_ids.txt'
 GENERATED_TRACKS_FILE    = OUTPUT_DIR_MUSIXMATCH + 'album_tracks.txt'
-GENERATED_LYRICS_FILE    = OUTPUT_DIR_MUSIXMATCH + 'lyrics.json'
 
 MUSIXMATCH_URL = 'http://api.musixmatch.com/ws/1.1/'
 FORMAT = 'json'
@@ -33,7 +32,7 @@ NUMBER_OF_ALBUMS      = 3
 NUMBER_OF_MAX_TRACKS  = 10
 MAX_API_QUERIES = 2000
 
-API_COUNTER = 10
+API_COUNTER = 5000
 
 def fetch_musixmatch_basic(method, additionalstring):
     global API_COUNTER
@@ -225,7 +224,6 @@ def get_lyrics_by_tracks(artist_tracks_id_object):
                 except:
                     artist_tracks_object[artist_id] = ''
                     artist_tracks_object[artist_id] += lyrics_replaced
-
 
         if VERBOSE:
             print '    Save JSON with lyrics'

@@ -24,13 +24,13 @@ WIKIPEDIA_TFIDFS = WIKIPEDIA_OUTPUT + "tfidfs.txt"            # file to store te
 WIKIPEDIA_TERMS = WIKIPEDIA_OUTPUT + "terms.txt"             # file to store list of terms (for easy interpretation of term weights)
 WIKIPEDIA_AAM = WIKIPEDIA_OUTPUT + "AAM.txt"               # file to store similarities between items
 
+ARTISTS_FILE = OUTPUT_DIR + 'artists.txt'
+
 MUSIXMATCH_OUTPUT        = OUTPUT_DIR + 'musixmatch/'
 MUSIXMATCH_TFIDFS        = MUSIXMATCH_OUTPUT + "tfidfs.txt"            # file to store term weights
 MUSIXMATCH_TERMS         = MUSIXMATCH_OUTPUT + "terms.txt"             # file to store list of terms (for easy interpretation of term weights)
 MUSIXMATCH_AAM           = MUSIXMATCH_OUTPUT + "AAM.txt"               # file to store similarities between items
-MUSIXMATCH_AAM_ARTIST_ID = MUSIXMATCH_OUTPUT + "artist_id_aam.txt"
 MUSIXMATCH_ARTISTS_ID    = MUSIXMATCH_OUTPUT + 'artist_ids.txt'
-MUSIXMATCH_AAM_ARTISTS   = MUSIXMATCH_OUTPUT + 'artists.txt'
 
 # Stop words used by Google
 STOP_WORDS = ["a", "able", "about", "above", "abroad", "according", "accordingly", "across", "actually", "adj", "after", "afterwards", "again", "against", "ago", "ahead", "ain't", "all",
@@ -86,6 +86,7 @@ def remove_html_markup(s):
     return out
 
 def generate_wikipedia_AAM():
+
         html_contents = {}
         # dictionary to hold document frequency of each term in corpus
         terms_df = {}
@@ -126,6 +127,7 @@ def generate_wikipedia_AAM():
                 print "File " + html_fn + " --- total tokens: " + str(len(tokens)) + "; after filtering and stopping: " + str(len(tokens_filtered_stopped))
             else:           # Inform user if target file does not exist
                 print "Target file " + html_fn + " does not exist!"
+                html_contents[i] = ''
 
         # Start computing term weights, in particular, document frequencies and term frequencies.
 
@@ -214,69 +216,100 @@ def generate_wikipedia_AAM():
 def generate_musixmatch_AAM():
     ps = PorterStemmer()
     lyrics_contents  = {}
-    artist_id_object = 'aam_aid\tartists\n'
     terms_df         = {}
     term_list        = []
 
     musixmatch_artists = mf.read_txt(mf.GENERATED_ARTISTS_FILE)
+    artists_file = Wikipedia_Fetcher.read_file(ARTISTS_FILE)
 
-    counter = 0
-    artist_counter = 0
-    artists = 'artists\n'
+    MAX_ARTISTS = len(artists_file)
 
-    # filtering words
-    for artist_id, artist_name in musixmatch_artists.items():
-        file = mf.OUTPUT_DIR_MUSIXMATCH_JSON + str(artist_id) + '.json'
+    ###########################
+    ## keep artist structure ##
+    ###########################
 
-        try:
-            with open(file, 'r') as f:
-                data  = json.load(f)      # create reader
-                data_by_artist = data[artist_id]
-                lyrics_content = ''
+    # iterate over the same artist file and check
+    # if the values are in the same order
+    # so the later generated AAM is still in the same order
+    for index, artist_name in enumerate(artists_file, start = 0):
+        # make it short for debugging
+        if index < MAX_ARTISTS:
+            for artist_mm_id, artist_mm_name in musixmatch_artists.items():
+                # if the name is in the musixmatch array
+                # to checking it is still in the same order
+                if artist_name == artist_mm_name:
+                    # check the lyrics and sort everything
+                    file = mf.OUTPUT_DIR_MUSIXMATCH_JSON + str(artist_mm_id) + '.json'
 
-                for string in data_by_artist:
-                    # remove all non english
                     try:
-                        lang = detect(string)
+                        with open(file, 'r') as f:
+                            data  = json.load(f)      # create reader
+                            data_by_artist = data[artist_mm_id]
+                            lyrics_content = ''
 
-                        if lang == 'en':
-                            lyrics_content += re.sub(r'\*.*\*(\s|\S)*$', '', string)
+                            for string in data_by_artist:
+                                # remove all non english
+                                try:
+                                    lang = detect(string)
+
+                                    if lang == 'en':
+                                        # add to lyrics and make regex
+                                        # musixmatch has ***** TEXT ***** at the end of string
+                                        # remove those
+                                        lyrics_content += re.sub(r'\*.*\*(\s|\S)*$', '', string)
+                                except:
+                                    continue;
+
+                            #####################################
+                            ## sorting | stamming | stopwords ##
+                            #####################################
+
+                            # remove dots
+                            content_no_dots = re.sub(r'\.', ' ', lyrics_content)
+
+                            # remove numbers
+                            content_no_numbers = re.sub(r'[0-9]+', ' ', content_no_dots)
+
+                            # Perform case-folding, i.e., convert to lower case
+                            content_casefolded = content_no_numbers.lower()
+
+                            # Tokenize stripped content at white space characters
+                            tokens = content_casefolded.split()
+
+                            # Remove all tokens containing non-alphanumeric characters; using a simple lambda function (i.e., anonymous function, can be used as parameter to other function)
+                            tokens_filtered = filter(lambda t: t.isalnum(), tokens)
+
+                            # Remove words in the stop word list
+                            tokens_filtered_stopped = filter(lambda t: t not in STOP_WORDS, tokens_filtered)
+
+                            tokens_stammed = []
+
+
+                            for w in tokens_filtered_stopped:
+                                tokens_stammed.append(ps.stem(w))
+
+                            if len(tokens_stammed) > 0:
+                                lyrics_contents[index] = tokens_stammed
+
                     except:
-                        continue;
+                        print 'File ' + file + ' not found'
 
-                # remove dots
-                content_no_dots = re.sub(r'\.', ' ', lyrics_content)
+    #########################################
+    ## add index of artists without lyrics ##
+    #########################################
 
-                # remove numbers
-                content_no_numbers = re.sub(r'[0-9]+', ' ', content_no_dots)
-
-                # Perform case-folding, i.e., convert to lower case
-                content_casefolded = content_no_numbers.lower()
-
-                # Tokenize stripped content at white space characters
-                tokens = content_casefolded.split()
-
-                # Remove all tokens containing non-alphanumeric characters; using a simple lambda function (i.e., anonymous function, can be used as parameter to other function)
-                tokens_filtered = filter(lambda t: t.isalnum(), tokens)
-
-                # Remove words in the stop word list
-                tokens_filtered_stopped = filter(lambda t: t not in STOP_WORDS, tokens_filtered)
-
-                tokens_stammed = []
-
-                for w in tokens_filtered_stopped:
-                    tokens_stammed.append(ps.stem(w))
-
-                if len(tokens_stammed) > 0:
-                    artist_id_object += str(artist_counter) + '\t' + str(artist_id) + '\n'
-                    artists += artist_name.encode('utf-8') + '\n'
-                    lyrics_contents[artist_counter]  = tokens_stammed
-                    artist_counter += 1
-
+    # iterate over the max artists and check
+    for index in range(0, MAX_ARTISTS):
+        try:
+            if (lyrics_contents[index]):
+                continue;
         except:
-            print 'File ' + file + ' not found'
+            lyrics_contents[index] = ''
 
-        counter += 1
+
+    #######################
+    ## termslist counter ##
+    #######################
 
     # get terms list
     # Iterate over all (key, value) tuples from dictionary just created to determine document frequency (DF) of all terms
@@ -295,10 +328,13 @@ def generate_musixmatch_AAM():
     print "Number of artists in corpus: " + str(no_artists)
     print "Number of terms in corpus: " + str(no_terms)
 
+    ###################
+    ## TF-IDF MATRIX ##
+    ###################
+
     # You may want (or need) to perform some kind of dimensionality reduction here, e.g., filtering all terms
     # with a very small document frequency.
     # ...
-
     # Dictionary is unordered, so we store all terms in a list to fix their order, before computing the TF-IDF matrix
     for t in terms_df.keys():
         term_list.append(t)
@@ -310,12 +346,6 @@ def generate_musixmatch_AAM():
 
     # Initialize matrix to hold term frequencies (and eventually TF-IDF weights) for all artists for which we fetched HTML content
     tfidf = np.zeros(shape=(no_artists, no_terms), dtype=np.float32)
-
-    # without stemming
-    # artists max 20
-    # 16 artists
-    # 1826 words
-    # print tfidf
 
     # Iterate over all (artist, terms) tuples to determine all term frequencies TF_{artist,term}
     terms_index_lookup = {}         # lookup table for indices (for higher efficiency)
@@ -334,6 +364,15 @@ def generate_musixmatch_AAM():
     # copy and reshape IDF vector and point-wise multiply it with the TF values
     tfidf = np.log1p(tfidf) * np.tile(idf, no_artists).reshape(no_artists, no_terms)
 
+
+    ################
+    ## Save Files ##
+    ################
+
+    ## ------------
+    ## TFIDF Matrix
+    ## ------------
+
     # Storing TF-IDF weights and term list
     print "Saving TF-IDF matrix to " + MUSIXMATCH_TFIDFS + "."
     np.savetxt(MUSIXMATCH_TFIDFS, tfidf, fmt='%0.6f', delimiter='\t', newline='\n')
@@ -343,6 +382,11 @@ def generate_musixmatch_AAM():
         f.write("terms\n")
         for t in term_list:
             f.write(t.encode('utf-8') + "\n")
+
+
+    ## ----------
+    ## AAM Matrix
+    ## ----------
 
     # Computing cosine similarities and store them
 #    print "Computing cosine similarities between artists."
@@ -362,24 +406,10 @@ def generate_musixmatch_AAM():
 
     print "Saving cosine similarities to " + MUSIXMATCH_AAM + "."
     np.savetxt(MUSIXMATCH_AAM, sims, fmt='%0.6f', delimiter='\t', newline='\n')
-
-    print "Saving AAM artist id to " + MUSIXMATCH_AAM_ARTIST_ID + "."
-
-    text_file = open(MUSIXMATCH_AAM_ARTIST_ID, 'w')
-
-    text_file.write(artist_id_object)
-    text_file.close()
-
-    print "Saving artists to " + MUSIXMATCH_AAM_ARTISTS + "."
-
-    text_file = open(MUSIXMATCH_AAM_ARTISTS, 'w')
-
-    text_file.write(artists)
-    text_file.close()
 # /generate_musixmatch_AAM
 
 # Main program
 if __name__ == '__main__':
     # dictionary to hold tokenized HTML content of each artist
-    generate_wikipedia_AAM()
-    #generate_musixmatch_AAM()
+    #generate_wikipedia_AAM()
+    generate_musixmatch_AAM()
