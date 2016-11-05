@@ -33,7 +33,7 @@ NUMBER_OF_ALBUMS      = 3
 NUMBER_OF_MAX_TRACKS  = 10
 MAX_API_QUERIES = 2000
 
-API_COUNTER = 500
+API_COUNTER = 10
 
 def fetch_musixmatch_basic(method, additionalstring):
     global API_COUNTER
@@ -279,7 +279,7 @@ def get_html_by_tracks(artist_tracks_id_object):
 
 
 def save_txt(objects, filename, output = OUTPUT_DIR_MUSIXMATCH):
-    text = ''
+    text = 'key\tvalue\n'
 
     for key, value in objects.items():
         if type(value) is list:
@@ -351,18 +351,20 @@ if __name__ == '__main__':
     helper.ensure_dir(OUTPUT_DIR_MUSIXMATCH)
 
     # live fetching
-    # fetched_artist_ids          = get_artist_ids(artists)
-    # fetched_artist_album_ids    = get_artist_albums(fetched_artist_ids, NUMBER_OF_ALBUMS)
-    # fetched_artist_album_tracks = get_artist_album_tracks(fetched_artist_album_ids, NUMBER_OF_MAX_TRACKS)
+    fetched_artist_ids = get_artist_ids(artists)
+    save_txt(fetched_artist_ids, 'artist_ids.txt')
+
+    fetched_artist_album_ids = get_artist_albums(fetched_artist_ids, NUMBER_OF_ALBUMS)
+    save_txt(fetched_artist_album_ids, 'album_ids.txt')
+
+    fetched_artist_album_tracks = get_artist_album_tracks(fetched_artist_album_ids, NUMBER_OF_MAX_TRACKS)
+    save_txt(fetched_artist_album_tracks, 'album_tracks.txt')
     # fetched_lyrics              = get_lyrics_by_tracks(fetched_artist_album_tracks)
 
     # fetching with stored data
-    fetched_artist_ids          = read_txt(GENERATED_ARTISTS_FILE)
-    fetched_artist_album_ids    = read_txt(GENERATED_ALBUM_IDS_FILE, True)
-    fetched_artist_album_tracks = read_txt(GENERATED_TRACKS_FILE, True)
-    fetched_lyrics              = get_lyrics_by_tracks(fetched_artist_album_tracks)
+    # fetched_artist_ids          = read_txt(GENERATED_ARTISTS_FILE)
+    # fetched_artist_album_ids    = read_txt(GENERATED_ALBUM_IDS_FILE, True)
+    # fetched_artist_album_tracks = read_txt(GENERATED_TRACKS_FILE, True)
+    # fetched_lyrics              = get_lyrics_by_tracks(fetched_artist_album_tracks)
 
-    # save_txt(fetched_artist_ids, 'artist_ids.txt')
-    # save_txt(fetched_artist_album_ids, 'album_ids.txt')
-    # save_txt(fetched_artist_album_tracks, 'album_tracks.txt')
     # save_json(fetched_lyrics, 'lyrics.json')

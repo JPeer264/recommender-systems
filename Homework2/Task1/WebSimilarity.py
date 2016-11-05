@@ -24,12 +24,13 @@ WIKIPEDIA_TFIDFS = WIKIPEDIA_OUTPUT + "tfidfs.txt"            # file to store te
 WIKIPEDIA_TERMS = WIKIPEDIA_OUTPUT + "terms.txt"             # file to store list of terms (for easy interpretation of term weights)
 WIKIPEDIA_AAM = WIKIPEDIA_OUTPUT + "AAM.txt"               # file to store similarities between items
 
-MUSIXMATCH_OUTPUT = OUTPUT_DIR + 'musixmatch/'
-MUSIXMATCH_TFIDFS = MUSIXMATCH_OUTPUT + "tfidfs.txt"            # file to store term weights
-MUSIXMATCH_TERMS = MUSIXMATCH_OUTPUT + "terms.txt"             # file to store list of terms (for easy interpretation of term weights)
-MUSIXMATCH_AAM = MUSIXMATCH_OUTPUT + "AAM.txt"               # file to store similarities between items
-MUSIXMATCH_AAM_ARTIST_ID = "artist_id_aam.txt"
-MUSIXMATCH_ARTISTS_ID = MUSIXMATCH_OUTPUT + 'artist_ids.txt'
+MUSIXMATCH_OUTPUT        = OUTPUT_DIR + 'musixmatch/'
+MUSIXMATCH_TFIDFS        = MUSIXMATCH_OUTPUT + "tfidfs.txt"            # file to store term weights
+MUSIXMATCH_TERMS         = MUSIXMATCH_OUTPUT + "terms.txt"             # file to store list of terms (for easy interpretation of term weights)
+MUSIXMATCH_AAM           = MUSIXMATCH_OUTPUT + "AAM.txt"               # file to store similarities between items
+MUSIXMATCH_AAM_ARTIST_ID = MUSIXMATCH_OUTPUT + "artist_id_aam.txt"
+MUSIXMATCH_ARTISTS_ID    = MUSIXMATCH_OUTPUT + 'artist_ids.txt'
+MUSIXMATCH_AAM_ARTISTS   = MUSIXMATCH_OUTPUT + 'artists.txt'
 
 # Stop words used by Google
 STOP_WORDS = ["a", "able", "about", "above", "abroad", "according", "accordingly", "across", "actually", "adj", "after", "afterwards", "again", "against", "ago", "ahead", "ain't", "all",
@@ -97,7 +98,7 @@ def generate_wikipedia_AAM():
         helper.ensure_dir(WIKIPEDIA_OUTPUT)
 
         # for all artists
-        for i in range(0, len(artists)):
+        for i in range(0, 2000):
             # construct file name to fetched HTML page for current artist, depending on parameter settings in Wikipedia_Fetcher.py
             if Wikipedia_Fetcher.USE_INDEX_IN_OUTPUT_FILE:
                 html_fn = Wikipedia_Fetcher.OUTPUT_DIRECTORY + "/" + str(i) + ".html"     # target file name
@@ -126,7 +127,6 @@ def generate_wikipedia_AAM():
             else:           # Inform user if target file does not exist
                 print "Target file " + html_fn + " does not exist!"
 
-        print html_contents
         # Start computing term weights, in particular, document frequencies and term frequencies.
 
         # Iterate over all (key, value) tuples from dictionary just created to determine document frequency (DF) of all terms
@@ -187,6 +187,8 @@ def generate_wikipedia_AAM():
 
         print "Saving term list to " + WIKIPEDIA_TERMS + "."
         with open(WIKIPEDIA_TERMS, 'w') as f:
+            f.write("terms\n")
+
             for t in term_list:
                 f.write(t + "\n")
 
@@ -212,7 +214,7 @@ def generate_wikipedia_AAM():
 def generate_musixmatch_AAM():
     ps = PorterStemmer()
     lyrics_contents  = {}
-    artist_id_object = {}
+    artist_id_object = 'aam_aid\tartists\n'
     terms_df         = {}
     term_list        = []
 
@@ -220,58 +222,59 @@ def generate_musixmatch_AAM():
 
     counter = 0
     artist_counter = 0
+    artists = 'artists\n'
 
     # filtering words
     for artist_id, artist_name in musixmatch_artists.items():
-        if (counter < 10):
-            file = mf.OUTPUT_DIR_MUSIXMATCH_JSON + str(artist_id) + '.json'
+        file = mf.OUTPUT_DIR_MUSIXMATCH_JSON + str(artist_id) + '.json'
 
-            try:
-                with open(file, 'r') as f:
-                    data  = json.load(f)      # create reader
-                    data_by_artist = data[artist_id]
-                    lyrics_content = ''
+        try:
+            with open(file, 'r') as f:
+                data  = json.load(f)      # create reader
+                data_by_artist = data[artist_id]
+                lyrics_content = ''
 
-                    for string in data_by_artist:
-                        # remove all non english
-                        try:
-                            lang = detect(string)
+                for string in data_by_artist:
+                    # remove all non english
+                    try:
+                        lang = detect(string)
 
-                            if lang == 'en':
-                                lyrics_content += re.sub(r'\*.*\*(\s|\S)*$', '', string)
-                        except:
-                            continue;
+                        if lang == 'en':
+                            lyrics_content += re.sub(r'\*.*\*(\s|\S)*$', '', string)
+                    except:
+                        continue;
 
-                    # remove dots
-                    content_no_dots = re.sub(r'\.', ' ', lyrics_content)
+                # remove dots
+                content_no_dots = re.sub(r'\.', ' ', lyrics_content)
 
-                    # remove numbers
-                    content_no_numbers = re.sub(r'[0-9]+', ' ', content_no_dots)
+                # remove numbers
+                content_no_numbers = re.sub(r'[0-9]+', ' ', content_no_dots)
 
-                    # Perform case-folding, i.e., convert to lower case
-                    content_casefolded = content_no_numbers.lower()
+                # Perform case-folding, i.e., convert to lower case
+                content_casefolded = content_no_numbers.lower()
 
-                    # Tokenize stripped content at white space characters
-                    tokens = content_casefolded.split()
+                # Tokenize stripped content at white space characters
+                tokens = content_casefolded.split()
 
-                    # Remove all tokens containing non-alphanumeric characters; using a simple lambda function (i.e., anonymous function, can be used as parameter to other function)
-                    tokens_filtered = filter(lambda t: t.isalnum(), tokens)
+                # Remove all tokens containing non-alphanumeric characters; using a simple lambda function (i.e., anonymous function, can be used as parameter to other function)
+                tokens_filtered = filter(lambda t: t.isalnum(), tokens)
 
-                    # Remove words in the stop word list
-                    tokens_filtered_stopped = filter(lambda t: t not in STOP_WORDS, tokens_filtered)
+                # Remove words in the stop word list
+                tokens_filtered_stopped = filter(lambda t: t not in STOP_WORDS, tokens_filtered)
 
-                    tokens_stammed = []
+                tokens_stammed = []
 
-                    for w in tokens_filtered_stopped:
-                        tokens_stammed.append(ps.stem(w))
+                for w in tokens_filtered_stopped:
+                    tokens_stammed.append(ps.stem(w))
 
-                    if len(tokens_stammed) > 0:
-                        artist_id_object[artist_counter] = artist_id
-                        lyrics_contents[artist_counter]  = tokens_stammed
-                        artist_counter += 1
+                if len(tokens_stammed) > 0:
+                    artist_id_object += str(artist_counter) + '\t' + str(artist_id) + '\n'
+                    artists += artist_name.encode('utf-8') + '\n'
+                    lyrics_contents[artist_counter]  = tokens_stammed
+                    artist_counter += 1
 
-            except:
-                print 'File ' + file + ' not found'
+        except:
+            print 'File ' + file + ' not found'
 
         counter += 1
 
@@ -337,8 +340,9 @@ def generate_musixmatch_AAM():
 
     print "Saving term list to " + MUSIXMATCH_TERMS + "."
     with open(MUSIXMATCH_TERMS, 'w') as f:
+        f.write("terms\n")
         for t in term_list:
-            f.write(t + "\n")
+            f.write(t.encode('utf-8') + "\n")
 
     # Computing cosine similarities and store them
 #    print "Computing cosine similarities between artists."
@@ -357,31 +361,25 @@ def generate_musixmatch_AAM():
                 sims[j,i] = cossim
 
     print "Saving cosine similarities to " + MUSIXMATCH_AAM + "."
-    np.savetxt(WIKIPEDIA_AAM, sims, fmt='%0.6f', delimiter='\t', newline='\n')
+    np.savetxt(MUSIXMATCH_AAM, sims, fmt='%0.6f', delimiter='\t', newline='\n')
 
     print "Saving AAM artist id to " + MUSIXMATCH_AAM_ARTIST_ID + "."
 
-    mf.save_txt(artist_id_object, MUSIXMATCH_AAM_ARTIST_ID, MUSIXMATCH_OUTPUT)
+    text_file = open(MUSIXMATCH_AAM_ARTIST_ID, 'w')
+
+    text_file.write(artist_id_object)
+    text_file.close()
+
+    print "Saving artists to " + MUSIXMATCH_AAM_ARTISTS + "."
+
+    text_file = open(MUSIXMATCH_AAM_ARTISTS, 'w')
+
+    text_file.write(artists)
+    text_file.close()
 # /generate_musixmatch_AAM
-
-def generate_musixmatch_artist_artists():
-    mm_artists = mf.read_txt(MUSIXMATCH_ARTISTS_ID)
-    aam_artists = mf.read_txt(MUSIXMATCH_OUTPUT + MUSIXMATCH_AAM_ARTIST_ID)
-
-    aam_artists_list = []
-
-    for aam_id, aam_mm_id in aam_artists.items():
-        for mm_aid, mm_artist_name in mm_artists.items():
-            if aam_mm_id == mm_aid:
-                aam_artists_list.append(mm_artist_name)
-
-    # mf.save_txt(aam_artists_list, 'artists.txt', MUSIXMATCH_OUTPUT)
-# /generate_musixmatch_artist_artists
-
 
 # Main program
 if __name__ == '__main__':
     # dictionary to hold tokenized HTML content of each artist
-    #generate_wikipedia_AAM()
+    generate_wikipedia_AAM()
     #generate_musixmatch_AAM()
-    generate_musixmatch_artist_artists()
