@@ -4,6 +4,7 @@ import urllib
 import json
 import csv
 import re
+import os
 
 # apicalls limited to 2000 a day
 APIKEY_1 = 'a12b038ac3676f2943c701c4c1758f55'
@@ -12,6 +13,7 @@ APIKEY_3 = '192df0c0daaac4722a6f1e2c00b30f5d'
 APIKEY_4 = '2b659ad7e0c7a554fc58294d93e68c06'
 APIKEY_5 = 'c5327d2f4272ef5b51a87985a7f83a3f'
 APIKEY_6 = 'd5a7afb790a9602da75b8f62a7019a4b'
+APIKEY_7 = '7c00b2a9338d091f10987c5c29cee579'
 
 OUTPUT_DIR = './output/'
 OUTPUT_DIR_MUSIXMATCH = OUTPUT_DIR + 'musixmatch/'
@@ -31,6 +33,8 @@ NUMBER_OF_MAX_ARTISTS = 1000
 NUMBER_OF_ALBUMS      = 3
 NUMBER_OF_MAX_TRACKS  = 10
 MAX_API_QUERIES = 2000
+
+SKIP_EXISTING_LYRICS = True
 
 API_COUNTER = 5000
 
@@ -181,7 +185,7 @@ def get_artist_album_tracks(artist_album_object, number_of_tracks_per_album):
                 if VERBOSE:
                     print '    Tracks of album ' + str(album_id) + ' not found'
 
-        counter +=1
+        counter += 1
 
     return artist_album_tracks
 # /get_artist_album_tracks
@@ -203,6 +207,11 @@ def get_lyrics_by_tracks(artist_tracks_id_object):
         if VERBOSE:
             print 'Fetching tracks of artist ' + str(artist_id) + ' [' + str(counter) + ' of ' + str(len(artist_tracks_id_object)) + ']'
 
+        if os.path.exists(OUTPUT_DIR_MUSIXMATCH_JSON + artist_id + '.json') and SKIP_EXISTING_LYRICS:
+            if VERBOSE:
+                print "    Tracks of artist already fetched: " + OUTPUT_DIR_MUSIXMATCH_JSON + str(artist_id) + '.json'
+                counter += 1
+            continue
 
         for index, track_id in enumerate(tracks, start = 1):
             response    = fetch_lyrics_by_track_id(track_id)
@@ -224,6 +233,8 @@ def get_lyrics_by_tracks(artist_tracks_id_object):
                 except:
                     artist_tracks_object[artist_id] = ''
                     artist_tracks_object[artist_id] += lyrics_replaced
+
+        counter += 1
 
         if VERBOSE:
             print '    Save JSON with lyrics'
@@ -349,20 +360,20 @@ if __name__ == '__main__':
     helper.ensure_dir(OUTPUT_DIR_MUSIXMATCH)
 
     # live fetching
-    fetched_artist_ids = get_artist_ids(artists)
-    save_txt(fetched_artist_ids, 'artist_ids.txt')
+    # fetched_artist_ids = get_artist_ids(artists)
+    # save_txt(fetched_artist_ids, 'artist_ids.txt')
 
-    fetched_artist_album_ids = get_artist_albums(fetched_artist_ids, NUMBER_OF_ALBUMS)
-    save_txt(fetched_artist_album_ids, 'album_ids.txt')
+    # fetched_artist_album_ids = get_artist_albums(fetched_artist_ids, NUMBER_OF_ALBUMS)
+    # save_txt(fetched_artist_album_ids, 'album_ids.txt')
 
-    fetched_artist_album_tracks = get_artist_album_tracks(fetched_artist_album_ids, NUMBER_OF_MAX_TRACKS)
-    save_txt(fetched_artist_album_tracks, 'album_tracks.txt')
+    # fetched_artist_album_tracks = get_artist_album_tracks(fetched_artist_album_ids, NUMBER_OF_MAX_TRACKS)
+    # save_txt(fetched_artist_album_tracks, 'album_tracks.txt')
     # fetched_lyrics              = get_lyrics_by_tracks(fetched_artist_album_tracks)
 
     # fetching with stored data
     # fetched_artist_ids          = read_txt(GENERATED_ARTISTS_FILE)
     # fetched_artist_album_ids    = read_txt(GENERATED_ALBUM_IDS_FILE, True)
-    # fetched_artist_album_tracks = read_txt(GENERATED_TRACKS_FILE, True)
-    # fetched_lyrics              = get_lyrics_by_tracks(fetched_artist_album_tracks)
+    fetched_artist_album_tracks = read_txt(GENERATED_TRACKS_FILE, True)
+    fetched_lyrics              = get_lyrics_by_tracks(fetched_artist_album_tracks)
 
     # save_json(fetched_lyrics, 'lyrics.json')

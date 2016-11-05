@@ -32,6 +32,9 @@ MUSIXMATCH_TERMS         = MUSIXMATCH_OUTPUT + "terms.txt"             # file to
 MUSIXMATCH_AAM           = MUSIXMATCH_OUTPUT + "AAM.txt"               # file to store similarities between items
 MUSIXMATCH_ARTISTS_ID    = MUSIXMATCH_OUTPUT + 'artist_ids.txt'
 
+WIKIPEDIA_MAX_ARTISTS  = 2000
+MUSIXMATCH_MAX_ARTISTS = 1000
+
 VERBOSE = True
 
 # Stop words used by Google
@@ -101,7 +104,7 @@ def generate_wikipedia_AAM():
         helper.ensure_dir(WIKIPEDIA_OUTPUT)
 
         # for all artists
-        for i in range(0, 2000):
+        for i in range(0, WIKIPEDIA_MAX_ARTISTS):
             # construct file name to fetched HTML page for current artist, depending on parameter settings in Wikipedia_Fetcher.py
             if Wikipedia_Fetcher.USE_INDEX_IN_OUTPUT_FILE:
                 html_fn = Wikipedia_Fetcher.OUTPUT_DIRECTORY + "/" + str(i) + ".html"     # target file name
@@ -222,9 +225,7 @@ def generate_musixmatch_AAM():
     term_list        = []
 
     musixmatch_artists = mf.read_txt(mf.GENERATED_ARTISTS_FILE)
-    artists_file = Wikipedia_Fetcher.read_file(ARTISTS_FILE)
-
-    MAX_ARTISTS = len(artists_file)
+    artists_file = Wikipedia_Fetcher.read_file(ARTISTS_FILE)[:MUSIXMATCH_MAX_ARTISTS]
 
     ###########################
     ## keep artist structure ##
@@ -241,7 +242,7 @@ def generate_musixmatch_AAM():
         if VERBOSE:
             print 'Get lyrics of ' + artist_name + ' [' + str(index + 1) + ' of ' + str(len(artists_file)) + ']'
 
-        if index < MAX_ARTISTS:
+        if index < len(artists_file):
             for artist_mm_id, artist_mm_name in musixmatch_artists.items():
                 # if the name is in the musixmatch array
                 # to checking it is still in the same order
@@ -308,7 +309,7 @@ def generate_musixmatch_AAM():
     #########################################
 
     # iterate over the max artists and check
-    for index in range(0, MAX_ARTISTS):
+    for index in range(0, MUSIXMATCH_MAX_ARTISTS):
         try:
             if (lyrics_contents[index]):
                 continue;
@@ -462,5 +463,5 @@ def generate_musixmatch_AAM():
 # Main program
 if __name__ == '__main__':
     # dictionary to hold tokenized HTML content of each artist
-    #generate_wikipedia_AAM()
-    generate_musixmatch_AAM()
+    generate_wikipedia_AAM()
+    #generate_musixmatch_AAM()

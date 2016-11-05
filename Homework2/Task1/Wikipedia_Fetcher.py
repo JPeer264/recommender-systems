@@ -58,7 +58,7 @@ if __name__ == '__main__':
         os.makedirs(OUTPUT_DIRECTORY)
 
     # Read artist list
-    artists = read_file(ARTISTS_FILE)[:2000]
+    artists = read_file(ARTISTS_FILE)[:]
 
     # Retrieve Wikipedia pages for all artists
     # Either use index as output file name
