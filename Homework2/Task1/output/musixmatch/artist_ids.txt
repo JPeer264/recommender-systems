@@ -1,3 +1,4 @@
+key	value
 3	Massive Attack
 292868	Versailles
 14342	Lulu
@@ -167,7 +168,6 @@
 31006	Machinae Supremacy
 10527	Hoobastank
 15899	Solange
-289	Goo Goo Dolls
 290	Green Day
 10531	Adema
 295	Michael Jackson
@@ -200,6 +200,7 @@
 356	Van Halen
 357	Lou Bega
 359	Britney Spears
+28970209	Wire
 26458172	Prince and the New Power Generation
 6506	Cinderella
 10605	Howard Shore
@@ -572,6 +573,7 @@
 66620	ASIAN KUNG-FU GENERATION
 7229	Mr. Big
 17473	Avril Lavigne
+23619	Lil Wayne
 12985412	Tyler Ward
 1094	New Model Army
 410698	Psy
@@ -604,7 +606,6 @@
 1151	The Buggles
 27776	Fink
 70787	The Killers
-1156	Nas
 1157	Nina Simone
 17544	Decapitated
 279689	Moss
@@ -692,7 +693,7 @@
 3393	Kreator
 326978	Ra Ra Riot
 518027	Stromae
-28970209	Wire
+32224583	Goo Goo Dolls
 5448	Alkaline Trio
 271473	Daniel Kandi
 14382416	Travis
@@ -794,6 +795,7 @@
 173594	Bill Callahan
 7707	Mauro Picotto
 7716	Cosmic Gate
+28853797	Nas
 9766	Ulver
 175660	Bliss n Eso
 13796909	Florence + the Machine
@@ -905,7 +907,6 @@
 12978821	Нюша
 345889	Alestorm
 399138	Jelonek
-7835	Die Sterne
 120615	Shiny Toy Guns
 419624	The Big Pink
 13842222	Charli XCX

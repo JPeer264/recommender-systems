@@ -52,8 +52,10 @@ def fetch_musixmatch_basic(method, additionalstring):
         key = APIKEY_4
     elif API_COUNTER < MAX_API_QUERIES * 5:
         key = APIKEY_5
-    else:
+    elif API_COUNTER < MAX_API_QUERIES * 6:
         key = APIKEY_6
+    else:
+        key = APIKEY_7
 
     API_COUNTER += 1
 
@@ -194,6 +196,7 @@ def get_lyrics_by_tracks(artist_tracks_id_object):
     artist_tracks_object = {}
     counter = 1
     musixmatch_regex = re.compile(r'\*.*\*\s*$') # this will delete **** This Lyrics is NOT... *** at the end of the string
+    is_limit_reached = False
 
     helper.ensure_dir(OUTPUT_DIR_MUSIXMATCH_JSON)
 
@@ -234,11 +237,15 @@ def get_lyrics_by_tracks(artist_tracks_id_object):
                     artist_tracks_object[artist_id] = ''
                     artist_tracks_object[artist_id] += lyrics_replaced
 
+            if status_code is 402:
+                is_limit_reached = True
+
         counter += 1
 
-        if VERBOSE:
-            print '    Save JSON with lyrics'
-        save_json(artist_tracks, OUTPUT_DIR_MUSIXMATCH_JSON + artist_id + '.json')
+        if not is_limit_reached:
+            if VERBOSE:
+                print '\n    Save JSON with lyrics\n'
+            save_json(artist_tracks, OUTPUT_DIR_MUSIXMATCH_JSON + artist_id + '.json')
 
     return artist_tracks_object
 # /get_lyrics_by_tracks
@@ -262,7 +269,7 @@ def get_html_by_tracks(artist_tracks_id_object):
             response    = fetch_html_lyrics_by_track_id(track_id)
             header      = response['message']['header']
             status_code = header['status_code']
-            has_lyrics = response['message']['body']['track']['has_lyrics']
+            has_lyrics  = response['message']['body']['track']['has_lyrics']
 
             if VERBOSE:
                 print '    Fetching lyrics of track ' + str(track_id) + ' [' + str(index) + ' of ' + str(len(tracks)) + ']'
@@ -283,7 +290,6 @@ def get_html_by_tracks(artist_tracks_id_object):
                 except IOError:                # return empty content in case some IO / socket error occurred
                     if VERBOSE:
                         print '    Cannot retrieve data from ' + track_url
-
 # /get_html_by_tracks
 
 
