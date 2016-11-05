@@ -13,12 +13,19 @@ import scipy.spatial.distance as scidist        # import distance computation mo
 
 
 # Parameters
-UAM_FILE = "UAM.txt"                # user-artist-matrix (UAM)
-ARTISTS_FILE = "UAM_artists.txt"    # artist names for UAM
-USERS_FILE = "UAM_users.txt"        # user names for UAM
-AAM_FILE = "AAM.txt"                # artist-artist similarity matrix (AAM)
+TESTFILES = "../testfiles/"
+TASK1_OUTPUT = "../Task1/output/"
+WIKI = TASK1_OUTPUT + "wikipedia/"
+MUSIXMATCH = TASK1_OUTPUT + "musixmatch/"
+UAM_FILE = TESTFILES + "C1ku_UAM.txt"           # user-artist-matrix (UAM)
+ARTISTS_FILE = TASK1_OUTPUT + "artists.txt"        # artist names for UAM
+USERS_FILE = TASK1_OUTPUT + "users.txt"            # user names for UAM
+AAM_FILE = WIKI + "AAM.txt"                # artist-artist similarity matrix (AAM)
 METHOD = "CB"                       # recommendation method
                                     # ["RB", "CF", "CB", "HR_SEB", "HR_SCB"]
+
+MAX_ARTISTS = 2000
+MAX_USERS = 10
 
 NF = 2              # number of folds to perform in cross-validation
 VERBOSE = True    # verbose output?
@@ -36,6 +43,71 @@ def read_from_file(filename):
     return data
 
 
+# Function that implements a CF recommender. It takes as input the UAM,
+# the index of the seed user (to make predictions for) and the indices of the seed user's training artists.
+# It returns a dictionary of recommended artist indices (and corresponding scores).
+def recommend_CF(UAM, seed_uidx, seed_aidx_train, K):
+    # UAM               user-artist-matrix
+    # seed_uidx         user index of seed user
+    # seed_aidx_train   indices of training artists for seed user
+    # K                 number of nearest neighbors (users) to consider for each seed users
+
+    # Get playcount vector for seed user
+    pc_vec = UAM[seed_uidx, :]
+
+    # Remove information on test artists from seed's listening vector
+    aidx_nz = np.nonzero(pc_vec)[0]                             # artists with non-zero listening events
+    aidx_test = np.intersect1d(aidx_nz, seed_aidx_train)        # intersection between all artist indices of user and train indices gives test artist indices
+#    print aidx_test
+
+    # Set to 0 the listening events of seed user user for testing (in UAM; pc_vec just points to UAM, is thus automatically updated)
+    UAM[seed_uidx, aidx_test] = 0.0
+
+    # Seed user needs to be normalized again
+    # Perform sum-to-1 normalization
+    UAM[seed_uidx, :] = UAM[seed_uidx, :] / np.sum(UAM[seed_uidx, :])
+
+    # Compute similarities as inverse cosine distance between pc_vec of user and all users via UAM (assuming that UAM is normalized)
+    sim_users = np.zeros(shape=(UAM.shape[0]), dtype=np.float32)
+    for u in range(0, UAM.shape[0]):
+        sim_users[u] = 1.0 - scidist.cosine(pc_vec, UAM[u,:])
+
+    # Sort similarities to all others
+    sort_idx = np.argsort(sim_users)  # sort in ascending order
+
+    # Select the closest neighbor to seed user (which is the last but one; last one is user u herself!)
+    neighbor_idx = sort_idx[-1-K:-1]
+
+    # Get all artist indices the seed user and her closest neighbor listened to, i.e., element with non-zero entries in UAM
+    artist_idx_u = seed_aidx_train                      # indices of artists in training set user
+    # for k=1:
+    # artist_idx_n = np.nonzero(UAM[neighbor_idx, :])     # indices of artists user u's neighbor listened to
+    # for k>1:
+    artist_idx_n = np.nonzero(UAM[neighbor_idx, :])[1]    # [1] because we are only interested in non-zero elements among the artist axis
+
+    # Compute the set difference between seed user's neighbor and seed user,
+    # i.e., artists listened to by the neighbor, but not by seed user.
+    # These artists are recommended to seed user.
+    recommended_artists_idx = np.setdiff1d(artist_idx_n, artist_idx_u)
+
+
+    ##### ADDED FOR SCORE-BASED FUSION  #####
+    dict_recommended_artists_idx = {}           # dictionary to hold recommended artists and corresponding scores
+    # Compute artist scores. Here, just derived from max-to-1-normalized play count vector of nearest neighbor (neighbor_idx)
+    # for k=1:
+    # scores = UAM[neighbor_idx, recommended_artists_idx] / np.max(UAM[neighbor_idx, recommended_artists_idx])
+    # for k>1:
+    scores = np.mean(UAM[neighbor_idx][:, recommended_artists_idx], axis=0)
+
+    # Write (artist index, score) pairs to dictionary of recommended artists
+    for i in range(0, len(recommended_artists_idx)):
+        dict_recommended_artists_idx[recommended_artists_idx[i]] = scores[i]
+    #########################################
+
+
+    # Return dictionary of recommended artist indices (and scores)
+    return dict_recommended_artists_idx
+
 
 # Function that implements a content-based recommender. It takes as input an artist-artist-matrix (AAM) containing pair-wise similarities
 # and the indices of the seed user's training artists.
@@ -52,25 +124,15 @@ def recommend_CB(AAM, seed_aidx_train, K):
     # Select the K closest artists to all artists the seed user listened to
     neighbor_idx = sort_idx[:,-1-K:-1]
 
-    # Aggregate the artists in neighbor_idx.
-    # There are many (more) sophisticated ways to do this.
-    # We just count the number of appearances of each artist index
-    # in the range [0, max(neighbor_idx.flatten())] using np.bincount.
-    nn_count = np.bincount(neighbor_idx.flatten())
-    # Sort this count vector (we are interested in the last elements (the artists that appear most frequently as nearest neighbors).
-    nn_count_sort_idx = np.argsort(nn_count)
-    # Select all artists that appear as nearest neighbors among more than 5% of the user's training artists.
-    threshold = np.int(np.round(len(seed_aidx_train) * 0.05))
-    selected_artists_idx = np.where(nn_count > threshold)[0]
-
-    recommended_artists_idx = np.setdiff1d(selected_artists_idx, seed_aidx_train)
-
 
     ##### ADDED FOR SCORE-BASED FUSION  #####
     dict_recommended_artists_idx = {}           # dictionary to hold recommended artists and corresponding scores
 
     # Distill corresponding similarity scores and store in sims_neighbors_idx
     sims_neighbors_idx = np.zeros(shape=(len(seed_aidx_train), K), dtype=np.float32)
+    #print "###"
+    #print neighbor_idx.shape[0]
+    #print "###"
     for i in range(0, neighbor_idx.shape[0]):
         sims_neighbors_idx[i] = AAM[seed_aidx_train[i], neighbor_idx[i]]
 
@@ -80,19 +142,51 @@ def recommend_CB(AAM, seed_aidx_train, K):
     # Now, we find the positions of each unique neighbor in neighbor_idx.
     for nidx in uniq_neighbor_idx:
         mask = np.where(neighbor_idx == nidx)
-        print mask
+        #print mask
         # Apply this mask to corresponding similarities and compute average similarity
         avg_sim = np.mean(sims_neighbors_idx[mask])
         # Store artist index and corresponding aggregated similarity in dictionary of artists to recommend
         dict_recommended_artists_idx[nidx] = avg_sim
     #########################################
 
+    nn_count = np.bincount(neighbor_idx.flatten())
+    threshold = np.int(np.round(len(seed_aidx_train))*0.05)
+    selected_artists_idx = np.where(nn_count > threshold)[0]
+    recommended_artists_idx = np.setdiff1d(selected_artists_idx, dict_recommended_artists_idx)
     # Remove all artists that are in the training set of seed user
     for aidx in recommended_artists_idx:
         dict_recommended_artists_idx.pop(aidx, None)            # drop (key, value) from dictionary if key (i.e., aidx) exists; otherwise return None
 
+    #print "###"
+    #print dict_recommended_artists_idx
+    #print "###"
+
+
+
+    #print "###"
+    #print recommended_artists_idx
+    #print "###"
+
     # Return dictionary of recommended artist indices (and scores)
     return dict_recommended_artists_idx
+
+
+# Function that implements a dumb random recommender. It predicts a number of randomly chosen items.
+# It returns a dictionary of recommended artist indices (and corresponding scores).
+def recommend_RB(artists_idx, no_items):
+    # artists_idx           list of artist indices to draw random sample from
+    # no_items              no of items to predict
+
+    # Let's predict a number of random items that equal the number of items in the user's test set
+    random_aidx = random.sample(artists_idx, no_items)
+
+    # Insert scores into dictionary
+    dict_random_aidx = {}
+    for aidx in random_aidx:
+        dict_random_aidx[aidx] = 1.0            # for random recommendations, all scores are equal
+
+    # Return dict of recommended artist indices as keys (and scores as values)
+    return dict_random_aidx
 
 
 # Function to run an evaluation experiment.
@@ -107,7 +201,11 @@ def run():
     for u in range(0, no_users):
 
         # Get seed user's artists listened to
-        u_aidx = np.nonzero(UAM[u, :])[0]
+        u_aidx = np.nonzero(UAM[u, :MAX_ARTISTS])[0]
+
+        if NF >= len(u_aidx) or u == no_users -1:
+            continue
+
 
         # Split user's artists into train and test set for cross-fold (CV) validation
         fold = 0
@@ -125,8 +223,32 @@ def run():
             #K_CB = 3           # for CB: number of nearest neighbors to consider for each artist in seed user's training set
             #K_CF = 3           # for CF: number of nearest neighbors to consider for each user
             #K_HR = 10          # for hybrid: number of artists to recommend at most
-            if METHOD == "CB":        # content-based recommender
+            if METHOD == "RB":          # random baseline
+                dict_rec_aidx = recommend_RB(np.setdiff1d(range(0, no_artists), u_aidx[train_aidx]), K_RB) # len(test_aidx))
+            elif METHOD == "CF":        # collaborative filtering
+                dict_rec_aidx = recommend_CF(copy_UAM, u, u_aidx[train_aidx], K_CF)
+            elif METHOD == "CB":        # content-based recommender
                 dict_rec_aidx = recommend_CB(AAM, u_aidx[train_aidx], K_CB)
+            elif METHOD == "HR_SCB":     # hybrid of CF and CB, using score-based fusion (SCB)
+                dict_rec_aidx_CB = recommend_CB(AAM, u_aidx[train_aidx], K_CB)
+                dict_rec_aidx_CF = recommend_CF(copy_UAM, u, u_aidx[train_aidx], K_CF)
+                # Fuse scores given by CF and by CB recommenders
+                # First, create matrix to hold scores per recommendation method per artist
+                scores = np.zeros(shape=(2, no_artists), dtype=np.float32)
+                # Add scores from CB and CF recommenders to this matrix
+                for aidx in dict_rec_aidx_CB.keys():
+                    scores[0, aidx] = dict_rec_aidx_CB[aidx]
+                for aidx in dict_rec_aidx_CF.keys():
+                    scores[1, aidx] = dict_rec_aidx_CF[aidx]
+                # Apply aggregation function (here, just take arithmetic mean of scores)
+                scores_fused = np.mean(scores, axis=0)
+                # Sort and select top K_HR artists to recommend
+                sorted_idx = np.argsort(scores_fused)
+                sorted_idx_top = sorted_idx[-1-K_HR:]
+                # Put (artist index, score) pairs of highest scoring artists in a dictionary
+                dict_rec_aidx = {}
+                for i in range(0, len(sorted_idx_top)):
+                    dict_rec_aidx[sorted_idx_top[i]] = scores_fused[sorted_idx_top[i]]
 
 
             # Distill recommended artist indices from dictionary returned by the recommendation functions
@@ -181,15 +303,28 @@ if __name__ == '__main__':
     artists = read_from_file(ARTISTS_FILE)
     users = read_from_file(USERS_FILE)
     # Load UAM
-    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:MAX_USERS]
     # Load AAM
     AAM = np.loadtxt(AAM_FILE, delimiter='\t', dtype=np.float32)
 
-    if True:
-        METHOD = "CB"
+    if METHOD == "HR_SCB":
+        print METHOD
+        K_CB = 3            # number of nearest neighbors to consider in CB (= artists)
+        K_CF = 3            # number of nearest neighbors to consider in CF (= users)
+        for K_HR in range(10, 100):
+            print (str(K_HR) + ","),
+            run()
+
+    if METHOD == "CB":
         print METHOD
         for K_CB in range(1, 50):
             print (str(K_CB) + ","),
+            run()
+
+    if METHOD == "CF":
+        print METHOD
+        for K_CF in range(1, 100):
+            print (str(K_CF) + ","),
             run()
 
 
