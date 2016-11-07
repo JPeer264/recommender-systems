@@ -36,7 +36,7 @@ MAX_API_QUERIES = 2000
 
 SKIP_EXISTING_LYRICS = True
 
-API_COUNTER = 5000
+API_COUNTER = 0
 
 def fetch_musixmatch_basic(method, additionalstring):
     global API_COUNTER
