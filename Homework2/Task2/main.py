@@ -23,11 +23,14 @@ USERS_FILE = TASK1_OUTPUT + "users.txt"            # user names for UAM
 AAM_FILE = WIKI + "AAM.txt"                # artist-artist similarity matrix (AAM)
 METHOD = "CB"                       # recommendation method
                                     # ["RB", "CF", "CB", "HR_SEB", "HR_SCB"]
+MAX_ARTISTS = 1000
+MAX_USERS = 1000
 
-MAX_ARTISTS = 2000
-MAX_USERS = 10
+K = 100
+K_CB = K
+K_CF = K
 
-NF = 2              # number of folds to perform in cross-validation
+NF = 10              # number of folds to perform in cross-validation
 VERBOSE = True    # verbose output?
 
 # Function to read metadata (users or artists)
@@ -149,14 +152,12 @@ def recommend_CB(AAM, seed_aidx_train, K):
         dict_recommended_artists_idx[nidx] = avg_sim
     #########################################
 
-    nn_count = np.bincount(neighbor_idx.flatten())
-    threshold = np.int(np.round(len(seed_aidx_train))*0.05)
-    selected_artists_idx = np.where(nn_count > threshold)[0]
-    recommended_artists_idx = np.setdiff1d(selected_artists_idx, dict_recommended_artists_idx)
-    # Remove all artists that are in the training set of seed user
-    for aidx in recommended_artists_idx:
+    for aidx in seed_aidx_train:
         dict_recommended_artists_idx.pop(aidx, None)            # drop (key, value) from dictionary if key (i.e., aidx) exists; otherwise return None
 
+
+    # for key in sorted(dict_recommended_artists_idx):
+    #     temp_dict[key] = dict_recommended_artists_idx[]
     #print "###"
     #print dict_recommended_artists_idx
     #print "###"
@@ -167,6 +168,18 @@ def recommend_CB(AAM, seed_aidx_train, K):
     #print recommended_artists_idx
     #print "###"
 
+    dict_recommended_artists_idx = dict((k, v) for k, v in dict_recommended_artists_idx.items() if v >= 0.15)
+    # print '-----------'
+    # print '-----------'
+    # print '-----------'
+    # print '-----------'
+    # print '-----------'
+    # print dict_recommended_artists_idx
+    # print '-----------'
+    # print '-----------'
+    # print '-----------'
+    # print '-----------'
+    # print '-----------'
     # Return dictionary of recommended artist indices (and scores)
     return dict_recommended_artists_idx
 
@@ -220,7 +233,7 @@ def run():
             # Run recommendation method specified in METHOD
             # NB: u_aidx[train_aidx] gives the indices of training artists
             #K_RB = 10          # for RB: number of randomly selected artists to recommend
-            #K_CB = 3           # for CB: number of nearest neighbors to consider for each artist in seed user's training set
+            # K_CB = 1           # for CB: number of nearest neighbors to consider for each artist in seed user's training set
             #K_CF = 3           # for CF: number of nearest neighbors to consider for each user
             #K_HR = 10          # for hybrid: number of artists to recommend at most
             if METHOD == "RB":          # random baseline
@@ -290,10 +303,13 @@ def run():
             # Increase fold counter
             fold += 1
 
+    f1_score = 2 * ((avg_prec * avg_rec) / (avg_prec + avg_rec))
+
     # Output mean average precision and recall
     if VERBOSE:
-        print ("\nMAP: %.2f, MAR  %.2f" % (avg_prec, avg_rec))
+        print ("\nMAP: %.2f, MAR  %.2f, F1 Scrore: %.2f" % (avg_prec, avg_rec, f1_score))
     print ("%.3f, %.3f" % (avg_prec, avg_rec))
+    print ("K neighbors " + str(K))
 
 
 # Main program, for experimentation.
@@ -303,7 +319,7 @@ if __name__ == '__main__':
     artists = read_from_file(ARTISTS_FILE)
     users = read_from_file(USERS_FILE)
     # Load UAM
-    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:MAX_USERS]
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)
     # Load AAM
     AAM = np.loadtxt(AAM_FILE, delimiter='\t', dtype=np.float32)
 
@@ -317,9 +333,7 @@ if __name__ == '__main__':
 
     if METHOD == "CB":
         print METHOD
-        for K_CB in range(1, 50):
-            print (str(K_CB) + ","),
-            run()
+        run()
 
     if METHOD == "CF":
         print METHOD
