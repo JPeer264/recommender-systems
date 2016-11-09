@@ -104,7 +104,7 @@ def generate_wikipedia_AAM():
         helper.ensure_dir(WIKIPEDIA_OUTPUT)
 
         # for all artists
-        for i in range(0, WIKIPEDIA_MAX_ARTISTS):
+        for i in range(0, len(artists)):
             # construct file name to fetched HTML page for current artist, depending on parameter settings in Wikipedia_Fetcher.py
             if Wikipedia_Fetcher.USE_INDEX_IN_OUTPUT_FILE:
                 html_fn = Wikipedia_Fetcher.OUTPUT_DIRECTORY + "/" + str(i) + ".html"     # target file name

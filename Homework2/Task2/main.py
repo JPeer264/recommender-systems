@@ -10,6 +10,7 @@ import numpy as np
 from sklearn import cross_validation            # machine learning & evaluation module
 import random
 import scipy.spatial.distance as scidist        # import distance computation module from scipy package
+import operator
 
 
 # Parameters
@@ -20,15 +21,17 @@ MUSIXMATCH = TASK1_OUTPUT + "musixmatch/"
 UAM_FILE = TESTFILES + "C1ku_UAM.txt"           # user-artist-matrix (UAM)
 ARTISTS_FILE = TASK1_OUTPUT + "artists.txt"        # artist names for UAM
 USERS_FILE = TASK1_OUTPUT + "users.txt"            # user names for UAM
-AAM_FILE = WIKI + "AAM.txt"                # artist-artist similarity matrix (AAM)
+AAM_FILE = MUSIXMATCH + "AAM.txt"                # artist-artist similarity matrix (AAM)
 METHOD = "CB"                       # recommendation method
                                     # ["RB", "CF", "CB", "HR_SEB", "HR_SCB"]
 MAX_ARTISTS = 1000
-MAX_USERS = 1000
+MAX_USERS = 100
 
 K = 100
 K_CB = K
 K_CF = K
+
+MAX_RECOMMENDED_ARTISTS = 25
 
 NF = 10              # number of folds to perform in cross-validation
 VERBOSE = True    # verbose output?
@@ -155,9 +158,20 @@ def recommend_CB(AAM, seed_aidx_train, K):
     for aidx in seed_aidx_train:
         dict_recommended_artists_idx.pop(aidx, None)            # drop (key, value) from dictionary if key (i.e., aidx) exists; otherwise return None
 
+    temp = []
+    dictlist = []
 
-    # for key in sorted(dict_recommended_artists_idx):
-    #     temp_dict[key] = dict_recommended_artists_idx[]
+    for key, value in dict_recommended_artists_idx.iteritems():
+        temp = [key,value]
+        dictlist.append(temp)
+
+    sorted_dict_reco_aidx = sorted(dict_recommended_artists_idx.items(), key=operator.itemgetter(1), reverse=True)
+    new_dict_recommended_artists_idx = {}
+
+    for index, key in enumerate(sorted_dict_reco_aidx, start=0):
+        if index < MAX_RECOMMENDED_ARTISTS and index < len(sorted_dict_reco_aidx):
+            new_dict_recommended_artists_idx[key[0]] = key[1]
+
     #print "###"
     #print dict_recommended_artists_idx
     #print "###"
@@ -168,7 +182,8 @@ def recommend_CB(AAM, seed_aidx_train, K):
     #print recommended_artists_idx
     #print "###"
 
-    dict_recommended_artists_idx = dict((k, v) for k, v in dict_recommended_artists_idx.items() if v >= 0.15)
+    # dict_recommended_artists_idx = dict((k, v) for k, v in dict_recommended_artists_idx.items() if v >= 0.15)
+
     # print '-----------'
     # print '-----------'
     # print '-----------'
@@ -181,7 +196,7 @@ def recommend_CB(AAM, seed_aidx_train, K):
     # print '-----------'
     # print '-----------'
     # Return dictionary of recommended artist indices (and scores)
-    return dict_recommended_artists_idx
+    return new_dict_recommended_artists_idx
 
 
 # Function that implements a dumb random recommender. It predicts a number of randomly chosen items.
@@ -214,7 +229,7 @@ def run():
     for u in range(0, no_users):
 
         # Get seed user's artists listened to
-        u_aidx = np.nonzero(UAM[u, :MAX_ARTISTS])[0]
+        u_aidx = np.nonzero(UAM[u, :])[0]
 
         if NF >= len(u_aidx) or u == no_users -1:
             continue

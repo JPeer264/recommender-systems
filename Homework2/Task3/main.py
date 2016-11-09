@@ -11,6 +11,7 @@ from sklearn import cross_validation            # machine learning & evaluation 
 import random
 import scipy.spatial.distance as scidist        # import distance computation module from scipy package
 import helper # helper.py
+import operator
 
 # Parameters
 TESTFILES    = "../testfiles/"
@@ -22,12 +23,19 @@ USERS_FILE   = TASK1_OUTPUT + "users.txt" # user names for UAM
 UAM_FILE     = TESTFILES + "C1ku_UAM.txt" # user-artist-matrix (UAM)
 AAM_FILE     = WIKI + "AAM.txt" # artist-artist similarity matrix (AAM)
 
-METHOD = "HR_SCB" # recommendation method - ["CF", "CB", "HR_SEB", "HR_SCB"]
+METHOD = "CB" # recommendation method - ["CF", "CB", "HR_SEB", "HR_SCB"]
 
-MAX_ARTISTS = 2000
-MAX_USERS   = 10
+MAX_ARTISTS = 1000
+MAX_USERS   = 100
 
-NF      = 2 # number of folds to perform in cross-validation
+MAX_RECOMMENDED_ARTISTS = 50
+
+K = 100
+K_CB = K
+K_CF = K
+K_HR = K
+
+NF      = 10 # number of folds to perform in cross-validation
 VERBOSE = True # verbose output?
 
 # Function to read metadata (users or artists)
@@ -104,12 +112,28 @@ def recommend_CF(UAM, seed_uidx, seed_aidx_train, K):
         dict_recommended_artists_idx[recommended_artists_idx[i]] = scores[i]
     #########################################
 
+    dictlist = []
+
+    for key, value in dict_recommended_artists_idx.iteritems():
+        temp = [key, value]
+        dictlist.append(temp)
+
+    sorted_dict_reco_aidx = sorted(dict_recommended_artists_idx.items(), key=operator.itemgetter(1), reverse=True)
+    new_dict_recommended_artists_idx = {}
+
+    for index, key in enumerate(sorted_dict_reco_aidx, start=0):
+        if index < MAX_RECOMMENDED_ARTISTS and index < len(sorted_dict_reco_aidx):
+            new_dict_recommended_artists_idx[key[0]] = key[1]
+
 
     # Return dictionary of recommended artist indices (and scores)
-    return dict_recommended_artists_idx
+    return new_dict_recommended_artists_idx
 # /recommend_CF
 
 
+# Function that implements a content-based recommender. It takes as input an artist-artist-matrix (AAM) containing pair-wise similarities
+# and the indices of the seed user's training artists.
+# It returns a dictionary of recommended artist indices (and corresponding scores).
 # Function that implements a content-based recommender. It takes as input an artist-artist-matrix (AAM) containing pair-wise similarities
 # and the indices of the seed user's training artists.
 # It returns a dictionary of recommended artist indices (and corresponding scores).
@@ -150,13 +174,22 @@ def recommend_CB(AAM, seed_aidx_train, K):
         dict_recommended_artists_idx[nidx] = avg_sim
     #########################################
 
-    nn_count = np.bincount(neighbor_idx.flatten())
-    threshold = np.int(np.round(len(seed_aidx_train))*0.05)
-    selected_artists_idx = np.where(nn_count > threshold)[0]
-    recommended_artists_idx = np.setdiff1d(selected_artists_idx, dict_recommended_artists_idx)
-    # Remove all artists that are in the training set of seed user
-    for aidx in recommended_artists_idx:
+    for aidx in seed_aidx_train:
         dict_recommended_artists_idx.pop(aidx, None)            # drop (key, value) from dictionary if key (i.e., aidx) exists; otherwise return None
+
+    temp = []
+    dictlist = []
+
+    for key, value in dict_recommended_artists_idx.iteritems():
+        temp = [key,value]
+        dictlist.append(temp)
+
+    sorted_dict_reco_aidx = sorted(dict_recommended_artists_idx.items(), key=operator.itemgetter(1), reverse=True)
+    new_dict_recommended_artists_idx = {}
+
+    for index, key in enumerate(sorted_dict_reco_aidx, start=0):
+        if index < MAX_RECOMMENDED_ARTISTS and index < len(sorted_dict_reco_aidx):
+            new_dict_recommended_artists_idx[key[0]] = key[1]
 
     #print "###"
     #print dict_recommended_artists_idx
@@ -168,8 +201,21 @@ def recommend_CB(AAM, seed_aidx_train, K):
     #print recommended_artists_idx
     #print "###"
 
+    # dict_recommended_artists_idx = dict((k, v) for k, v in dict_recommended_artists_idx.items() if v >= 0.15)
+
+    # print '-----------'
+    # print '-----------'
+    # print '-----------'
+    # print '-----------'
+    # print '-----------'
+    # print dict_recommended_artists_idx
+    # print '-----------'
+    # print '-----------'
+    # print '-----------'
+    # print '-----------'
+    # print '-----------'
     # Return dictionary of recommended artist indices (and scores)
-    return dict_recommended_artists_idx
+    return new_dict_recommended_artists_idx
 # /recommend_CB
 
 # Function to run an evaluation experiment.
@@ -184,7 +230,7 @@ def run():
     for u in range(0, no_users):
 
         # Get seed user's artists listened to
-        u_aidx = np.nonzero(UAM[u, :MAX_ARTISTS])[0]
+        u_aidx = np.nonzero(UAM[u, :])[0]
 
         if NF >= len(u_aidx) or u == no_users -1:
             continue
@@ -223,7 +269,9 @@ def run():
             # Sort and select top K_HR artists to recommend
             sorted_idx     = np.argsort(scores_fused)
             sorted_idx_top = sorted_idx[-1-K_HR:]
-
+            print "###"
+            print len(scores_fused)
+            print "###"
             # Put (artist index, score) pairs of highest scoring artists in a dictionary
             dict_rec_aidx = {}
 
@@ -233,7 +281,7 @@ def run():
 
             # Distill recommended artist indices from dictionary returned by the recommendation functions
             rec_aidx = dict_rec_aidx.keys()
-
+            
             if VERBOSE:
                 print "Recommended items: ", len(rec_aidx)
 
@@ -273,11 +321,13 @@ def run():
             # Increase fold counter
             fold += 1
 
+    f1_score = 2 * ((avg_prec * avg_rec) / (avg_prec + avg_rec))
+
     # Output mean average precision and recall
     if VERBOSE:
-        print ("\nMAP: %.2f, MAR  %.2f" % (avg_prec, avg_rec))
-
+        print ("\nMAP: %.2f, MAR  %.2f, F1 Scrore: %.2f" % (avg_prec, avg_rec, f1_score))
     print ("%.3f, %.3f" % (avg_prec, avg_rec))
+    print ("K neighbors " + str(K))
 # /run
 
 # Main program, for experimentation.
@@ -290,7 +340,7 @@ if __name__ == '__main__':
     if VERBOSE:
         helper.log_highlight('Read UAM file')
 
-    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:MAX_USERS]
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)
 
     if VERBOSE:
         print 'Successfully read UAM file\n'
@@ -303,6 +353,4 @@ if __name__ == '__main__':
     if VERBOSE:
         print 'Successfully read AAM file\n'
 
-    for K_HR in range(10, 100):
-        print (str(K_HR) + ","),
-        run()
+    run()
