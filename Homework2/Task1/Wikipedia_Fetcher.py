@@ -41,7 +41,7 @@ def fetch_wikipedia_page(query):
         print "Retrieving data from " + url
         content = urllib.urlopen(url).read()
         regexp_1 = re.compile(r'h1.*firstHeading.*Search result.*/h1')  # check if it only retrieves the search page
-        regexp_2 = re.compile(r'div.*mw-content-text.*may refer to:')   # check if it only retrieves the "may refer to" page
+        regexp_2 = re.compile(r'may refer to:')   # check if it only retrieves the "may refer to" page
         if (regexp_1.search(content) is None) and (regexp_2.search(content) is None):
             return content
         else:
