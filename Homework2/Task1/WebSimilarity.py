@@ -501,6 +501,57 @@ def generate_musixmatch_AAM():
     np.savetxt(MUSIXMATCH_AAM, sims, fmt='%0.6f', delimiter='\t', newline='\n')
 # /generate_musixmatch_AAM
 
+def language_stats_musixmatch():
+    languages = {}
+
+    musixmatch_artists = mf.read_txt(mf.GENERATED_ARTISTS_FILE)
+    artists_file = Wikipedia_Fetcher.read_file(ARTISTS_FILE)[:MUSIXMATCH_MAX_ARTISTS]
+
+    ###########################
+    ## keep artist structure ##
+    ###########################
+
+    if VERBOSE:
+        helper.log_highlight('Generate lyrics content')
+
+    # iterate over the same artist file and check
+    # if the values are in the same order
+    # so the later generated AAM is still in the same order
+    for index, artist_name in enumerate(artists_file, start = 0):
+        # make it short for debugging
+        if VERBOSE:
+            print 'Get lyrics of ' + artist_name + ' [' + str(index + 1) + ' of ' + str(len(artists_file)) + ']'
+
+        if index < len(artists_file):
+            for artist_mm_id, artist_mm_name in musixmatch_artists.items():
+                # if the name is in the musixmatch array
+                # to checking it is still in the same order
+                if artist_name == artist_mm_name:
+                    # check the lyrics and sort everything
+                    file = mf.OUTPUT_DIR_MUSIXMATCH_JSON + str(artist_mm_id) + '.json'
+
+                    try:
+                        with open(file, 'r') as f:
+                            data  = json.load(f)      # create reader
+                            data_by_artist = data[artist_mm_id]
+
+                            for string in data_by_artist:
+                                # remove all non english
+                                try:
+                                    lang = detect(string)
+
+                                    try:
+                                        languages[lang] += 1
+                                    except:
+                                        languages[lang] = 1
+
+                                except:
+                                    continue;
+                    except:
+                        print 'File ' + file + ' not found'
+    return languages
+# /language_stats_musixmatch
+
 # Main program
 if __name__ == '__main__':
     # dictionary to hold tokenized HTML content of each artist
