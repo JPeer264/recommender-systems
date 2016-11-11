@@ -106,14 +106,12 @@ def generate_wikipedia_AAM():
         term_list = []
 
         # read artist names from file
-        artists = Wikipedia_Fetcher.read_file(Wikipedia_Fetcher.ARTISTS_FILE)   # using functions and parameters defined in Wikipedia_Fetcher.py
+        artists = Wikipedia_Fetcher.read_file(Wikipedia_Fetcher.ARTISTS_FILE)   # using functions and parameters defined in o1_Wikipedia_Fetcher.py
 
         helper.ensure_dir(WIKIPEDIA_OUTPUT)
 
         # for all artists
         for i in range(0, len(artists)):
-            if i > 20:
-                continue
             # construct file name to fetched HTML page for current artist, depending on parameter settings in Wikipedia_Fetcher.py
             if Wikipedia_Fetcher.USE_INDEX_IN_OUTPUT_FILE:
                 html_fn = Wikipedia_Fetcher.OUTPUT_DIRECTORY + "/" + str(i) + ".html"     # target file name
