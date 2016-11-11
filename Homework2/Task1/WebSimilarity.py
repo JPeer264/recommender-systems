@@ -166,7 +166,7 @@ def generate_wikipedia_AAM():
                     terms_df[t] += 1
 
         # remove all values which are one
-        terms_df = dict((k, v) for k, v in terms_df.iteritems() if v != 1)
+        #terms_df = dict((k, v) for k, v in terms_df.iteritems() if v != 1)
 
         # Compute number of artists/documents and terms
         no_artists = len(html_contents.items())
@@ -198,13 +198,12 @@ def generate_wikipedia_AAM():
             print "Computing term weights for artist " + str(a_idx)
             # You may want (or need) to make the following more efficient.
             for t in terms:                     # iterate over all terms of current artist
-                if t in terms_df:
-                    if t in terms_index_lookup:
-                        t_idx = terms_index_lookup[t]
-                    else:
-                        t_idx = term_list.index(t)      # get index of term t in (ordered) list of terms
-                        terms_index_lookup[t] = t_idx
-                    tfidf[a_idx, t_idx] += 1        # increase TF value for every encounter of a term t within a document of the current artist
+                if t in terms_index_lookup:
+                    t_idx = terms_index_lookup[t]
+                else:
+                    t_idx = term_list.index(t)      # get index of term t in (ordered) list of terms
+                    terms_index_lookup[t] = t_idx
+                tfidf[a_idx, t_idx] += 1        # increase TF value for every encounter of a term t within a document of the current artist
 
         # Replace TF values in tfidf by TF-IDF values:
         # copy and reshape IDF vector and point-wise multiply it with the TF values
@@ -239,6 +238,13 @@ def generate_wikipedia_AAM():
 
         print "Saving cosine similarities to " + WIKIPEDIA_AAM + "."
         np.savetxt(WIKIPEDIA_AAM, sims, fmt='%0.6f', delimiter='\t', newline='\n')
+
+        # Compute number of artists/documents and terms
+        no_artists = len(html_contents.items())
+        no_terms = len(terms_df)
+
+        print "Number of artists in corpus: " + str(no_artists)
+        print "Number of terms in corpus: " + str(no_terms)
 
 def generate_musixmatch_AAM():
     ps = PorterStemmer()
