@@ -12,6 +12,12 @@ import json
 import re
 from langdetect import detect
 from nltk.stem import PorterStemmer
+from google.cloud import translate
+
+GOOGLE_API_KEY = 'AIzaSyChzGh69eIv-XAosYWKcLojTMc3Afg4aag'
+
+# Instantiates a client
+TRANSLATE_CLIENT = translate.Client(GOOGLE_API_KEY)
 
 
 # Parameters
@@ -38,7 +44,8 @@ MUSIXMATCH_MAX_ARTISTS = 1000
 VERBOSE = True
 
 # Stop words used by Google
-STOP_WORDS = ["a", "able", "about", "above", "abroad", "according", "accordingly", "across", "actually", "adj", "after", "afterwards", "again", "against", "ago", "ahead", "ain't", "all",
+STOP_WORDS = [
+    "a", "able", "about", "above", "abroad", "according", "accordingly", "across", "actually", "adj", "after", "afterwards", "again", "against", "ago", "ahead", "ain't", "all",
     "allow", "allows", "almost", "alone", "along", "alongside", "already", "also", "although", "always", "am", "amid", "amidst", "among", "amongst", "an", "and", "another", "any", "anybody",
     "anyhow", "anyone", "anything", "anyway", "anyways", "anywhere", "apart", "appear", "appreciate", "appropriate", "are", "aren't", "around", "as", "a's", "aside", "ask", "asking", "associated", "at", "available", "away",
     "awfully", "b", "back", "backward", "backwards", "be", "became", "because", "become", "becomes", "becoming", "been", "before", "beforehand", "begin", "behind", "being", "believe", "below", "beside", "besides", "best", "better",
@@ -68,7 +75,7 @@ STOP_WORDS = ["a", "able", "about", "above", "abroad", "according", "accordingly
     "went", "were", "we're", "weren't", "we've", "what", "whatever", "what'll", "what's", "what've", "when", "whence", "whenever", "where", "whereafter", "whereas", "whereby", "wherein",
     "where's", "whereupon", "wherever", "whether", "which", "whichever", "while", "whilst", "whither", "who", "who'd", "whoever", "whole", "who'll", "whom", "whomever", "who's", "whose",
     "why", "will", "willing", "wish", "with", "within", "without", "wonder", "won't", "would", "wouldn't", "x", "y", "yes", "yet", "you", "you'd", "you'll", "your", "you're", "yours",
-    "yourself", "yourselves", "you've", "z", "zero"
+    "yourself", "yourselves", "you've", "z", "zero", "january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"
 ]
 
 # A simple function to remove HTML tags from a string.
@@ -91,7 +98,7 @@ def remove_html_markup(s):
     return out
 
 def generate_wikipedia_AAM():
-
+        ps = PorterStemmer()
         html_contents = {}
         # dictionary to hold document frequency of each term in corpus
         terms_df = {}
@@ -105,6 +112,8 @@ def generate_wikipedia_AAM():
 
         # for all artists
         for i in range(0, len(artists)):
+            if i > 20:
+                continue
             # construct file name to fetched HTML page for current artist, depending on parameter settings in Wikipedia_Fetcher.py
             if Wikipedia_Fetcher.USE_INDEX_IN_OUTPUT_FILE:
                 html_fn = Wikipedia_Fetcher.OUTPUT_DIRECTORY + "/" + str(i) + ".html"     # target file name
@@ -119,16 +128,28 @@ def generate_wikipedia_AAM():
                 # Next we perform some text processing:
                 # Strip content off HTML tags
                 content_tags_removed = remove_html_markup(html_content)
+                # remove numbers
+                content_no_numbers = re.sub(r'[0-9]+', ' ', content_tags_removed)
                 # Perform case-folding, i.e., convert to lower case
-                content_casefolded = content_tags_removed.lower()
+                content_casefolded = content_no_numbers.lower()
+                # remove words with wiki in it
+                content_no_specific_words = re.sub(r'[\w]*wiki|article|pedia|privacy|policy[\w]*', ' ', content_casefolded)
                 # Tokenize stripped content at white space characters
-                tokens = content_casefolded.split()
+                tokens = content_no_specific_words.split()
                 # Remove all tokens containing non-alphanumeric characters; using a simple lambda function (i.e., anonymous function, can be used as parameter to other function)
                 tokens_filtered = filter(lambda t: t.isalnum(), tokens)
                 # Remove words in the stop word list
                 tokens_filtered_stopped = filter(lambda t: t not in STOP_WORDS, tokens_filtered)
+
+                tokens_stemmed = []
+                # stemm words
+                for w in tokens_filtered_stopped:
+                    tokens_stemmed.append(ps.stem(w))
+
                 # Store remaining tokens of current artist in dictionary for further processing
-                html_contents[i] = tokens_filtered_stopped
+                if len(tokens_stemmed) > 0:
+                    html_contents[i] = tokens_filtered_stopped
+
                 print "File " + html_fn + " --- total tokens: " + str(len(tokens)) + "; after filtering and stopping: " + str(len(tokens_filtered_stopped))
             else:           # Inform user if target file does not exist
                 print "Target file " + html_fn + " does not exist!"
@@ -146,9 +167,13 @@ def generate_wikipedia_AAM():
                 else:
                     terms_df[t] += 1
 
+        # remove all values which are one
+        terms_df = dict((k, v) for k, v in terms_df.iteritems() if v != 1)
+
         # Compute number of artists/documents and terms
         no_artists = len(html_contents.items())
         no_terms = len(terms_df)
+
         print "Number of artists in corpus: " + str(no_artists)
         print "Number of terms in corpus: " + str(no_terms)
 
@@ -156,11 +181,9 @@ def generate_wikipedia_AAM():
         # with a very small document frequency.
         # ...
 
-
         # Dictionary is unordered, so we store all terms in a list to fix their order, before computing the TF-IDF matrix
         for t in terms_df.keys():
             term_list.append(t)
-
 
         # Create IDF vector using logarithmic IDF formulation
         idf = np.zeros(no_terms, dtype=np.float32)
@@ -223,6 +246,7 @@ def generate_musixmatch_AAM():
     lyrics_contents  = {}
     terms_df         = {}
     term_list        = []
+    total_string = ''
 
     musixmatch_artists = mf.read_txt(mf.GENERATED_ARTISTS_FILE)
     artists_file = Wikipedia_Fetcher.read_file(ARTISTS_FILE)[:MUSIXMATCH_MAX_ARTISTS]
@@ -250,25 +274,33 @@ def generate_musixmatch_AAM():
                     # check the lyrics and sort everything
                     file = mf.OUTPUT_DIR_MUSIXMATCH_JSON + str(artist_mm_id) + '.json'
 
-
                     try:
                         with open(file, 'r') as f:
                             data  = json.load(f)      # create reader
                             data_by_artist = data[artist_mm_id]
                             lyrics_content = ''
 
+
                             for string in data_by_artist:
                                 # remove all non english
-                                try:
-                                    lang = detect(string)
 
-                                    if lang == 'en':
-                                        # add to lyrics and make regex
-                                        # musixmatch has ***** TEXT ***** at the end of string
-                                        # remove those
-                                        lyrics_content += re.sub(r'\*.*\*(\s|\S)*$', '', string)
-                                except:
-                                    continue;
+                                try:
+                                    lyrics = re.sub(r'\*.*\*(\s|\S)*$', '', string)
+                                    lang = detect(lyrics)
+
+                                    # translate non-english strings
+                                    if lang != 'en':
+                                        total_string += lyrics
+                                        # translation = translate_client.translate(translated_string, target_language = 'en')
+                                        # translated_string = translation['translatedText'].encode('utf-8')
+                                        translated_string = lyrics
+                                    else:
+                                        translated_string = lyrics
+
+
+                                    lyrics_content += translated_string
+                                except Exception, e:
+                                    continue
 
                             #####################################
                             ## sorting | stamming | stopwords ##
@@ -292,16 +324,16 @@ def generate_musixmatch_AAM():
                             # Remove words in the stop word list
                             tokens_filtered_stopped = filter(lambda t: t not in STOP_WORDS, tokens_filtered)
 
-                            tokens_stammed = []
-
+                            tokens_stemmed = []
 
                             for w in tokens_filtered_stopped:
-                                tokens_stammed.append(ps.stem(w))
+                                tokens_stemmed.append(ps.stem(w))
 
-                            if len(tokens_stammed) > 0:
-                                lyrics_contents[index] = tokens_stammed
+                            if len(tokens_stemmed) > 0:
+                                lyrics_contents[index] = tokens_stemmed
 
-                    except:
+                    except Exception, e:
+                        print e
                         print 'File ' + file + ' not found'
 
     #########################################
@@ -338,6 +370,9 @@ def generate_musixmatch_AAM():
                 terms_df[t] = 1
             else:
                 terms_df[t] += 1
+
+    # remove all values which are one
+    terms_df = dict((k, v) for k, v in terms_df.iteritems() if v != 1)
 
     if VERBOSE:
         print 'Terms weighted'
