@@ -198,12 +198,13 @@ def generate_wikipedia_AAM():
             print "Computing term weights for artist " + str(a_idx)
             # You may want (or need) to make the following more efficient.
             for t in terms:                     # iterate over all terms of current artist
-                if t in terms_index_lookup:
-                    t_idx = terms_index_lookup[t]
-                else:
-                    t_idx = term_list.index(t)      # get index of term t in (ordered) list of terms
-                    terms_index_lookup[t] = t_idx
-                tfidf[a_idx, t_idx] += 1        # increase TF value for every encounter of a term t within a document of the current artist
+                if t in terms_df:
+                    if t in terms_index_lookup:
+                        t_idx = terms_index_lookup[t]
+                    else:
+                        t_idx = term_list.index(t)      # get index of term t in (ordered) list of terms
+                        terms_index_lookup[t] = t_idx
+                    tfidf[a_idx, t_idx] += 1        # increase TF value for every encounter of a term t within a document of the current artist
 
         # Replace TF values in tfidf by TF-IDF values:
         # copy and reshape IDF vector and point-wise multiply it with the TF values
@@ -420,14 +421,15 @@ def generate_musixmatch_AAM():
         # You may want (or need) to make the following more efficient.
         # iterate over all terms of current artist
         for t in terms:
-            if t in terms_index_lookup:
-                t_idx = terms_index_lookup[t]
+            if t in terms_df:
+                if t in terms_index_lookup:
+                    t_idx = terms_index_lookup[t]
 
-            else:
-                t_idx                 = term_list.index(t) # get index of term t in (ordered) list of terms
-                terms_index_lookup[t] = t_idx
+                else:
+                    t_idx                 = term_list.index(t) # get index of term t in (ordered) list of terms
+                    terms_index_lookup[t] = t_idx
 
-            tfidf[a_idx, t_idx] += 1 # increase TF value for every encounter of a term t within a document of the current artist
+                tfidf[a_idx, t_idx] += 1 # increase TF value for every encounter of a term t within a document of the current artist
 
     # Replace TF values in tfidf by TF-IDF values:
     # copy and reshape IDF vector and point-wise multiply it with the TF values
