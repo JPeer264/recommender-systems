@@ -121,7 +121,7 @@ def recommend_CF(UAM, seed_uidx, seed_aidx_train, K):
 # Function that implements a content-based recommender. It takes as input an artist-artist-matrix (AAM) containing pair-wise similarities
 # and the indices of the seed user's training artists.
 # It returns a dictionary of recommended artist indices (and corresponding scores).
-def recommend_CB(AAM, seed_aidx_train, K, length_artists):
+def recommend_CB(AAM, seed_aidx_train, K):
     # AAM               artist-artist-matrix of pairwise similarities
     # seed_aidx_train   indices of training artists for seed user
     # K                 number of nearest neighbors (artists) to consider for each seed artist
@@ -312,7 +312,7 @@ def run():
             elif METHOD == "CF":  # collaborative filtering
                 dict_rec_aidx = recommend_CF(copy_UAM, u, u_aidx[train_aidx], K_CF)
             elif METHOD == "CB":  # content-based recommender
-                dict_rec_aidx = recommend_CB(AAM, u_aidx[train_aidx], K_CB, test_aidx_plus)
+                dict_rec_aidx = recommend_CB(AAM, u_aidx[train_aidx], K_CB)
             elif METHOD == "HR_SCB":  # hybrid of CF and CB, using score-based fusion (SCB)
                 dict_rec_aidx_CB = recommend_CB(AAM, u_aidx[train_aidx], K_CB)
                 dict_rec_aidx_CF = recommend_CF(copy_UAM, u, u_aidx[train_aidx], K_CF)

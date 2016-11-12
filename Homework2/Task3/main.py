@@ -25,12 +25,13 @@ AAM_FILE     = WIKI + "AAM.txt" # artist-artist similarity matrix (AAM)
 
 METHOD = "CB" # recommendation method - ["CF", "CB", "HR_SEB", "HR_SCB"]
 
-MAX_ARTISTS = 1000
+MAX_ARTISTS = 2000
 MAX_USERS   = 100
 
+MIN_RECOMMENDED_ARTISTS = 10
 MAX_RECOMMENDED_ARTISTS = 50
 
-K = 100
+K = 10
 K_CB = K
 K_CF = K
 K_HR = K
@@ -106,10 +107,11 @@ def recommend_CF(UAM, seed_uidx, seed_aidx_train, K):
     # scores = UAM[neighbor_idx, recommended_artists_idx] / np.max(UAM[neighbor_idx, recommended_artists_idx])
     # for k>1:
     scores = np.mean(UAM[neighbor_idx][:, recommended_artists_idx], axis=0)
+    sum = np.sum(UAM[neighbor_idx][:, recommended_artists_idx], axis=0)
 
     # Write (artist index, score) pairs to dictionary of recommended artists
     for i in range(0, len(recommended_artists_idx)):
-        dict_recommended_artists_idx[recommended_artists_idx[i]] = scores[i]
+        dict_recommended_artists_idx[recommended_artists_idx[i]] = sum[i]
     #########################################
 
     dictlist = []
@@ -119,7 +121,21 @@ def recommend_CF(UAM, seed_uidx, seed_aidx_train, K):
         dictlist.append(temp)
 
     sorted_dict_reco_aidx = sorted(dict_recommended_artists_idx.items(), key=operator.itemgetter(1), reverse=True)
+
+    max = sorted_dict_reco_aidx[0][1]
+
+
+
     new_dict_recommended_artists_idx = {}
+
+    for i in sorted_dict_reco_aidx:
+        new_dict_recommended_artists_idx[i[0]] = i[1] / max
+
+    if len(sorted_dict_reco_aidx) <= MIN_RECOMMENDED_ARTISTS:
+        print "*"
+        reco_art_RB = recommend_RB(np.setdiff1d(range(0, AAM.shape[1]), seed_aidx_train), MIN_RECOMMENDED_ARTISTS-len(sorted_dict_reco_aidx))
+        print "Recommended < 10: "
+        sorted_dict_reco_aidx =  sorted_dict_reco_aidx+reco_art_RB.items()
 
     for index, key in enumerate(sorted_dict_reco_aidx, start=0):
         if index < MAX_RECOMMENDED_ARTISTS and index < len(sorted_dict_reco_aidx):
@@ -134,9 +150,6 @@ def recommend_CF(UAM, seed_uidx, seed_aidx_train, K):
 # Function that implements a content-based recommender. It takes as input an artist-artist-matrix (AAM) containing pair-wise similarities
 # and the indices of the seed user's training artists.
 # It returns a dictionary of recommended artist indices (and corresponding scores).
-# Function that implements a content-based recommender. It takes as input an artist-artist-matrix (AAM) containing pair-wise similarities
-# and the indices of the seed user's training artists.
-# It returns a dictionary of recommended artist indices (and corresponding scores).
 def recommend_CB(AAM, seed_aidx_train, K):
     # AAM               artist-artist-matrix of pairwise similarities
     # seed_aidx_train   indices of training artists for seed user
@@ -145,61 +158,106 @@ def recommend_CB(AAM, seed_aidx_train, K):
     # Get nearest neighbors of train set artist of seed user
     # Sort AAM column-wise for each row
     sort_idx = np.argsort(AAM[seed_aidx_train, :], axis=1)
+    print '\n'
+    print sort_idx
+    print '\n'
+    # print "AAAAMMMM###"
+    # print AAM[seed_aidx_train, :MAX_ARTISTS]
+    # print "###"
+    # print sort_idx
+    # print "###"
 
     # Select the K closest artists to all artists the seed user listened to
-    neighbor_idx = sort_idx[:,-1-K:-1]
-
+    neighbor_idx = sort_idx[:, -1 - K:-1]
 
     ##### ADDED FOR SCORE-BASED FUSION  #####
-    dict_recommended_artists_idx = {}           # dictionary to hold recommended artists and corresponding scores
+    dict_recommended_artists_idx = {}  # dictionary to hold recommended artists and corresponding scores
 
     # Distill corresponding similarity scores and store in sims_neighbors_idx
     sims_neighbors_idx = np.zeros(shape=(len(seed_aidx_train), K), dtype=np.float32)
-    #print "###"
-    #print neighbor_idx.shape[0]
-    #print "###"
+    print "###"
+    print neighbor_idx.shape[0]
+    print "###"
     for i in range(0, neighbor_idx.shape[0]):
         sims_neighbors_idx[i] = AAM[seed_aidx_train[i], neighbor_idx[i]]
 
     # Aggregate the artists in neighbor_idx.
     # To this end, we compute their average similarity to the seed artists
-    uniq_neighbor_idx = set(neighbor_idx.flatten())     # First, we obtain a unique set of artists neighboring the seed user's artists.
+    uniq_neighbor_idx = set(
+        neighbor_idx.flatten())  # First, we obtain a unique set of artists neighboring the seed user's artists.
+
     # Now, we find the positions of each unique neighbor in neighbor_idx.
     for nidx in uniq_neighbor_idx:
         mask = np.where(neighbor_idx == nidx)
-        #print mask
+
+        # print mask
         # Apply this mask to corresponding similarities and compute average similarity
         avg_sim = np.mean(sims_neighbors_idx[mask])
+        sum = np.sum(sims_neighbors_idx[mask]);
+
         # Store artist index and corresponding aggregated similarity in dictionary of artists to recommend
-        dict_recommended_artists_idx[nidx] = avg_sim
+        dict_recommended_artists_idx[nidx] = sum
     #########################################
+    # print "###"
+    # print "###"
+    # print dict_recommended_artists_idx
+    # print "###"
+    # print "###"
+
+
+
 
     for aidx in seed_aidx_train:
-        dict_recommended_artists_idx.pop(aidx, None)            # drop (key, value) from dictionary if key (i.e., aidx) exists; otherwise return None
+        dict_recommended_artists_idx.pop(aidx,
+                                         None)  # drop (key, value) from dictionary if key (i.e., aidx) exists; otherwise return None
 
     temp = []
     dictlist = []
 
     for key, value in dict_recommended_artists_idx.iteritems():
-        temp = [key,value]
+        temp = [key, value]
         dictlist.append(temp)
 
     sorted_dict_reco_aidx = sorted(dict_recommended_artists_idx.items(), key=operator.itemgetter(1), reverse=True)
+
+    print sorted_dict_reco_aidx
+
+    max = sorted_dict_reco_aidx[0][1]
+
     new_dict_recommended_artists_idx = {}
+
+    for i in sorted_dict_reco_aidx:
+        new_dict_recommended_artists_idx[i[0]] = i[1] / max
+
+
+    if len(sorted_dict_reco_aidx) <= MIN_RECOMMENDED_ARTISTS:
+        print "*"
+        reco_art_RB = recommend_RB(np.setdiff1d(range(0, AAM.shape[1]), seed_aidx_train), MIN_RECOMMENDED_ARTISTS-len(sorted_dict_reco_aidx))
+        print "Recommended < 10: "
+        sorted_dict_reco_aidx =  sorted_dict_reco_aidx+reco_art_RB.items()
+
+    print sorted_dict_reco_aidx
 
     for index, key in enumerate(sorted_dict_reco_aidx, start=0):
         if index < MAX_RECOMMENDED_ARTISTS and index < len(sorted_dict_reco_aidx):
             new_dict_recommended_artists_idx[key[0]] = key[1]
 
-    #print "###"
-    #print dict_recommended_artists_idx
-    #print "###"
+
+    print "###"
+    print "###"
+    print new_dict_recommended_artists_idx
+    print "###"
+    print "###"
+
+    # print "###"
+    # print dict_recommended_artists_idx
+    # print "###"
 
 
 
-    #print "###"
-    #print recommended_artists_idx
-    #print "###"
+    # print "###"
+    # print recommended_artists_idx
+    # print "###"
 
     # dict_recommended_artists_idx = dict((k, v) for k, v in dict_recommended_artists_idx.items() if v >= 0.15)
 
@@ -216,7 +274,24 @@ def recommend_CB(AAM, seed_aidx_train, K):
     # print '-----------'
     # Return dictionary of recommended artist indices (and scores)
     return new_dict_recommended_artists_idx
-# /recommend_CB
+
+# Function that implements a dumb random recommender. It predicts a number of randomly chosen items.
+# It returns a dictionary of recommended artist indices (and corresponding scores).
+def recommend_RB(artists_idx, no_items):
+    # artists_idx           list of artist indices to draw random sample from
+    # no_items              no of items to predict
+
+    # Let's predict a number of random items that equal the number of items in the user's test set
+    random_aidx = random.sample(artists_idx, no_items)
+
+    # Insert scores into dictionary
+    dict_random_aidx = {}
+    for aidx in random_aidx:
+        dict_random_aidx[aidx] = 1.0  # for random recommendations, all scores are equal
+
+    # Return dict of recommended artist indices as keys (and scores as values)
+    return dict_random_aidx
+
 
 # Function to run an evaluation experiment.
 def run():
@@ -340,7 +415,7 @@ if __name__ == '__main__':
     if VERBOSE:
         helper.log_highlight('Read UAM file')
 
-    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:MAX_USERS, :MAX_ARTISTS]
 
     if VERBOSE:
         print 'Successfully read UAM file\n'
