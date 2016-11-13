@@ -21,17 +21,17 @@ MUSIXMATCH   = TASK1_OUTPUT + "musixmatch/"
 ARTISTS_FILE = TASK1_OUTPUT + "artists.txt" # artist names for UAM
 USERS_FILE   = TASK1_OUTPUT + "users.txt" # user names for UAM
 UAM_FILE     = TESTFILES + "C1ku_UAM.txt" # user-artist-matrix (UAM)
-AAM_FILE     = WIKI + "AAM.txt" # artist-artist similarity matrix (AAM)
+AAM_FILE     = MUSIXMATCH + "AAM.txt" # artist-artist similarity matrix (AAM)
 
 METHOD = "CB" # recommendation method - ["CF", "CB", "HR_SEB", "HR_SCB"]
 
-MAX_ARTISTS = 2000
-MAX_USERS   = 100
+MAX_ARTISTS = 3000
+MAX_USERS   = 500
 
-MIN_RECOMMENDED_ARTISTS = 10
-MAX_RECOMMENDED_ARTISTS = 50
+MIN_RECOMMENDED_ARTISTS = 300
+MAX_RECOMMENDED_ARTISTS = MIN_RECOMMENDED_ARTISTS + 10
 
-K = 10
+K = 2
 K_CB = K
 K_CF = K
 K_HR = K
@@ -122,14 +122,14 @@ def recommend_CF(UAM, seed_uidx, seed_aidx_train, K):
 
     sorted_dict_reco_aidx = sorted(dict_recommended_artists_idx.items(), key=operator.itemgetter(1), reverse=True)
 
-    max = sorted_dict_reco_aidx[0][1]
+    max_value = sorted_dict_reco_aidx[0][1]
 
 
 
     new_dict_recommended_artists_idx = {}
 
     for i in sorted_dict_reco_aidx:
-        new_dict_recommended_artists_idx[i[0]] = i[1] / max
+        new_dict_recommended_artists_idx[i[0]] = i[1] / max_value
 
     if len(sorted_dict_reco_aidx) <= MIN_RECOMMENDED_ARTISTS:
         print "*"
@@ -403,6 +403,7 @@ def run():
         print ("\nMAP: %.2f, MAR  %.2f, F1 Scrore: %.2f" % (avg_prec, avg_rec, f1_score))
     print ("%.3f, %.3f" % (avg_prec, avg_rec))
     print ("K neighbors " + str(K))
+    print ("Recommendation: " + str(MIN_RECOMMENDED_ARTISTS))
 # /run
 
 # Main program, for experimentation.
@@ -415,7 +416,7 @@ if __name__ == '__main__':
     if VERBOSE:
         helper.log_highlight('Read UAM file')
 
-    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:MAX_USERS, :MAX_ARTISTS]
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:, :MAX_ARTISTS]
 
     if VERBOSE:
         print 'Successfully read UAM file\n'
@@ -423,7 +424,7 @@ if __name__ == '__main__':
     if VERBOSE:
         helper.log_highlight('Read AAM file')
 
-    AAM = np.loadtxt(AAM_FILE, delimiter='\t', dtype=np.float32)
+    AAM = np.loadtxt(AAM_FILE, delimiter='\t', dtype=np.float32)[:MAX_ARTISTS, :MAX_ARTISTS]
 
     if VERBOSE:
         print 'Successfully read AAM file\n'
