@@ -3,17 +3,17 @@ import random
 
 MAX_ARTIST = 1
 # Parameters
-UAM_FILE = "./test_data/C1ku_UAM.txt"                # user-artist-matrix (UAM)
-ARTISTS_FILE = "./data/C1ku_idx_artists.txt"    # artist names for UAM
-USERS_FILE = "./data/C1ku_idx_users.txt"        # user names for UAM
+UAM_FILE = "./test_data/C1ku/C1ku_UAM.txt"                # user-artist-matrix (UAM)
+ARTISTS_FILE = "./data/C1ku_artists_extended.txt"    # artist names for UAM
+USERS_FILE = "./data/C1ku_user_extended.txt"        # user names for UAM
 
-def recommend_random_artists_RB(UAM, u_idx, train_aidx):
+
+def recommend_random_user_RB(UAM, u_idx, train_aidx):
     """
     randomly generates a list of artists which the target_user never heard.
     It will compare the artists by a random generated user
 
     :param target_user: the username of the targetuser
-
     :return: an array with new artists
     """
     all_idx = range(0, UAM.shape[0])
@@ -21,7 +21,7 @@ def recommend_random_artists_RB(UAM, u_idx, train_aidx):
 
     # cannot generate the own user
     if random_u_idx == u_idx:
-        recommend_random_artists_RB(UAM, u_idx)
+        recommend_random_user_RB(UAM, u_idx)
 
     u_aidx = np.nonzero(UAM[u_idx, :])[0]
     random_u_aidx = np.nonzero(UAM[random_u_idx, :])[0]
