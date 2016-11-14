@@ -37,7 +37,7 @@ MIN_RECOMMENDED_ARTISTS = 300
 MAX_RECOMMENDED_ARTISTS = MIN_RECOMMENDED_ARTISTS
 
 NF = 10  # number of folds to perform in cross-validation
-VERBOSE = True  # verbose output?
+VERBOSE = False  # verbose output?
 
 
 # Function to read metadata (users or artists)
@@ -201,7 +201,7 @@ def recommend_CB(AAM, seed_aidx_train, K):
 
     new_return = {}
     for index, key in enumerate(sorted_dict_reco_aidx, start=0):
-        if index < MAX_RECOMMENDED_ARTISTS and index < len(sorted_dict_reco_aidx):
+        if index < MIN_RECOMMENDED_ARTISTS and index < len(sorted_dict_reco_aidx):
             new_return[key[0]] = key[1]
 
     #print "###"
@@ -458,7 +458,7 @@ if __name__ == '__main__':
             r_sorted['R' + str(recommender_artist)] = []
 
             MIN_RECOMMENDED_ARTISTS = recommender_artist
-
+            print MIN_RECOMMENDED_ARTISTS
             # prepare for appending
             data_to_append = {}
             data_to_append['neighbors'] = K2
