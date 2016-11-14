@@ -22,11 +22,11 @@ MUSIXMATCH = TASK1_OUTPUT + "musixmatch/"
 UAM_FILE = TESTFILES + "C1ku_UAM.txt"  # user-artist-matrix (UAM)
 ARTISTS_FILE = TASK1_OUTPUT + "artists.txt"  # artist names for UAM
 USERS_FILE = TASK1_OUTPUT + "users.txt"  # user names for UAM
-AAM_FILE = MUSIXMATCH + "AAM.txt"  # artist-artist similarity matrix (AAM)
+AAM_FILE = WIKI + "AAM.txt"  # artist-artist similarity matrix (AAM)
 AAM_FILE_ihres = WIKI + "AAM_wiki.txt"  # artist-artist similarity matrix (AAM)
 METHOD = "CB"  # recommendation method
 # ["RB", "CF", "CB", "HR_SEB", "HR_SCB"]
-MAX_ARTISTS = 3000
+MAX_ARTISTS = 10119
 MAX_USERS = 3000
 
 K2 = 10
@@ -37,7 +37,7 @@ MIN_RECOMMENDED_ARTISTS = 300
 MAX_RECOMMENDED_ARTISTS = MIN_RECOMMENDED_ARTISTS
 
 NF = 10  # number of folds to perform in cross-validation
-VERBOSE = False  # verbose output?
+VERBOSE = True  # verbose output?
 
 
 # Function to read metadata (users or artists)
@@ -161,7 +161,7 @@ def recommend_CB(AAM, seed_aidx_train, K):
         # print mask
         # Apply this mask to corresponding similarities and compute average similarity
         avg_sim = np.mean(sims_neighbors_idx[mask])
-        the_sum = np.sum(sims_neighbors_idx[mask]);
+        the_sum = np.sum(sims_neighbors_idx[mask])
 
         # Store artist index and corresponding aggregated similarity in dictionary of artists to recommend
         dict_recommended_artists_idx[nidx] = the_sum
@@ -185,7 +185,6 @@ def recommend_CB(AAM, seed_aidx_train, K):
 
     sorted_dict_reco_aidx = sorted(dict_recommended_artists_idx.items(), key=operator.itemgetter(1), reverse=True)
 
-    print sorted_dict_reco_aidx
 
     max = sorted_dict_reco_aidx[0][1]
 
@@ -195,17 +194,15 @@ def recommend_CB(AAM, seed_aidx_train, K):
         new_dict_recommended_artists_idx[i[0]] = i[1] / max
 
     if len(sorted_dict_reco_aidx) <= MIN_RECOMMENDED_ARTISTS:
-        print "*"
         reco_art_RB = recommend_RB(np.setdiff1d(range(0, AAM.shape[1]), seed_aidx_train),
                                    MIN_RECOMMENDED_ARTISTS - len(sorted_dict_reco_aidx))
-        print "Recommended < 10: "
         sorted_dict_reco_aidx = sorted_dict_reco_aidx + reco_art_RB.items()
 
-    print sorted_dict_reco_aidx
 
+    new_return = {}
     for index, key in enumerate(sorted_dict_reco_aidx, start=0):
         if index < MAX_RECOMMENDED_ARTISTS and index < len(sorted_dict_reco_aidx):
-            new_dict_recommended_artists_idx[key[0]] = key[1]
+            new_return[key[0]] = key[1]
 
     #print "###"
     #print "###"
@@ -237,7 +234,7 @@ def recommend_CB(AAM, seed_aidx_train, K):
     # print '-----------'
     # print '-----------'
     # Return dictionary of recommended artist indices (and scores)
-    return new_dict_recommended_artists_idx
+    return new_return
 
 
 # Function that implements a dumb random recommender. It predicts a number of randomly chosen items.
@@ -409,7 +406,7 @@ if __name__ == '__main__':
     artists = read_from_file(ARTISTS_FILE)
     users = read_from_file(USERS_FILE)
     # Load UAM
-    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:, :MAX_ARTISTS]
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:, MAX_ARTISTS]
     # Load AAM
     AAM = np.loadtxt(AAM_FILE, delimiter='\t', dtype=np.float32)
 
@@ -435,8 +432,9 @@ if __name__ == '__main__':
         }]
     }
     """
+    METHOD_two = "CB_wiki"
     runned_methods = {}
-    runned_methods[METHOD] = []
+    runned_methods[METHOD_two] = []
 
     k_sorted = {}
     r_sorted = {}
@@ -445,7 +443,7 @@ if __name__ == '__main__':
     neighbors = [ 1, 2, 3, 5, 10, 20, 50 ]
     recommender_artists = [ 10, 20, 30, 50, 100, 200, 300 ]
 
-    output_filedir = TASK1_OUTPUT + '/results/' + METHOD + '/'
+    output_filedir = TASK1_OUTPUT + '/results/' + METHOD_two + '/'
 
     # ensure dir
     if not os.path.exists(output_filedir):
@@ -469,7 +467,7 @@ if __name__ == '__main__':
             data = run()
 
             data_to_append.update(data)
-            runned_methods[METHOD].append(data_to_append)
+            runned_methods[METHOD_two].append(data_to_append)
 
             # write into file
             content = json.dumps(data_to_append, indent=4, sort_keys=True)
@@ -487,7 +485,7 @@ if __name__ == '__main__':
     with open(output_filedir + 'all.json') as data_file:
         runned_methods = json.load(data_file)
 
-    for result_obj in runned_methods[METHOD]:
+    for result_obj in runned_methods[METHOD_two]:
         data_neighbors = [
             result_obj['neighbors'],
             result_obj['avg_prec'],
