@@ -22,11 +22,11 @@ MUSIXMATCH = TASK1_OUTPUT + "musixmatch/"
 UAM_FILE = TESTFILES + "C1ku_UAM.txt"  # user-artist-matrix (UAM)
 ARTISTS_FILE = TASK1_OUTPUT + "artists.txt"  # artist names for UAM
 USERS_FILE = TASK1_OUTPUT + "users.txt"  # user names for UAM
-AAM_FILE = WIKI + "AAM.txt"  # artist-artist similarity matrix (AAM)
+AAM_FILE = MUSIXMATCH + "AAM.txt"  # artist-artist similarity matrix (AAM)
 AAM_FILE_ihres = WIKI + "AAM_wiki.txt"  # artist-artist similarity matrix (AAM)
 METHOD = "CB"  # recommendation method
 # ["RB", "CF", "CB", "HR_SEB", "HR_SCB"]
-MAX_ARTISTS = 10119
+MAX_ARTISTS = 3000
 MAX_USERS = 3000
 
 K2 = 10
@@ -406,7 +406,7 @@ if __name__ == '__main__':
     artists = read_from_file(ARTISTS_FILE)
     users = read_from_file(USERS_FILE)
     # Load UAM
-    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:, MAX_ARTISTS]
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:, :MAX_ARTISTS]
     # Load AAM
     AAM = np.loadtxt(AAM_FILE, delimiter='\t', dtype=np.float32)
 
