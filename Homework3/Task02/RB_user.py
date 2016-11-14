@@ -6,17 +6,23 @@ import random
 import scipy.spatial.distance as scidist        # import distance computation module from scipy package
 import helper # helper.py
 import operator
+import os
+import json
 
 # Parameters
 TESTFILES    = "../test_data/"
-TASK1_OUTPUT = "../Task1/output/"
+TASK2_OUTPUT = "../Task02/output/"
 ARTISTS_FILE = TESTFILES + "C1ku_artists_extended.csv" # artist names for UAM
 USERS_FILE   = TESTFILES + "C1ku_artists_extended.csv" # user names for UAM
 UAM_FILE     = TESTFILES + "C1ku/C1ku_UAM.txt" # user-artist-matrix (UAM)
 
+METHOD = "RB_user"
+
 MAX_USERS   = 50
 
-NUM_RECOMMENDED_ARTIST = 100
+MIN_RECOMMENDED_ARTISTS = 6
+
+K = 1
 
 NF      = 10 # number of folds to perform in cross-validation
 VERBOSE = True # verbose output?
@@ -52,14 +58,14 @@ def recommend_random_user_RB(UAM, u_idx):
 
     sorted_dict_reco_aidx = sorted(dict_random_aidx.items(), key=operator.itemgetter(1), reverse=True)
 
-    if len(dict_random_aidx) <= NUM_RECOMMENDED_ARTIST:
+    if len(dict_random_aidx) <= MIN_RECOMMENDED_ARTISTS:
         print "*"
         reco_art_RB = recommend_random_user_RB(UAM,u_idx)
         print "Recommended < 10: "
         sorted_dict_reco_aidx = sorted_dict_reco_aidx + reco_art_RB.items()
 
     for index, key in enumerate(sorted_dict_reco_aidx, start=0):
-        if index < NUM_RECOMMENDED_ARTIST and index < len(sorted_dict_reco_aidx):
+        if index < MIN_RECOMMENDED_ARTISTS and index < len(sorted_dict_reco_aidx):
             new_dict_recommended_artists_idx[key[0]] = key[1]
 
     return new_dict_recommended_artists_idx
@@ -162,9 +168,56 @@ if __name__ == '__main__':
     if VERBOSE:
         helper.log_highlight('Read UAM file')
 
-    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:MAX_USERS,:]
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)
 
     if VERBOSE:
         print 'Successfully read UAM file\n'
 
-    run()
+    runned_methods = {}
+    runned_methods[METHOD] = []
+
+    k_sorted = {}
+    r_sorted = {}
+
+    # data
+    neighbors = [1, 2, 3, 5, 10, 20, 50]
+    recommender_artists = [10, 20, 30, 50, 100, 200, 300]
+
+    output_filedir = TASK2_OUTPUT + '/results/' + METHOD + '/'
+
+    # ensure dir
+    if not os.path.exists(output_filedir):
+        os.makedirs(output_filedir)
+
+    for neighbor in neighbors:
+        k_sorted['K' + str(neighbor)] = []
+
+        K2 = neighbor
+
+        for recommender_artist in recommender_artists:
+            k_sorted['R' + str(recommender_artist)] = []
+
+            MIN_RECOMMENDED_ARTISTS = recommender_artist
+
+            # prepare for appending
+            data_to_append = {}
+            data_to_append['neighbors'] = K2
+            data_to_append['recommended_artists'] = MIN_RECOMMENDED_ARTISTS
+
+            data = run()
+
+            data_to_append.update(data)
+            runned_methods[METHOD].append(data_to_append)
+
+            # write into file
+            content = json.dumps(data_to_append, indent=4, sort_keys=True)
+            f = open(output_filedir + 'K' + str(K2) + '_recommended' + str(MIN_RECOMMENDED_ARTISTS) + '.json', 'w')
+
+            f.write(content)
+            f.close()
+
+    content = json.dumps(data_to_append, indent=4, sort_keys=True)
+    f = open(output_filedir + 'all.json', 'w')
+
+    f.write(content)
+    f.close()
