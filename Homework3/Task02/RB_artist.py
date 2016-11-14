@@ -1,32 +1,32 @@
-import numpy as np
-import random
-import csv
-# Machine learning & evaluation module
-from sklearn import cross_validation
-import json
 import os
+import json
+import csv
+import numpy as np
+from sklearn import cross_validation  # machine learning & evaluation module
+import random
 
 
 # Parameters
-TESTFILES    = "../test_data/"
-TASK2_OUTPUT = "../Task02/output/"
-ARTISTS_FILE = TESTFILES + "C1ku_artists_extended.csv" # artist names for UAM
-USERS_FILE   = TESTFILES + "C1ku_artists_extended.csv" # user names for UAM
-UAM_FILE     = TESTFILES + "C1ku/C1ku_UAM.txt" # user-artist-matrix (UAM)
+TESTFILES = "../test_data/"
+TASK2_OUTPUT = "../Task02/output"
+# User-artist-matrix (UAM)
+UAM_FILE = TESTFILES + "C1ku/C1ku_UAM.txt"
+# Artist names for UAM
+ARTISTS_FILE = TESTFILES + "C1ku_artists_extended.csv"
+# User names for UAM
+USERS_FILE = TESTFILES + "C1ku_users_extended.csv"
+# Recommendation method
+METHOD = "RB_Artists"
 
-
-MAX_ARTISTS = 500
-MAX_USERS = 20
-
-K2 = 10
-K_CB = K2
-K_CF = K2
-K_CB = K2
+# Define no of artists that should be recommended
 MIN_RECOMMENDED_ARTISTS = 300
 MAX_RECOMMENDED_ARTISTS = MIN_RECOMMENDED_ARTISTS
 
-NF = 10  # number of folds to perform in cross-validation
-VERBOSE = True  # verbose output?
+# Number of folds to perform in cross-validation
+NF = 10
+
+# Verbose output?
+VERBOSE = False
 
 
 # Function to read metadata (users or artists)
@@ -42,11 +42,14 @@ def read_from_file(filename):
     return data
 
 
-# Function that implements a dumb random recommender. It predicts a number of randomly chosen items.
-# It returns a dictionary of recommended artist indices (and corresponding scores).
 def RB_artists(artists_idx, no_items):
-    # artists_idx           list of artist indices to draw random sample from
-    # no_items              no of items to predict
+    """
+    Function that implements a dumb random recommender. It predicts a number of randomly chosen items
+
+    :param artists_idx:  list of artist indices
+    :param no_items: no of items to predict
+    :return: a dictionary of recommended artist indices (and corresponding scores)
+    """
 
     # Let's predict a number of random items that equal the number of items in the user's test set
     random_aidx = random.sample(artists_idx, no_items)
@@ -63,6 +66,8 @@ def RB_artists(artists_idx, no_items):
 def run():
     """
     Function to run an evaluation experiment
+
+    :return: a dictionary with MAP, MAR and F1-Score for the tested recommender
     """
 
     # Initialize variables to hold performance measures
@@ -70,8 +75,7 @@ def run():
     avg_rec = 0;  # mean recall
 
     # For all users in our data (UAM)
-    #no_users = UAM.shape[0]
-    no_users = MAX_USERS+2
+    no_users = UAM.shape[0]
     no_artists = UAM.shape[1]
 
     for u in range(0, no_users):
@@ -79,17 +83,17 @@ def run():
         # Get seed user's artists listened to
         u_aidx = np.nonzero(UAM[u, :])[0]
 
-        # ignore users with less artists than the crossfold validation split maximum | NF
+        # Ignore users with less artists than the crossfold validation split maximum | NF
         if NF >= len(u_aidx) or u == no_users - 1:
             continue
 
         # Split user's artists into train and test set for cross-fold (CV) validation
         fold = 0
 
-        # Create folds (splits) for 5-fold CV
+        # Create folds (splits) for 10-fold CV
         kf = cross_validation.KFold(len(u_aidx), n_folds=NF)
 
-        # for all folds
+        # For all folds
         for train_aidx, test_aidx in kf:
             # Show progress
             if VERBOSE:
@@ -130,7 +134,7 @@ def run():
         else:
             rec = 100.0 * TP / len(test_aidx)
 
-        # add precision and recall for current user and fold to aggregate variables
+        # Add precision and recall for current user and fold to aggregate variables
         avg_prec += prec / (NF * no_users)
         avg_rec += rec / (NF * no_users)
 
@@ -152,13 +156,13 @@ def run():
     return data_rb_artists
 
 
+# Main program, for experimentation.
 if __name__ == '__main__':
     # Load metadata from provided files into lists
     artists = read_from_file(ARTISTS_FILE)
     users = read_from_file(USERS_FILE)
     # Load UAM
     UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)
-
 
     runned_methods = {METHOD: []}
 
@@ -178,7 +182,7 @@ if __name__ == '__main__':
     for neighbor in neighbors:
         k_sorted['K' + str(neighbor)] = []
 
-        K2 = neighbor
+        K = neighbor
 
         for recommender_artist in recommender_artists:
             k_sorted['R' + str(recommender_artist)] = []
@@ -186,7 +190,7 @@ if __name__ == '__main__':
             MIN_RECOMMENDED_ARTISTS = recommender_artist
 
             # prepare for appending
-            data_to_append = {'neighbors': K2, 'recommended_artists': MIN_RECOMMENDED_ARTISTS}
+            data_to_append = {'neighbors': K, 'recommended_artists': MIN_RECOMMENDED_ARTISTS}
 
             data = run()
 
@@ -195,7 +199,7 @@ if __name__ == '__main__':
 
             # write into file
             content = json.dumps(data_to_append, indent=4, sort_keys=True)
-            f = open(output_filedir + 'K' + str(K2) + '_recommended' + str(MIN_RECOMMENDED_ARTISTS) + '.json', 'w')
+            f = open(output_filedir + 'K' + str(K) + '_recommended' + str(MIN_RECOMMENDED_ARTISTS) + '.json', 'w')
 
             f.write(content)
             f.close()
@@ -205,7 +209,3 @@ if __name__ == '__main__':
 
     f.write(content)
     f.close()
-
-
-
-
