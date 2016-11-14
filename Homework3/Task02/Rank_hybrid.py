@@ -101,7 +101,7 @@ def recommend_PB(UAM, seed_aidx_train, K):
 
     new_dict_finish = {}
     for index, key in enumerate(sorted_dict_reco_aidx, start=0):
-        if index < MIN_RECOMMENDED_ARTISTS and index < len(sorted_dict_reco_aidx):
+        if index < MIN_RECOMMENDED_ARTISTS / 2 and index < len(sorted_dict_reco_aidx):
             new_dict_finish[key[0]] = key[1]
     print "##########"
     print new_dict_finish
@@ -239,12 +239,9 @@ def recommend_CB(AAM, seed_aidx_train, K):
 
     new_dict_finish = {}
     for index, key in enumerate(sorted_dict_reco_aidx, start=0):
-        if index < MIN_RECOMMENDED_ARTISTS and index < len(sorted_dict_reco_aidx):
+        if index < MIN_RECOMMENDED_ARTISTS / 2 and index < len(sorted_dict_reco_aidx):
             new_dict_finish[key[0]] = key[1]
 
-    print "##########"
-    print new_dict_finish
-    print "##########"
     # Return dictionary of recommended artist indices (and scores)
     return new_dict_finish
 
@@ -266,38 +263,6 @@ def recommend_RB(artists_idx, no_items):
     # Return dict of recommended artist indices as keys (and scores as values)
     return dict_random_aidx
 
-# Function that implements a dumb random recommender. It predicts a number of artists from randomly chosen users.
-# It returns a dictionary of recommended artist indices (and corresponding scores).
-def recommend_RB_user(UAM, seed_aidx_train, no_items, K_users = 1):
-    # UAM                   user-artist-matrix
-    # artists_idx           list of artist indices to draw random sample from
-    # no_items              no of items to predict
-    # K_users               no of random users selected
-
-    # Select a random sample of users
-    random_uidx = random.sample(range(0,UAM.shape[0]), K_users)
-    # Get artits of these
-    random_aidx_nz = np.nonzero(UAM[random_uidx,:])[1]      # only interested in artists, hence [1]
-    # Remove artists in training set of seed user
-    random_aidx = np.setdiff1d(set(random_aidx_nz), seed_aidx_train)
-
-    if VERBOSE:
-        print str(K_users) + ' user(s) randomly chosen, ' + str(no_items) + ' recommendations requested, ' + str(len(random_aidx)) + ' found' # restart with K=' + str(K_users+1)
-
-    # Start over with increased number of users to consider, if recommended artists smaller than requested
-    if len(random_aidx) < no_items:
-        K_users += 1
-        return recommend_RB_user(UAM, seed_aidx_train, no_items, K_users)
-
-    # Insert scores into dictionary
-    dict_random_aidx = {}
-    for aidx in random_aidx:
-        dict_random_aidx[aidx] = 1.0            # for random recommendations, all scores are equal
-
-    # Return dict of recommended artist indices as keys (and scores as values)
-    return dict_random_aidx
-
-
 # Function to run an evaluation experiment.
 def run():
     # Initialize variables to hold performance measures
@@ -307,6 +272,7 @@ def run():
     # For all users in our data (UAM)
     no_users = UAM.shape[0]
     no_artists = UAM.shape[1]
+
     for u in range(0, no_users):
 
         # Get seed user's artists listened to
@@ -322,40 +288,45 @@ def run():
             # Show progress
             if VERBOSE:
                 print "User: " + str(u) + ", Fold: " + str(fold) + ", Training items: " + str(len(train_aidx)) + ", Test items: " + str(len(test_aidx)),      # the comma at the end avoids line break
+
             # Call recommend function
             copy_UAM = UAM.copy()       # we need to create a copy of the UAM, otherwise modifications within recommend function will effect the variable
 
+            dict_rec_aidx_CB = recommend_CB(AAM, u_aidx[train_aidx], K)
+            dict_rec_aidx_PB = recommend_PB(copy_UAM, u_aidx[train_aidx], K)
 
+            # Fuse scores given by CB and by PB recommenders
+            # First, create matrix to hold scores per recommendation method per artist
+            scores = np.zeros(shape=(2, no_artists), dtype=np.float32)
 
-            if METHOD == "HR_RB":     # hybrid of CB and PB, using rank-based fusion (RB), Borda rank aggregation
-                dict_rec_aidx_CB = recommend_CB(AAM, u_aidx[train_aidx], K)
-                dict_rec_aidx_PB = recommend_PB(copy_UAM, u_aidx[train_aidx], K)
-                # Fuse scores given by CB and by PB recommenders
-                # First, create matrix to hold scores per recommendation method per artist
-                scores = np.zeros(shape=(2, no_artists), dtype=np.float32)
-                # Add scores from CB and CF recommenders to this matrix
-                for aidx in dict_rec_aidx_CB.keys():
-                    scores[0, aidx] = dict_rec_aidx_CB[aidx]
-                for aidx in dict_rec_aidx_PB.keys():
-                    scores[1, aidx] = dict_rec_aidx_PB[aidx]
-                # Convert scores to ranks
-                ranks = np.zeros(shape=(2, no_artists), dtype=np.int16)         # init rank matrix
-                for m in range(0, scores.shape[0]):                             # for all methods to fuse
-                    aidx_nz = np.nonzero(scores[m])[0]                          # identify artists with positive scores
-                    scores_sorted_idx = np.argsort(scores[m,aidx_nz])           # sort artists with positive scores according to their score
-                    # Insert votes (i.e., inverse ranks) for each artist and current method
-                    for a in range(0, len(scores_sorted_idx)):
-                        ranks[m, aidx_nz[scores_sorted_idx[a]]] = a + 1
-                # Sum ranks over different approaches
-                ranks_fused = np.sum(ranks, axis=0)
-                # Sort and select top K_HR artists to recommend
-                sorted_idx = np.argsort(ranks_fused)
-                sorted_idx_top = sorted_idx[-K:]
-                # Put (artist index, score) pairs of highest scoring artists in a dictionary
-                dict_rec_aidx = {}
-                for i in range(0, len(sorted_idx_top)):
-                    dict_rec_aidx[sorted_idx_top[i]] = ranks_fused[sorted_idx_top[i]]
+            # Add scores from CB and CF recommenders to this matrix
+            for aidx in dict_rec_aidx_CB.keys():
+                scores[0, aidx] = dict_rec_aidx_CB[aidx]
 
+            for aidx in dict_rec_aidx_PB.keys():
+                scores[1, aidx] = dict_rec_aidx_PB[aidx]
+
+            # Convert scores to ranks
+            ranks = np.zeros(shape=(2, no_artists), dtype=np.int16)         # init rank matrix
+
+            for m in range(0, scores.shape[0]):                             # for all methods to fuse
+                aidx_nz = np.nonzero(scores[m])[0]                          # identify artists with positive scores
+                scores_sorted_idx = np.argsort(scores[m,aidx_nz])           # sort artists with positive scores according to their score
+                # Insert votes (i.e., inverse ranks) for each artist and current method
+
+                for a in range(0, len(scores_sorted_idx)):
+                    ranks[m, aidx_nz[scores_sorted_idx[a]]] = a + 1
+
+            # Sum ranks over different approaches
+            ranks_fused = np.sum(ranks, axis=0)
+            # Sort and select top K_HR artists to recommend
+            sorted_idx = np.argsort(ranks_fused)
+            sorted_idx_top = sorted_idx[-MIN_RECOMMENDED_ARTISTS:]
+            # Put (artist index, score) pairs of highest scoring artists in a dictionary
+            dict_rec_aidx = {}
+
+            for i in range(0, len(sorted_idx_top)):
+                dict_rec_aidx[sorted_idx_top[i]] = ranks_fused[sorted_idx_top[i]]
 
             # Distill recommended artist indices from dictionary returned by the recommendation functions
             rec_aidx = dict_rec_aidx.keys()
