@@ -31,10 +31,10 @@ MAX_USERS   = 500
 MIN_RECOMMENDED_ARTISTS = 300
 MAX_RECOMMENDED_ARTISTS = MIN_RECOMMENDED_ARTISTS + 10
 
-K = 2
+K = 10
 K_CB = K
 K_CF = K
-K_HR = K
+K_HR = MIN_RECOMMENDED_ARTISTS
 
 NF      = 10 # number of folds to perform in cross-validation
 VERBOSE = True # verbose output?
@@ -220,7 +220,7 @@ def recommend_CB(AAM, seed_aidx_train, K):
 
     sorted_dict_reco_aidx = sorted(dict_recommended_artists_idx.items(), key=operator.itemgetter(1), reverse=True)
 
-    print sorted_dict_reco_aidx
+    #print sorted_dict_reco_aidx
 
     max = sorted_dict_reco_aidx[0][1]
 
@@ -231,23 +231,21 @@ def recommend_CB(AAM, seed_aidx_train, K):
 
 
     if len(sorted_dict_reco_aidx) <= MIN_RECOMMENDED_ARTISTS:
-        print "*"
+        #print "*"
         reco_art_RB = recommend_RB(np.setdiff1d(range(0, AAM.shape[1]), seed_aidx_train), MIN_RECOMMENDED_ARTISTS-len(sorted_dict_reco_aidx))
-        print "Recommended < 10: "
+        #print "Recommended < 10: "
         sorted_dict_reco_aidx =  sorted_dict_reco_aidx+reco_art_RB.items()
-
-    print sorted_dict_reco_aidx
 
     for index, key in enumerate(sorted_dict_reco_aidx, start=0):
         if index < MAX_RECOMMENDED_ARTISTS and index < len(sorted_dict_reco_aidx):
             new_dict_recommended_artists_idx[key[0]] = key[1]
 
-
-    print "###"
-    print "###"
-    print new_dict_recommended_artists_idx
-    print "###"
-    print "###"
+    print 'test'
+    #print "###"
+    #print "###"
+    #print new_dict_recommended_artists_idx
+    #print "###"
+    #print "###"
 
     # print "###"
     # print dict_recommended_artists_idx
