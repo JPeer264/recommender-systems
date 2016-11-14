@@ -26,8 +26,8 @@ AAM_FILE = MUSIXMATCH + "AAM.txt"  # artist-artist similarity matrix (AAM)
 AAM_FILE_ihres = WIKI + "AAM_wiki.txt"  # artist-artist similarity matrix (AAM)
 METHOD = "CB"  # recommendation method
 # ["RB", "CF", "CB", "HR_SEB", "HR_SCB"]
-MAX_ARTISTS = 500
-MAX_USERS = 20
+MAX_ARTISTS = 3000
+MAX_USERS = 3000
 
 K2 = 10
 K_CB = K2
@@ -37,7 +37,7 @@ MIN_RECOMMENDED_ARTISTS = 300
 MAX_RECOMMENDED_ARTISTS = MIN_RECOMMENDED_ARTISTS
 
 NF = 10  # number of folds to perform in cross-validation
-VERBOSE = True  # verbose output?
+VERBOSE = False  # verbose output?
 
 
 # Function to read metadata (users or artists)
@@ -131,9 +131,7 @@ def recommend_CB(AAM, seed_aidx_train, K):
     # Get nearest neighbors of train set artist of seed user
     # Sort AAM column-wise for each row
     sort_idx = np.argsort(AAM[seed_aidx_train, :], axis=1)
-    print '\n'
-    print sort_idx
-    print '\n'
+
     # print "AAAAMMMM###"
     # print AAM[seed_aidx_train, :MAX_ARTISTS]
     # print "###"
@@ -148,9 +146,7 @@ def recommend_CB(AAM, seed_aidx_train, K):
 
     # Distill corresponding similarity scores and store in sims_neighbors_idx
     sims_neighbors_idx = np.zeros(shape=(len(seed_aidx_train), K), dtype=np.float32)
-    print "###"
-    print neighbor_idx.shape[0]
-    print "###"
+
     for i in range(0, neighbor_idx.shape[0]):
         sims_neighbors_idx[i] = AAM[seed_aidx_train[i], neighbor_idx[i]]
 
@@ -226,7 +222,7 @@ def run():
         # Split user's artists into train and test set for cross-fold (CV) validation
         fold = 0
         kf = cross_validation.KFold(len(u_aidx), n_folds=NF)  # create folds (splits) for 5-fold CV
-        print kf
+
         for train_aidx, test_aidx in kf:  # for all folds
 
             test_aidx_plus = len(test_aidx) * 1.15
@@ -302,20 +298,10 @@ def run():
             else:
                 rec = 100.0 * TP / len(test_aidx)
 
-            print '------'
-            print 'TRUE POSITIVES'
-            print TP
-
-            print '------'
-            print 'NO. USER'
-            print no_users
 
             # add precision and recall for current user and fold to aggregate variables
             avg_prec += prec / (NF * no_users)
-            print '---------'
-            print prec / (NF * no_users)
-            print 'Avg Precision'
-            print avg_prec
+
             avg_rec += rec / (NF * no_users)
 
             # Output precision and recall of current fold
@@ -337,9 +323,9 @@ def run():
     # Output mean average precision and recall
     if VERBOSE:
         print ("\nMAP: %.2f, MAR  %.2f, F1 Scrore: %.2f" % (avg_prec, avg_rec, f1_score))
-    print ("%.3f, %.3f" % (avg_prec, avg_rec))
-    print ("K neighbors " + str(K2))
-    print AAM_FILE
+        print ("%.3f, %.3f" % (avg_prec, avg_rec))
+        print ("K neighbors " + str(K2))
+        print AAM_FILE
 
 
 # Function that implements a dumb random recommender. It predicts a number of randomly chosen items.
@@ -363,13 +349,13 @@ def recommend_RB(artists_idx, no_items):
 # Main program, for experimentation.
 if __name__ == '__main__':
 
-    # # Load metadata from provided files into lists
-    # artists = read_from_file(ARTISTS_FILE)
-    # users = read_from_file(USERS_FILE)
-    # # Load UAM
-    # UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:10, :MAX_ARTISTS]
-    # # Load AAM
-    # AAM = np.loadtxt(AAM_FILE, delimiter='\t', dtype=np.float32)
+    # Load metadata from provided files into lists
+    artists = read_from_file(ARTISTS_FILE)
+    users = read_from_file(USERS_FILE)
+    # Load UAM
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:, :MAX_ARTISTS]
+    # Load AAM
+    AAM = np.loadtxt(AAM_FILE, delimiter='\t', dtype=np.float32)
 
     csv_k_sorted_header = [
         ['Sorted by K values'],
@@ -415,7 +401,7 @@ if __name__ == '__main__':
         K2 = neighbor
 
         for recommender_artist in recommender_artists:
-            k_sorted['R' + str(recommender_artist)] = []
+            r_sorted['R' + str(recommender_artist)] = []
 
             MIN_RECOMMENDED_ARTISTS = recommender_artist
 
@@ -436,15 +422,63 @@ if __name__ == '__main__':
             f.write(content)
             f.close()
 
+    content = json.dumps(data_to_append, indent=4, sort_keys=True)
+    f = open(output_filedir + 'all.json', 'w')
+
+    f.write(content)
+    f.close()
+
     with open(output_filedir + 'all.json') as data_file:
         runned_methods = json.load(data_file)
 
+    for result_obj in runned_methods[METHOD]:
+        data_neighbors = [
+            result_obj['neighbors'],
+            result_obj['avg_prec'],
+            result_obj['avg_rec'],
+            result_obj['f1_score']
+        ]
+
+        data_recommended_artists = [
+            result_obj['recommended_artists'],
+            result_obj['avg_prec'],
+            result_obj['avg_rec'],
+            result_obj['f1_score']
+        ]
+
+        k_sorted['K' + str(result_obj['neighbors'])].append(data_recommended_artists)
+        r_sorted['R' + str(result_obj['recommended_artists'])].append(data_neighbors)
 
 
+    for key, value in r_sorted.items():
+        if key[0] == 'R':
+            # fill with meta info
+            csv_recommended_sorted_header.append([''])
+            csv_recommended_sorted_header.append([str(key) + ' recommended artists. '])
 
+            for data in value:
+                csv_recommended_sorted_header.append(data)
 
+    for key, value in k_sorted.items():
+        if key[0] == 'K':
+            # fill with meta info
+            csv_k_sorted_header.append([''])
+            csv_k_sorted_header.append([str(key) + ' neighbors. '])
 
+            for data in value:
+                csv_k_sorted_header.append(data)
 
+    b = open(output_filedir + 'sorted_neighbors.csv', 'w')
+    a = csv.writer(b)
+
+    a.writerows(csv_k_sorted_header)
+    b.close()
+
+    b = open(output_filedir + 'sorted_recommender.csv', 'w')
+    a = csv.writer(b)
+
+    a.writerows(csv_recommended_sorted_header)
+    b.close()
 
     # data = [
     #     ["Test"],
