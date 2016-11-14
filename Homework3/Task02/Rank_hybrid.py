@@ -20,7 +20,7 @@ TASK2_OUTPUT = "../Task02/output"
 # User-artist-matrix (UAM)
 UAM_FILE = TESTFILES + "C1ku/C1ku_UAM.txt"
 # AAM_FILE = TESTFILES + "AAM_wiki.txt"
-AAM_FILE = TESTFILES + "AAM_lyrics.txt"
+AAM_FILE = TESTFILES + "AAM.txt"
 # Artist names for UAM
 ARTISTS_FILE = TESTFILES + "C1ku_artists_extended.csv"
 # User names for UAM
@@ -29,8 +29,8 @@ USERS_FILE = TESTFILES + "C1ku_users_extended.csv"
 METHOD = "HR_RB"
 
 # MAX_USER = 50
-# MAX_ARTIST = 10119
-MAX_ARTIST = 3000
+# MAX_ARTISTS = 10119
+MAX_ARTISTS = 3000
 
 
 VERBOSE = True
@@ -279,7 +279,8 @@ def run():
     for u in range(0, no_users):
 
         # Get seed user's artists listened to
-        u_aidx = np.nonzero(UAM[u, :MAX_ARTIST])[0]
+        u_aidx = np.nonzero(UAM[u, :MAX_ARTISTS])[0]
+        print len(u_aidx)
 
         if NF >= len(u_aidx) or u == no_users - 1:
             continue
@@ -383,11 +384,11 @@ if __name__ == '__main__':
     artists = read_from_file(ARTISTS_FILE)
     users = read_from_file(USERS_FILE)
     # Load UAM
-    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:, :MAX_ARTIST]
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:, :MAX_ARTISTS]
     # Load AAM
-    AAM = np.loadtxt(AAM_FILE, delimiter='\t', dtype=np.float32)
+    AAM = np.loadtxt(AAM_FILE, delimiter='\t', dtype=np.float32)[:MAX_ARTISTS, :MAX_ARTISTS]
 
-    METHOD_two = METHOD # hier aendern
+    METHOD_two = "rank_hybrid_wiki" # hier aendern
 
     runned_methods = {METHOD_two: []}
 
