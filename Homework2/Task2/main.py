@@ -163,25 +163,81 @@ def recommend_CB(AAM, seed_aidx_train, K):
         avg_sim = np.mean(sims_neighbors_idx[mask])
         the_sum = np.sum(sims_neighbors_idx[mask]);
 
-        score = avg_sim * len(mask[0])
-        max_score = 1 * MIN_RECOMMENDED_ARTISTS
-        min_score = 0
-        score_normalized = (score - min_score) / (max_score - min_score)
-
-        dict_recommended_artists_idx[nidx] = score_normalized
-
+        # Store artist index and corresponding aggregated similarity in dictionary of artists to recommend
+        dict_recommended_artists_idx[nidx] = the_sum
     #########################################
+    # print "###"
+    # print "###"
+    # print dict_recommended_artists_idx
+    # print "###"
+    # print "###"
 
-    # Remove all artists that are in the training set of seed user
     for aidx in seed_aidx_train:
-        dict_recommended_artists_idx.pop(aidx, None)            # drop (key, value) from dictionary if key (i.e., aidx) exists; otherwise return None
+        dict_recommended_artists_idx.pop(aidx,
+                                         None)  # drop (key, value) from dictionary if key (i.e., aidx) exists; otherwise return None
 
-    # Sort dictionary by similarity; returns list of tuples(artist_idx, sim)
-    recommendations = sorted(dict_recommended_artists_idx.items(), key=operator.itemgetter(1), reverse=True)[:MIN_RECOMMENDED_ARTISTS]
-    # recommendations = sorted([(key,value) for (key,value) in dict_recommended_artists_idx.items()], reverse=False)[:no_recommendations]
+    temp = []
+    dictlist = []
 
-    # Return sorted list of recommended artist indices (and scores)
-    return dict(recommendations)
+    for key, value in dict_recommended_artists_idx.iteritems():
+        temp = [key, value]
+        dictlist.append(temp)
+
+    sorted_dict_reco_aidx = sorted(dict_recommended_artists_idx.items(), key=operator.itemgetter(1), reverse=True)
+
+    print sorted_dict_reco_aidx
+
+    max = sorted_dict_reco_aidx[0][1]
+
+    new_dict_recommended_artists_idx = {}
+
+    for i in sorted_dict_reco_aidx:
+        new_dict_recommended_artists_idx[i[0]] = i[1] / max
+
+    if len(sorted_dict_reco_aidx) <= MIN_RECOMMENDED_ARTISTS:
+        print "*"
+        reco_art_RB = recommend_RB(np.setdiff1d(range(0, AAM.shape[1]), seed_aidx_train),
+                                   MIN_RECOMMENDED_ARTISTS - len(sorted_dict_reco_aidx))
+        print "Recommended < 10: "
+        sorted_dict_reco_aidx = sorted_dict_reco_aidx + reco_art_RB.items()
+
+    print sorted_dict_reco_aidx
+
+    for index, key in enumerate(sorted_dict_reco_aidx, start=0):
+        if index < MAX_RECOMMENDED_ARTISTS and index < len(sorted_dict_reco_aidx):
+            new_dict_recommended_artists_idx[key[0]] = key[1]
+
+    #print "###"
+    #print "###"
+    #print new_dict_recommended_artists_idx
+    #print "###"
+    #print "###"
+
+    # print "###"
+    # print dict_recommended_artists_idx
+    # print "###"
+
+
+
+    # print "###"
+    # print recommended_artists_idx
+    # print "###"
+
+    # dict_recommended_artists_idx = dict((k, v) for k, v in dict_recommended_artists_idx.items() if v >= 0.15)
+
+    # print '-----------'
+    # print '-----------'
+    # print '-----------'
+    # print '-----------'
+    # print '-----------'
+    # print dict_recommended_artists_idx
+    # print '-----------'
+    # print '-----------'
+    # print '-----------'
+    # print '-----------'
+    # print '-----------'
+    # Return dictionary of recommended artist indices (and scores)
+    return new_dict_recommended_artists_idx
 
 
 # Function that implements a dumb random recommender. It predicts a number of randomly chosen items.
