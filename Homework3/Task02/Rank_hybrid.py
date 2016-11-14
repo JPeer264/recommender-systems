@@ -19,7 +19,8 @@ TESTFILES = "../test_data/"
 TASK2_OUTPUT = "../Task02/output"
 # User-artist-matrix (UAM)
 UAM_FILE = TESTFILES + "C1ku/C1ku_UAM.txt"
-AAM_FILE = TESTFILES + "AAM.txt"
+# AAM_FILE = TESTFILES + "AAM_wiki.txt"
+AAM_FILE = TESTFILES + "AAM_lyrics.txt"
 # Artist names for UAM
 ARTISTS_FILE = TESTFILES + "C1ku_artists_extended.csv"
 # User names for UAM
@@ -27,8 +28,10 @@ USERS_FILE = TESTFILES + "C1ku_users_extended.csv"
 # Recommendation method
 METHOD = "HR_RB"
 
-MAX_USER = 50
-MAX_ARTIST = 1000
+# MAX_USER = 50
+# MAX_ARTIST = 10119
+MAX_ARTIST = 3000
+
 
 VERBOSE = True
 
@@ -276,7 +279,7 @@ def run():
     for u in range(0, no_users):
 
         # Get seed user's artists listened to
-        u_aidx = np.nonzero(UAM[u, :])[0]
+        u_aidx = np.nonzero(UAM[u, :MAX_ARTIST])[0]
 
         if NF >= len(u_aidx) or u == no_users - 1:
             continue
@@ -380,11 +383,13 @@ if __name__ == '__main__':
     artists = read_from_file(ARTISTS_FILE)
     users = read_from_file(USERS_FILE)
     # Load UAM
-    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:MAX_USER, :MAX_ARTIST]
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:, :MAX_ARTIST]
     # Load AAM
     AAM = np.loadtxt(AAM_FILE, delimiter='\t', dtype=np.float32)
 
-    runned_methods = {METHOD: []}
+    METHOD_two = METHOD # hier aendern
+
+    runned_methods = {METHOD_two: []}
 
     k_sorted = {}
     r_sorted = {}
@@ -393,7 +398,7 @@ if __name__ == '__main__':
     neighbors = [1, 2, 3, 5, 10, 20, 50]
     recommender_artists = [10, 20, 30, 50, 100, 200, 300]
 
-    output_filedir = TASK2_OUTPUT + '/results/' + METHOD + '/'
+    output_filedir = TASK2_OUTPUT + '/results/' + METHOD_two + '/'
 
     # ensure dir
     if not os.path.exists(output_filedir):
@@ -415,7 +420,7 @@ if __name__ == '__main__':
             data = run()
 
             data_to_append.update(data)
-            runned_methods[METHOD].append(data_to_append)
+            runned_methods[METHOD_two].append(data_to_append)
 
             # write into file
             content = json.dumps(data_to_append, indent=4, sort_keys=True)
