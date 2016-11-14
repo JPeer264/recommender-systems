@@ -5,6 +5,8 @@
 __author__ = 'mms'
 
 # Load required modules
+import os
+import json
 import csv
 import numpy as np
 from sklearn import cross_validation  # machine learning & evaluation module
@@ -24,13 +26,13 @@ AAM_FILE = MUSIXMATCH + "AAM.txt"  # artist-artist similarity matrix (AAM)
 AAM_FILE_ihres = WIKI + "AAM_wiki.txt"  # artist-artist similarity matrix (AAM)
 METHOD = "CB"  # recommendation method
 # ["RB", "CF", "CB", "HR_SEB", "HR_SCB"]
-MAX_ARTISTS = 3000
+MAX_ARTISTS = 500
 MAX_USERS = 20
 
 K2 = 10
 K_CB = K2
 K_CF = K2
-MIN_RECOMMENDED_ARTISTS = 3000
+MIN_RECOMMENDED_ARTISTS = 300
 
 MAX_RECOMMENDED_ARTISTS = MIN_RECOMMENDED_ARTISTS
 
@@ -325,6 +327,13 @@ def run():
 
     f1_score = 2 * ((avg_prec * avg_rec) / (avg_prec + avg_rec))
 
+    data = {}
+    data['f1_score'] = f1_score
+    data['avg_prec'] = avg_prec
+    data['avg_rec'] = avg_rec
+
+    return data
+
     # Output mean average precision and recall
     if VERBOSE:
         print ("\nMAP: %.2f, MAR  %.2f, F1 Scrore: %.2f" % (avg_prec, avg_rec, f1_score))
@@ -354,28 +363,112 @@ def recommend_RB(artists_idx, no_items):
 # Main program, for experimentation.
 if __name__ == '__main__':
 
-    # Load metadata from provided files into lists
-    artists = read_from_file(ARTISTS_FILE)
-    users = read_from_file(USERS_FILE)
-    # Load UAM
-    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:, :MAX_ARTISTS]
-    # Load AAM
-    AAM = np.loadtxt(AAM_FILE, delimiter='\t', dtype=np.float32)
+    # # Load metadata from provided files into lists
+    # artists = read_from_file(ARTISTS_FILE)
+    # users = read_from_file(USERS_FILE)
+    # # Load UAM
+    # UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:10, :MAX_ARTISTS]
+    # # Load AAM
+    # AAM = np.loadtxt(AAM_FILE, delimiter='\t', dtype=np.float32)
 
-    if METHOD == "HR_SCB":
-        print METHOD
-        K_CB = 3  # number of nearest neighbors to consider in CB (= artists)
-        K_CF = 3  # number of nearest neighbors to consider in CF (= users)
-        for K_HR in range(10, 100):
-            print (str(K_HR) + ","),
-            run()
+    csv_k_sorted_header = [
+        ['Sorted by K values'],
+        ['']
+    ]
 
-    if METHOD == "CB":
-        print METHOD
-        run()
+    csv_recommended_sorted_header = [
+        ['Sorted by recommended artist values'],
+        ['']
+    ]
 
-    if METHOD == "CF":
-        print METHOD
-        for K_CF in range(1, 100):
-            print (str(K_CF) + ","),
-            run()
+    """
+    format
+    {
+        "cb": [{
+            avg_prec: Number,
+            avg_rec: Number,
+            neighbors: Number,
+            f1_score: Number,
+            recommended_artists: Number,
+        }]
+    }
+    """
+    runned_methods = {}
+    runned_methods[METHOD] = []
+
+    k_sorted = {}
+    r_sorted = {}
+
+    # data
+    neighbors = [ 1, 2, 3, 5, 10, 20, 50 ]
+    recommender_artists = [ 10, 20, 30, 50, 100, 200, 300 ]
+
+    output_filedir = TASK1_OUTPUT + '/results/' + METHOD + '/'
+
+    # ensure dir
+    if not os.path.exists(output_filedir):
+        os.makedirs(output_filedir)
+
+    for neighbor in neighbors:
+        k_sorted['K' + str(neighbor)] = []
+
+        K2 = neighbor
+
+        for recommender_artist in recommender_artists:
+            k_sorted['R' + str(recommender_artist)] = []
+
+            MIN_RECOMMENDED_ARTISTS = recommender_artist
+
+            # prepare for appending
+            data_to_append = {}
+            data_to_append['neighbors'] = K2
+            data_to_append['recommended_artists'] = MIN_RECOMMENDED_ARTISTS
+
+            data = run()
+
+            data_to_append.update(data)
+            runned_methods[METHOD].append(data_to_append)
+
+            # write into file
+            content = json.dumps(data_to_append, indent=4, sort_keys=True)
+            f = open(output_filedir + 'K' + str(K2) + '_recommended' + str(MIN_RECOMMENDED_ARTISTS) + '.json', 'w')
+
+            f.write(content)
+            f.close()
+
+    with open(output_filedir + 'all.json') as data_file:
+        runned_methods = json.load(data_file)
+
+
+
+
+
+
+
+
+    # data = [
+    #     ["Test"],
+    #     ["K", "MAP", "MAR"],
+    #     [1, 0.12, 0.12]
+    # ]
+
+
+
+
+    # if METHOD == "HR_SCB":
+    #     print METHOD
+    #     K_CB = 3  # number of nearest neighbors to consider in CB (= artists)
+    #     K_CF = 3  # number of nearest neighbors to consider in CF (= users)
+    #     for K_HR in range(10, 100):
+    #         print (str(K_HR) + ","),
+    #         run()
+
+    # if METHOD == "CB":
+    #     print METHOD
+    #     run()
+
+    # if METHOD == "CF":
+    #     print METHOD
+    #     for K_CF in range(1, 100):
+    #         print (str(K_CF) + ","),
+    #         run()
