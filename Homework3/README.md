@@ -25,11 +25,11 @@ MAX_ARTIST = 3000
 Check if you cut the UAM and the u_adix!<br>
 inside main method
 ```python
-UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:, :MAX_ARTIST]
+UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:, :MAX_ARTISTS]
 ```
 inside run method
 ```python
-u_aidx = np.nonzero(UAM[u, :MAX_ARTIST])[0]
+u_aidx = np.nonzero(UAM[u, :MAX_ARTISTS])[0]
 ```
 
 ## Fourth (just with AAM)
