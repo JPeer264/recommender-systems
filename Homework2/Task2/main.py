@@ -94,8 +94,7 @@ def recommend_CF(UAM, seed_uidx, seed_aidx_train, K):
     # for k=1:
     # artist_idx_n = np.nonzero(UAM[neighbor_idx, :])     # indices of artists user u's neighbor listened to
     # for k>1:
-    artist_idx_n = np.nonzero(UAM[neighbor_idx, :])[
-        1]  # [1] because we are only interested in non-zero elements among the artist axis
+    artist_idx_n = np.nonzero(UAM[neighbor_idx, :])[1]  # [1] because we are only interested in non-zero elements among the artist axis
 
     # Compute the set difference between seed user's neighbor and seed user,
     # i.e., artists listened to by the neighbor, but not by seed user.
@@ -114,6 +113,35 @@ def recommend_CF(UAM, seed_uidx, seed_aidx_train, K):
     for i in range(0, len(recommended_artists_idx)):
         dict_recommended_artists_idx[recommended_artists_idx[i]] = scores[i]
     #########################################
+
+    dictlist = []
+
+    for key, value in dict_recommended_artists_idx.iteritems():
+        temp = [key, value]
+        dictlist.append(temp)
+
+    sorted_dict_reco_aidx = sorted(dict_recommended_artists_idx.items(), key=operator.itemgetter(1), reverse=True)
+
+    max_value = sorted_dict_reco_aidx[0][1]
+
+    new_dict_recommended_artists_idx = {}
+
+    for i in sorted_dict_reco_aidx:
+        new_dict_recommended_artists_idx[i[0]] = i[1] / max_value
+
+    if len(sorted_dict_reco_aidx) <= MIN_RECOMMENDED_ARTISTS:
+        print "*"
+        reco_art_RB = recommend_RB(np.setdiff1d(range(0, AAM.shape[1]), seed_aidx_train),
+                                   MIN_RECOMMENDED_ARTISTS - len(sorted_dict_reco_aidx))
+        print "Recommended < 10: "
+        sorted_dict_reco_aidx = sorted_dict_reco_aidx + reco_art_RB.items()
+
+    for index, key in enumerate(sorted_dict_reco_aidx, start=0):
+        if index < MAX_RECOMMENDED_ARTISTS and index < len(sorted_dict_reco_aidx):
+            new_dict_recommended_artists_idx[key[0]] = key[1]
+
+    # Return dictionary of recommended artist indices (and scores)
+    return new_dict_recommended_artists_idx
 
 
     # Return dictionary of recommended artist indices (and scores)

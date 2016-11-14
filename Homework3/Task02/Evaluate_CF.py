@@ -26,10 +26,9 @@ MIN_RECOMMENDED_ARTISTS = 6
 K = 1
 K_CB = K
 K_CF = K
-K_HR = MIN_RECOMMENDED_ARTISTS
 
 NF      = 10 # number of folds to perform in cross-validation
-VERBOSE = True # verbose output?
+VERBOSE = False # verbose output?
 
 # Function to read metadata (users or artists)
 def read_from_file(filename):
@@ -122,19 +121,19 @@ def recommend_CF(UAM, seed_uidx, seed_aidx_train, K):
     for i in sorted_dict_reco_aidx:
         new_dict_recommended_artists_idx[i[0]] = i[1] / max_value
 
-    if len(sorted_dict_reco_aidx) <= MIN_RECOMMENDED_ARTISTS:
-        print "*"
+    if len(sorted_dict_reco_aidx) < MIN_RECOMMENDED_ARTISTS:
         reco_art_RB = recommend_RB(np.setdiff1d(range(0, UAM.shape[1]), seed_aidx_train), MIN_RECOMMENDED_ARTISTS-len(sorted_dict_reco_aidx))
-        print "Recommended < 10: "
         sorted_dict_reco_aidx =  sorted_dict_reco_aidx+reco_art_RB.items()
 
+
+    new_dict_finish ={}
     for index, key in enumerate(sorted_dict_reco_aidx, start=0):
         if index < MIN_RECOMMENDED_ARTISTS and index < len(sorted_dict_reco_aidx):
-            new_dict_recommended_artists_idx[key[0]] = key[1]
+            new_dict_finish[key[0]] = key[1]
 
 
     # Return dictionary of recommended artist indices (and scores)
-    return new_dict_recommended_artists_idx
+    return new_dict_finish
 # /recommend_CF
 
 # Function that implements a dumb random recommender. It predicts a number of randomly chosen items.
@@ -183,7 +182,7 @@ def run():
             # Call recommend function
             copy_UAM = UAM.copy()  # we need to create a copy of the UAM, otherwise modifications within recommend function will effect the variable
 
-            dict_rec_aidx = recommend_CF(copy_UAM, u, u_aidx[train_aidx], K_CF)
+            dict_rec_aidx = recommend_CF(copy_UAM, u, u_aidx[train_aidx], K_CB)
 
             rec_aidx = dict_rec_aidx.keys()
 
@@ -239,7 +238,7 @@ def run():
     data['avg_rec'] = avg_rec
     data['f1_score'] = f1_score
 
-    return
+    return data
 # /run
 
 # Main program, for experimentation.
