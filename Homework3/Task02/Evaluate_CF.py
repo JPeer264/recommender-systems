@@ -263,7 +263,7 @@ if __name__ == '__main__':
     r_sorted = {}
 
     # data
-    neighbors = [1, 2, 3, 5, 10, 20, 50]
+    neighbors = [2, 3, 5, 10, 20, 50]
     recommender_artists = [10, 20, 30, 50, 100, 200, 300]
 
     output_filedir = TASK2_OUTPUT + '/results/' + METHOD + '/'
@@ -275,7 +275,7 @@ if __name__ == '__main__':
     for neighbor in neighbors:
         k_sorted['K' + str(neighbor)] = []
 
-        K2 = neighbor
+        K = neighbor
 
         for recommender_artist in recommender_artists:
             k_sorted['R' + str(recommender_artist)] = []
@@ -284,7 +284,7 @@ if __name__ == '__main__':
 
             # prepare for appending
             data_to_append = {}
-            data_to_append['neighbors'] = K2
+            data_to_append['neighbors'] = K
             data_to_append['recommended_artists'] = MIN_RECOMMENDED_ARTISTS
 
             data = run()
@@ -294,7 +294,7 @@ if __name__ == '__main__':
 
             # write into file
             content = json.dumps(data_to_append, indent=4, sort_keys=True)
-            f = open(output_filedir + 'K' + str(K2) + '_recommended' + str(MIN_RECOMMENDED_ARTISTS) + '.json', 'w')
+            f = open(output_filedir + 'K' + str(K) + '_recommended' + str(MIN_RECOMMENDED_ARTISTS) + '.json', 'w')
 
             f.write(content)
             f.close()
