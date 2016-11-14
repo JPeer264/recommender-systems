@@ -1,17 +1,11 @@
-# Implementation of a simple evaluation framework for recommender systems algorithms.
-# This script further implements different baseline recommenders: collaborative filtering,
-# content-based recommender, random recommendation, and a simple hybrid method using set-based fusion.
-__author__ = 'mms'
-
 # Load required modules
 import csv
 import numpy as np
-from sklearn import cross_validation            # machine learning & evaluation module
+from sklearn import cross_validation  # machine learning & evaluation module
 import random
-import scipy.spatial.distance as scidist        # import distance computation module from scipy package
+import scipy.spatial.distance as scidist  # import distance computation module from scipy package
 import os
 import json
-
 
 # Parameters
 TESTFILES = "../test_data/"
@@ -31,9 +25,10 @@ MAX_ARTIST = 1000
 
 VERBOSE = True
 
-NF = 10              # number of folds to perform in cross-validation
+NF = 10  # number of folds to perform in cross-validation
 
-MIN_RECOMMENDED_ARTISTS = 1
+MIN_RECOMMENDED_ARTISTS = 5
+
 
 # Function to read metadata (users or artists)
 def read_from_file(filename):
@@ -48,119 +43,148 @@ def read_from_file(filename):
     return data
 
 
-# Function that implements a CF recommender. It takes as input the UAM,
-# the index of the seed user (to make predictions for) and the indices of the seed user's training artists.
-# It returns a list of recommended artist indices
 def recommend_CF(UAM, seed_uidx, seed_aidx_train):
-    # UAM               user-artist-matrix
-    # seed_uidx         user index of seed user
-    # seed_aidx_train   indices of training artists for seed user
+    """
+    Function that implements a CF recommender
+
+    :param UAM: takes the UAM
+    :param seed_uidx: index of the seed user (to make predictions for)
+    :param seed_aidx_train: the indices of the seed user's training artists
+    :return: a list of recommended artist indices
+    """
 
     # Get playcount vector for seed user
     pc_vec = UAM[seed_uidx, :]
 
-    # Remove information on test artists from seed's listening vector
-    aidx_nz = np.nonzero(pc_vec)[0]                             # artists with non-zero listening events
-    aidx_test = np.setdiff1d(aidx_nz, seed_aidx_train)        # intersection between all artist indices of user and train indices gives test artist indices
-#    print aidx_test
+    ### Remove information on test artists from seed's listening vector ###
+    # Artists with non-zero listening events
+    aidx_nz = np.nonzero(pc_vec)[0]
 
-    # Set to 0 the listening events of seed user user for testing (in UAM; pc_vec just points to UAM, is thus automatically updated)
+    # Intersection between:
+    # + all artist indices of user and
+    # + train indices
+    # --> gives test artist indices
+    aidx_test = np.setdiff1d(aidx_nz, seed_aidx_train)
+
+    # Set the listening events of seed user to 0
+    # (in UAM; pc_vec just points to UAM, is thus automatically updated)
     UAM[seed_uidx, aidx_test] = 0.0
 
     # Seed user needs to be normalized again
     # Perform sum-to-1 normalization
-    UAM[seed_uidx,:] = UAM[seed_uidx,:] / np.sum(UAM[seed_uidx,:])
-#    print np.sum(UAM[seed_uidx,:])
+    UAM[seed_uidx, :] = UAM[seed_uidx, :] / np.sum(UAM[seed_uidx, :])
 
-    # Compute similarities as inverse cosine distance between pc_vec of user and all users via UAM (assuming that UAM is normalized)
+    # Compute similarities as inverse cosine distance between:
+    # + pc_vec of user and
+    # + all users via UAM (assuming that UAM is normalized)
     sim_users = np.zeros(shape=(UAM.shape[0]), dtype=np.float32)
     for u in range(0, UAM.shape[0]):
-        sim_users[u] = 1.0 - scidist.cosine(pc_vec, UAM[u,:])
+        sim_users[u] = 1.0 - scidist.cosine(pc_vec, UAM[u, :])
 
-    # Compute similarities as inner product between pc_vec of user and all users via UAM (assuming that UAM is normalized)
-    #sim_users = np.inner(pc_vec, UAM)  # similarities between u and other users
+    # ######################
+    # Compute similarities #
+    ########################
+    # as inner product betweenpc_vec of user and all users via UAM (assuming that UAM is normalized)
 
-    # Sort similarities to all others
-    sort_idx = np.argsort(sim_users)  # sort in ascending order
+    # Similarities between u and other users
+    sim_users = np.inner(pc_vec, UAM)
+
+    # Sort similarities to all others (ascending)
+    sort_idx = np.argsort(sim_users)
 
     # Select the closest neighbor to seed user (which is the last but one; last one is user u herself!)
     neighbor_idx = sort_idx[-2:-1][0]
-#    print "The closest user to user " + str(seed_uidx) + " is " + str(neighbor_idx) + "."
-#    print "The closest user to user " + users[seed_uidx] + " is user " + users[neighbor_idx] + "."
 
-    # Get all artist indices the seed user and her closest neighbor listened to, i.e., element with non-zero entries in UAM
-    artist_idx_u = seed_aidx_train                      # indices of artists in training set user
-    artist_idx_n = np.nonzero(UAM[neighbor_idx, :])     # indices of artists user u's neighbor listened to
+    # Get all artist indices the seed user and her closest neighbor listened to
+    # e.g.: element with non-zero entries in UAM)
+
+    # Indices of artists in training set user
+    artist_idx_u = seed_aidx_train
+
+    # Indices of artists user u's neighbor listened to
+    artist_idx_n = np.nonzero(UAM[neighbor_idx, :])
 
     # Compute the set difference between seed user's neighbor and seed user,
     # i.e., artists listened to by the neighbor, but not by seed user.
     # These artists are recommended to seed user.
 
-    # np.nonzero returns a tuple of arrays, so we need to take the first element only when computing the set difference
+    # np.nonzero:
+    # returns a tuple of arrays -> so we need to take the first element only when computing the set difference
     recommended_artists_idx = np.setdiff1d(artist_idx_n[0], artist_idx_u)
 
-    print "_____________"
-    print recommended_artists_idx
-    print type(recommended_artists_idx)
-    print "_____________"
-
-    if len(recommended_artists_idx) <= MIN_RECOMMENDED_ARTISTS:
-        print "*"
+    if len(recommended_artists_idx) <= 5:
         reco_art_RB = recommend_RB(np.setdiff1d(range(0, AAM.shape[1]), seed_aidx_train),
                                    MIN_RECOMMENDED_ARTISTS - len(recommended_artists_idx))
-        print "_____________"
-        print reco_art_RB
-        print type(reco_art_RB)
-        print "_____________"
-        print "Recommended < 10: "
-        recommended_artists_idx = np.concatenate([recommended_artists_idx,reco_art_RB])
 
-    # Return list of recommended artist indices
-    return recommended_artists_idx
+        recommended_artists_idx = np.concatenate([recommended_artists_idx, reco_art_RB])
+
+    print "CF recommended_artists_idx: "
+    print "full-size: "
+    print recommended_artists_idx
+
+    recommended_artists_idx_shortened = recommended_artists_idx[1:MIN_RECOMMENDED_ARTISTS + 1]
+    print "min-size: "
+    print recommended_artists_idx_shortened
+    return recommended_artists_idx_shortened
 
 
-# Function that implements a content-based recommender. It takes as input an artist-artist-matrix (AAM) containing pair-wise similarities
-# and the indices of the seed user's training artists.
-# It returns a list of recommended artist indices
 def recommend_CB(AAM, seed_aidx_train, K):
-    # AAM               artist-artist-matrix of pairwise similarities
-    # seed_aidx_train   indices of training artists for seed user
-    # K                 number of nearest neighbors (artists) to consider for each seed artist
+    """
+    Function that implements a content-based recommender
 
-    # Get nearest neighbors of train set artist of seed user
+    :param AAM: artist-artist-matrix containing pair-wise similarities
+    :param seed_aidx_train: indices of the seed user's training artists
+    :param K: no of neighbours to consider
+    :return: number of nearest neighbors (artists) to consider for each seed artist
+    """
+
+    # ########################################################
+    # Get nearest neighbors of train set artist of seed user #
+    ##########################################################
+
     # Sort AAM column-wise for each row
     sort_idx = np.argsort(AAM[seed_aidx_train, :], axis=1)
 
     # Select the K closest artists to all artists the seed user listened to
-    neighbor_idx = sort_idx[:, -1-K:-1]
+    neighbor_idx = sort_idx[:, -1 - K:-1]
 
-    # Aggregate the artists in neighbor_idx.
-    # There are many (more) sophisticated ways to do this.
-    # We just count the number of appearances of each artist index
-    # in the range [0, max(neighbor_idx.flatten())] using np.bincount.
+    # Aggregate the artists in neighbor_idx:
+    # Count number of appearances of each artist-index in range [0, max(neighbor_idx.flatten())]
     nn_count = np.bincount(neighbor_idx.flatten())
-    # Sort this count vector (we are interested in the last elements (the artists that appear most frequently as nearest neighbors).
+
+    # Sort this count vector
+    # We are interested in the last elements (the artists that appear most frequently as nearest neighbors)
     nn_count_sort_idx = np.argsort(nn_count)
+
     # Select all artists that appear as nearest neighbors among more than 5% of the user's training artists.
     threshold = np.int(np.round(len(seed_aidx_train) * 0.05))
-    selected_artists_idx = np.where(nn_count > threshold)[0]
+
+    selected_artists_idx = np.where(nn_count_sort_idx > threshold)[0]
 
     recommended_artists_idx = np.setdiff1d(selected_artists_idx, seed_aidx_train)
-    print recommended_artists_idx
 
     if len(recommended_artists_idx) <= MIN_RECOMMENDED_ARTISTS:
-        print "*"
         reco_art_RB = recommend_RB(np.setdiff1d(range(0, AAM.shape[1]), seed_aidx_train),
                                    MIN_RECOMMENDED_ARTISTS - len(recommended_artists_idx))
-        print "Recommended < 10: "
+
         recommended_artists_idx = np.concatenate([recommended_artists_idx, reco_art_RB])
 
+    return recommended_artists_idx
 
-    # Return list of recommended artist indices
-    return recommended_artists_idx[:10]
+    print "CB recommended_artists_idx: "
+    print "full-size: "
+    print recommended_artists_idx
 
-# Function to run an evaluation experiment.
+    recommended_artists_idx_shortened = recommended_artists_idx[1:MIN_RECOMMENDED_ARTISTS + 1]
+    print "min-size: "
+    print recommended_artists_idx_shortened
+    return recommended_artists_idx_shortened
+
+
 def run():
+    """
+    Function to run an evaluation experiment
+    """
     # Initialize variables to hold performance measures
     avg_prec = 0  # mean precision
     avg_rec = 0  # mean recall
@@ -168,6 +192,7 @@ def run():
     # For all users in our data (UAM)
     no_users = UAM.shape[0]
     no_artists = UAM.shape[1]
+
     for u in range(0, no_users):
 
         # Get seed user's artists listened to
@@ -178,27 +203,33 @@ def run():
 
         # Split user's artists into train and test set for cross-fold (CV) validation
         fold = 0
-        kf = cross_validation.KFold(len(u_aidx), n_folds=NF)  # create folds (splits) for 5-fold CV
 
-        for train_aidx, test_aidx in kf:  # for all folds
+        # create folds (splits) for 10-fold CV
+        kf = cross_validation.KFold(len(u_aidx), n_folds=NF)
+
+        # For all folds
+        for train_aidx, test_aidx in kf:
             if VERBOSE:
                 print "User: " + str(u) + ", Fold: " + str(fold) + ", Training items: " + str(
-                    len(train_aidx)) + ", Test items: " + str(len(test_aidx)),  # the comma at the end avoids line break
-            # Call recommend function
-            copy_UAM = UAM.copy()  # we need to create a copy of the UAM, otherwise modifications within recommend function will effect the variable
+                    len(train_aidx)) + ", Test items: " + str(len(test_aidx)),
 
+            # Create a copy of the UAM, otherwise modifications within recommend function will effect the variable
+            copy_UAM = UAM.copy()
+
+            # Call recommend function
             rec_aidx_CF = recommend_CF(copy_UAM, u, u_aidx[train_aidx])
             rec_aidx_CB = recommend_CB(AAM, u_aidx[train_aidx], K)
             rec_aidx = np.intersect1d(rec_aidx_CB, rec_aidx_CF)
 
-
-
-
             if VERBOSE:
                 print "Recommended items: ", len(rec_aidx)
 
-            # Compute performance measures
-            correct_aidx = np.intersect1d(u_aidx[test_aidx], rec_aidx)  # correctly predicted artists
+            ################################
+            # Compute performance measures #
+            ################################
+
+            # Correctly predicted artists
+            correct_aidx = np.intersect1d(u_aidx[test_aidx], rec_aidx)
 
             # TP - True Positives is amount of overlap in recommended artists and test artists
             # FP - False Positives is recommended artists minus correctly predicted ones
@@ -241,13 +272,10 @@ def run():
     print ("K neighbors " + str(K))
     print ("Recommendation: " + str(MIN_RECOMMENDED_ARTISTS))
 
-    data = {}
-    data['avg_prec'] = avg_prec
-    data['avg_rec'] = avg_rec
-    data['f1_score'] = f1_score
+    data = {'avg_prec': avg_prec, 'avg_rec': avg_rec, 'f1_score': f1_score}
 
     return data
-# /run
+
 
 # Function that implements a dumb random recommender. It predicts a number of randomly chosen items.
 # It returns a list of recommended artist indices
@@ -269,7 +297,7 @@ if __name__ == '__main__':
     artists = read_from_file(ARTISTS_FILE)
     users = read_from_file(USERS_FILE)
     # Load UAM
-    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:MAX_USER,:MAX_ARTIST]
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:MAX_USER, :MAX_ARTIST]
     AAM = np.loadtxt(AAM_FILE, delimiter='\t', dtype=np.float32)
 
     runned_methods = {METHOD: []}
@@ -295,7 +323,7 @@ if __name__ == '__main__':
         for recommender_artist in recommender_artists:
             k_sorted['R' + str(recommender_artist)] = []
 
-            MIN_RECOMMENDED_ARTISTS = recommender_artist
+            MIN_RECOMMENDED_ARTISTS = recommender_artist / 2
 
             # prepare for appending
             data_to_append = {'neighbors': K, 'recommended_artists': MIN_RECOMMENDED_ARTISTS}
