@@ -31,3 +31,11 @@ inside run method
 ```python
 u_aidx = np.nonzero(UAM[u, :MAX_ARTIST])[0]
 ```
+
+## Fourth (just with AAM)
+
+The line where you read the AAM file check if it looks like this (look at the ending):
+
+```python
+AAM = np.loadtxt(AAM_FILE, delimiter='\t', dtype=np.float32)[:MAX_ARTISTS, :MAX_ARTISTS]
+```
