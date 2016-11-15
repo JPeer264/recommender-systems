@@ -368,7 +368,7 @@ def run():
 
             # Sort and select top K_HR artists to recommend
             sorted_idx = np.argsort(scores_fused)
-            sorted_idx_top = sorted_idx[-1 - K:]
+            sorted_idx_top = sorted_idx[- MIN_RECOMMENDED_ARTISTS:]
             print "###"
             print len(scores_fused)
             print "###"
@@ -496,7 +496,7 @@ if __name__ == '__main__':
             f.write(content)
             f.close()
 
-    content = json.dumps(data_to_append, indent=4, sort_keys=True)
+    content = json.dumps(runned_methods, indent=4, sort_keys=True)
     f = open(output_filedir + 'all.json', 'w')
 
     f.write(content)
