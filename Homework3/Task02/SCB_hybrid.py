@@ -454,7 +454,7 @@ if __name__ == '__main__':
     if VERBOSE:
         print 'Successfully read AAM file\n'
 
-    METHOD_two = "rank_hybrid_wiki"  # hier aendern
+    METHOD_two = METHOD  # hier aendern
 
     runned_methods = {METHOD_two: []}
 
@@ -462,7 +462,7 @@ if __name__ == '__main__':
     r_sorted = {}
 
     # data
-    neighbors = [1, 2, 3, 5, 10, 20, 50]
+    neighbors = [10, 20, 50]
     recommender_artists = [10, 20, 30, 50, 100, 200, 300]
 
     output_filedir = TASK2_OUTPUT + '/results/' + METHOD_two + '/'
@@ -482,7 +482,9 @@ if __name__ == '__main__':
             MIN_RECOMMENDED_ARTISTS = recommender_artist
 
             # prepare for appending
-            data_to_append = {'neighbors': K, 'recommended_artists': MIN_RECOMMENDED_ARTISTS}
+            data_to_append = {}
+            data_to_append['neighbors'] = K
+            data_to_append['recommended_artists'] = MIN_RECOMMENDED_ARTISTS
 
             data = run()
 
