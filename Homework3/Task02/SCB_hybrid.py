@@ -421,6 +421,13 @@ def run():
 
     f1_score = 2 * ((avg_prec * avg_rec) / (avg_prec + avg_rec))
 
+    data = {}
+    data['f1_score'] = f1_score
+    data['avg_prec'] = avg_prec
+    data['avg_rec'] = avg_rec
+
+    return data
+
     # Output mean average precision and recall
     if VERBOSE:
         print ("\nMAP: %.2f, MAR  %.2f, F1 Scrore: %.2f" % (avg_prec, avg_rec, f1_score))
