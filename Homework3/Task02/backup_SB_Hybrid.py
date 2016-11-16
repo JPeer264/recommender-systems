@@ -1,33 +1,55 @@
+"""
+Program that evaluates:
++ average precission (MAP)
++ average recall (MAR) and
++ F1-Score
+for a Hybrid Set-based Recommender with n-Fold crossvalidation
+"""
+
 # Load required modules
 import csv
 import numpy as np
 from sklearn import cross_validation  # machine learning & evaluation module
 import random
 import scipy.spatial.distance as scidist  # import distance computation module from scipy package
-import os
 import json
+import os.path
 
-# Parameters
-TESTFILES = "../test_data/"
-TASK2_OUTPUT = "../Task02/output"
-# User-artist-matrix (UAM)
-UAM_FILE = TESTFILES + "C1ku/C1ku_UAM.txt"
-AAM_FILE = TESTFILES + "AAM.txt"
-# Artist names for UAM
-ARTISTS_FILE = TESTFILES + "C1ku_artists_extended.csv"
-# User names for UAM
-USERS_FILE = TESTFILES + "C1ku_users_extended.csv"
-# Recommendation method
-METHOD = "HR_SEB"
 
-MAX_USER = 50
-MAX_ARTIST = 1000
+# Define Test-specs in this section - the rest is magic :-D
+# -----------------------------
+TEST = "LYRICS"
+# AAM | WIKI | LYRICS
 
+MAX_USER = 1100
+MIN_RECOMMENDED_ARTISTS = 10
+NF = 10
 VERBOSE = True
+# -----------------------------
 
-NF = 10  # number of folds to perform in cross-validation
 
-MIN_RECOMMENDED_ARTISTS = 5
+TASK2_OUTPUT = "../Task02/output"
+TESTFILES = "../test_data/"
+UAM_FILE = TESTFILES + "C1ku/C1ku_UAM.txt"
+ARTISTS_FILE = TESTFILES + "C1ku_artists_extended.csv"
+USERS_FILE = TESTFILES + "C1ku_users_extended.csv"
+
+if TEST == "AAM":
+    MAX_ARTIST = 1000
+    AAM_FILE = TESTFILES + "AAM.txt"
+    OUTPUT_FILE_NAME = "AAM"
+
+if TEST == "WIKI":
+    MAX_ARTIST = 10119
+    AAM_FILE = TESTFILES + "AAM_wiki.txt"
+    OUTPUT_FILE_NAME = "WIKI"
+
+if TEST == "LYRICS":
+    MAX_ARTIST = 3000
+    AAM_FILE = TESTFILES + "AAM_lyrics.txt"
+    OUTPUT_FILE_NAME = "LYRICS"
+
+METHOD = "HR_SEB_" + OUTPUT_FILE_NAME + "_User_" + str(MAX_USER)
 
 
 # Function to read metadata (users or artists)
@@ -79,7 +101,7 @@ def recommend_CF(UAM, seed_uidx, seed_aidx_train):
     # + all users via UAM (assuming that UAM is normalized)
     sim_users = np.zeros(shape=(UAM.shape[0]), dtype=np.float32)
     for u in range(0, UAM.shape[0]):
-        sim_users[u] = 1.0 - scidist.cosine(pc_vec, UAM[u, :])
+        sim_users[u] = 1.0 - scidist.cosine(pc_vec, UAM[u, :MAX_ARTIST])
 
     # ######################
     # Compute similarities #
@@ -112,20 +134,13 @@ def recommend_CF(UAM, seed_uidx, seed_aidx_train):
     # returns a tuple of arrays -> so we need to take the first element only when computing the set difference
     recommended_artists_idx = np.setdiff1d(artist_idx_n[0], artist_idx_u)
 
-    if len(recommended_artists_idx) <= 5:
+    if len(recommended_artists_idx) <= MIN_RECOMMENDED_ARTISTS:
         reco_art_RB = recommend_RB(np.setdiff1d(range(0, AAM.shape[1]), seed_aidx_train),
                                    MIN_RECOMMENDED_ARTISTS - len(recommended_artists_idx))
 
         recommended_artists_idx = np.concatenate([recommended_artists_idx, reco_art_RB])
 
-    print "CF recommended_artists_idx: "
-    print "full-size: "
-    print recommended_artists_idx
-
-    recommended_artists_idx_shortened = recommended_artists_idx[1:MIN_RECOMMENDED_ARTISTS + 1]
-    print "min-size: "
-    print recommended_artists_idx_shortened
-    return recommended_artists_idx_shortened
+    return recommended_artists_idx
 
 
 def recommend_CB(AAM, seed_aidx_train, K):
@@ -163,22 +178,13 @@ def recommend_CB(AAM, seed_aidx_train, K):
 
     recommended_artists_idx = np.setdiff1d(selected_artists_idx, seed_aidx_train)
 
-    if len(recommended_artists_idx) <= MIN_RECOMMENDED_ARTISTS:
+    if len(recommended_artists_idx) <= 10:
         reco_art_RB = recommend_RB(np.setdiff1d(range(0, AAM.shape[1]), seed_aidx_train),
                                    MIN_RECOMMENDED_ARTISTS - len(recommended_artists_idx))
 
         recommended_artists_idx = np.concatenate([recommended_artists_idx, reco_art_RB])
 
     return recommended_artists_idx
-
-    print "CB recommended_artists_idx: "
-    print "full-size: "
-    print recommended_artists_idx
-
-    recommended_artists_idx_shortened = recommended_artists_idx[1:MIN_RECOMMENDED_ARTISTS + 1]
-    print "min-size: "
-    print recommended_artists_idx_shortened
-    return recommended_artists_idx_shortened
 
 
 def run():
@@ -191,12 +197,12 @@ def run():
 
     # For all users in our data (UAM)
     no_users = UAM.shape[0]
-    no_artists = UAM.shape[1]
 
     for u in range(0, no_users):
 
         # Get seed user's artists listened to
-        u_aidx = np.nonzero(UAM[u, :])[0]
+        # u_aidx = np.nonzero(UAM[u, :])[0]
+        u_aidx = np.nonzero(UAM[u, :MAX_ARTIST])[0]
 
         if NF >= len(u_aidx) or u == no_users - 1:
             continue
@@ -219,30 +225,42 @@ def run():
             # Call recommend function
             rec_aidx_CF = recommend_CF(copy_UAM, u, u_aidx[train_aidx])
             rec_aidx_CB = recommend_CB(AAM, u_aidx[train_aidx], K)
+
+            # Return the sorted, unique values that are in both of the input arrays.
             rec_aidx = np.intersect1d(rec_aidx_CB, rec_aidx_CF)
 
+            # Shorten No of recommended Items
+            rec_aidx_shortened = rec_aidx[1:MIN_RECOMMENDED_ARTISTS+1]
+
+            # If no of recommended artists is noch reached fill with RB-values
+            if len(rec_aidx_shortened) <= MIN_RECOMMENDED_ARTISTS:
+                reco_art_RB = recommend_RB(np.setdiff1d(range(0, AAM.shape[1]), train_aidx),
+                                           MIN_RECOMMENDED_ARTISTS - len(rec_aidx_shortened))
+
+                rec_aidx_shortened = np.concatenate([rec_aidx_shortened, reco_art_RB])
+
             if VERBOSE:
-                print "Recommended items: ", len(rec_aidx)
+                print "Recommended items: ", len(rec_aidx_shortened)
 
             ################################
             # Compute performance measures #
             ################################
 
             # Correctly predicted artists
-            correct_aidx = np.intersect1d(u_aidx[test_aidx], rec_aidx)
+            correct_aidx = np.intersect1d(u_aidx[test_aidx], rec_aidx_shortened)
 
             # TP - True Positives is amount of overlap in recommended artists and test artists
             # FP - False Positives is recommended artists minus correctly predicted ones
             TP = len(correct_aidx)
-            FP = len(np.setdiff1d(rec_aidx, correct_aidx))
+            FP = len(np.setdiff1d(rec_aidx_shortened, correct_aidx))
 
             # Precision is percentage of correctly predicted among predicted
             # Handle special case that not a single artist could be recommended -> by definition, precision = 100%
-            if len(rec_aidx) == 0:
+            if len(rec_aidx_shortened) == 0:
                 prec = 100.0
 
             else:
-                prec = 100.0 * TP / len(rec_aidx)
+                prec = 100.0 * TP / len(rec_aidx_shortened)
 
             # Recall is percentage of correctly predicted among all listened to
             # Handle special case that there is no single artist in the test set -> by definition, recall = 100%
@@ -266,14 +284,14 @@ def run():
     f1_score = 2 * ((avg_prec * avg_rec) / (avg_prec + avg_rec))
 
     # Output mean average precision and recall
-    if VERBOSE:
-        print ("\nMAP: %.2f, MAR  %.2f, F1 Scrore: %.2f" % (avg_prec, avg_rec, f1_score))
-    print ("%.3f, %.3f" % (avg_prec, avg_rec))
-    print ("K neighbors " + str(K))
-    print ("Recommendation: " + str(MIN_RECOMMENDED_ARTISTS))
+    print ("MAP: %.3f, MAR: %.3f, F1 Score: %.3f" % (avg_prec, avg_rec, f1_score))
+    print ("K users: " + str(MAX_USER))
+    print ("K neighbors: " + str(K))
+    print ("Recommendations: " + str(MIN_RECOMMENDED_ARTISTS))
+    print"---------------------------------------------------------------------------"
+    print ""
 
     data = {'avg_prec': avg_prec, 'avg_rec': avg_rec, 'f1_score': f1_score}
-
     return data
 
 
@@ -297,8 +315,22 @@ if __name__ == '__main__':
     artists = read_from_file(ARTISTS_FILE)
     users = read_from_file(USERS_FILE)
     # Load UAM
-    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:MAX_USER, :MAX_ARTIST]
-    AAM = np.loadtxt(AAM_FILE, delimiter='\t', dtype=np.float32)
+    print "###############"
+    print "# Loading UAM #"
+    print "###############"
+    # UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:MAX_USER, :MAX_ARTIST]
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:, :MAX_ARTIST]
+    print ""
+    print "Loading UAM Done :-)!"
+    print ""
+    print "###############"
+    print "# Loading AAM #"
+    print "###############"
+    # AAM = np.loadtxt(AAM_FILE, delimiter='\t', dtype=np.float32)
+    AAM = np.loadtxt(AAM_FILE, delimiter='\t', dtype=np.float32)[:MAX_ARTIST, :MAX_ARTIST]
+    print ""
+    print "Loading AAM Done :-)!"
+    print ""
 
     runned_methods = {METHOD: []}
 
@@ -306,10 +338,16 @@ if __name__ == '__main__':
     r_sorted = {}
 
     # data
-    neighbors = [1, 2, 3, 5, 10, 20, 50]
+    neighbors = [1, 2, 5, 10, 20, 50]
     recommender_artists = [10, 20, 30, 50, 100, 200, 300]
 
     output_filedir = TASK2_OUTPUT + '/results/' + METHOD + '/'
+
+    data_to_append = {}
+
+    all_files = {}
+
+    all_files_path = output_filedir + 'all.json'
 
     # ensure dir
     if not os.path.exists(output_filedir):
@@ -323,25 +361,39 @@ if __name__ == '__main__':
         for recommender_artist in recommender_artists:
             k_sorted['R' + str(recommender_artist)] = []
 
-            MIN_RECOMMENDED_ARTISTS = recommender_artist / 2
+            MIN_RECOMMENDED_ARTISTS = recommender_artist
 
             # prepare for appending
-            data_to_append = {'neighbors': K, 'recommended_artists': MIN_RECOMMENDED_ARTISTS}
+            data_to_append = {'neighbors': K, 'recommended_artists': MIN_RECOMMENDED_ARTISTS, 'users': MAX_USER}
 
             data = run()
 
             data_to_append.update(data)
             runned_methods[METHOD].append(data_to_append)
 
-            # write into file
-            content = json.dumps(data_to_append, indent=4, sort_keys=True)
-            f = open(output_filedir + 'K' + str(K) + '_recommended' + str(MIN_RECOMMENDED_ARTISTS) + '.json', 'w')
+            # Define path to file that should be created
+            file_path = output_filedir + 'K' + str(K) + '_recommended' + str(MIN_RECOMMENDED_ARTISTS) + '.json'
 
-            f.write(content)
-            f.close()
+            # Check if file already exists
+            if os.path.exists(file_path):
+                print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+                print "!     FILE ALREADY EXISTS      !"
+                print "...skip to prevent overwriting !"
+                print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+                print ""
+                continue
+            else:
+                # Write into file
+                content = json.dumps(data_to_append, indent=4, sort_keys=True)
+                f = open(file_path, 'w')
+                f.write(content)
+                f.close()
+                print "##################################"
+                print "# DATA-FILE SUCESSFULLY CREATED! #"
+                print "##################################"
+                print ""
 
-    content = json.dumps(data_to_append, indent=4, sort_keys=True)
+    content = json.dumps(runned_methods, indent=4, sort_keys=True)
     f = open(output_filedir + 'all.json', 'w')
-
     f.write(content)
     f.close()

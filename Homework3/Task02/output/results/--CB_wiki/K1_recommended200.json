@@ -1,0 +1,7 @@
+{
+    "avg_prec": 0.38010146018464436, 
+    "avg_rec": 4.663775072930339, 
+    "f1_score": 0.7029147932369328, 
+    "neighbors": 1, 
+    "recommended_artists": 200
+}

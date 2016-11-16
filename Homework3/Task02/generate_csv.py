@@ -1,17 +1,24 @@
-# Implementation of a simple evaluation framework for recommender systems algorithms.
-# This script further implements different baseline recommenders: collaborative filtering,
-# content-based recommender, random recommendation, and simple hybrid methods.
-# It also implements a score-based fusion technique for hybrid recommendation.
-__author__ = 'mms'
+__author__ = 'jpeer'
 
 # Load required modules
 import json
 import csv
 import glob
+import os
 
 # Parameters
 RESULT_OUTPUT = './output/results/'
-METHOD_FOLDER = 'CF'
+METHOD_FOLDER = 'CB_musixmatch'
+# METHOD_FOLDER = 'CB_wiki'
+# METHOD_FOLDER = 'CF'
+# METHOD_FOLDER = 'HR_RB_Wiki'
+# METHOD_FOLDER = 'HR_SCB_Lyrics'
+# METHOD_FOLDER = 'HR_RB_Lyrics'
+# METHOD_FOLDER = 'HR_SEB_Wiki'
+# METHOD_FOLDER = 'HR_SEB_Lyrics'
+# METHOD_FOLDER = 'PB'
+# METHOD_FOLDER = 'RB_Artists'
+# METHOD_FOLDER = 'RB_user'
 
 OUTPUT_DIR = RESULT_OUTPUT + METHOD_FOLDER
 
@@ -45,7 +52,9 @@ if __name__ == '__main__':
         ['']
     ]
 
-    all_jsons = glob.glob(OUTPUT_DIR + '/*.json')
+    all_jsons = sorted(glob.glob(OUTPUT_DIR + '/*.json'), key=os.path.getmtime)
+
+    print all_jsons
 
     for one_json in all_jsons:
         with open(one_json) as data_file:
