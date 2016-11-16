@@ -1,0 +1,11 @@
+{
+    "SCB_HR_Lyrics": [
+        {
+            "avg_prec": 1.3556060606061562, 
+            "avg_rec": 31.734546816418508, 
+            "f1_score": 2.6001417494082535, 
+            "neighbors": 5, 
+            "recommended_artists": 300
+        }
+    ]
+}
