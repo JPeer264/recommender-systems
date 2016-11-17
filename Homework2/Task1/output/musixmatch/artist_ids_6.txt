@@ -1,0 +1,987 @@
+key	value
+503810	Moonface
+24579	Reso
+8199	Jackie Deshannon
+2057	Pigface
+309259	Sixx:A.M.
+90125	Commix
+122894	Avey Tare
+8207	John Mayall & The Bluesbreakers
+73744	Michel Petrucciani
+45073	Interference
+14357	Esbjörn Svensson Trio
+71703	The Perishers
+12316	Mahavishnu Orchestra
+13996061	Seven Lions
+30	Hole
+33	Ani DiFranco
+53282	Break
+18469	Amon Düül II
+208934	EF
+374108	Bigbang
+21170	Phats & Small
+6190	Dexter Gordon
+27888989	Rachel's
+38960	Jeffrey Lewis
+13797425	Pistol Annies
+16434	Willie Dixon
+53300	The Dresden Dolls
+233708	Bachelors of Science
+54	Phish
+127031	Math and Physics Club
+30776	The Elgins
+10297	Luniz
+245819	Room Eleven
+103482	Uniting Nations
+13953086	The Go-Betweens
+305217	Delta Spirit
+67	Burl Ives
+68	Bing Crosby
+74	George Winston
+323659	The Dodos
+70994	The 88
+2125	The Dickies
+73806	Albert Ammons
+38992	Harmonia
+4177	Mccoy Tyner
+88146	Tilly and the Wall
+303187	Au
+34900	IAM
+12375	Alan Menken
+100411	The Chariot
+35855	Set Fire to Flames
+12380	Hank Mobley
+45754	Seba
+8287	Super Furry Animals
+8292	Pandora
+127077	Robert Glasper
+184422	Manchester Orchestra
+4436	Billy Cobham
+508012	Male Bonding
+202866	Yndi Halda
+24457331	Ben l'Oncle Soul
+237684	Jake Owen
+10359	Zager & Evans
+10943	Roberta Flack
+57468	Teddybears
+125	Hans Zimmer & James Newton Howard
+69760	Israel Vibration
+43142	Mimosa
+2183	The Runaways
+164204	Minsk
+13953047	Ice MC
+59532	Alexi Murdoch
+129165	Mor ve Ötesi
+97645	Ciara
+366736	Laura
+40469	Yob
+8341	E-40
+25510	Bishop Allen
+153	Eiffel 65
+10395	The Dining Rooms
+13080736	La Sera
+63649	Tactical Sekt
+1229	Syd Barrett
+42082	Odd Nosdam
+7537	Benjamin Britten
+28	The Dismemberment Plan
+69802	Swan Lake
+10412	Adam F
+13777705	Dia Frampton
+9144	Drive Like Jehu
+180	Ricky Martin
+129054	Phosphorescent
+114872	Pzychobitch
+8377	Art Pepper
+186	Rosemary Clooney
+284859	Nurses
+233665	Yuksek
+13786827	Karmin
+63684	Brooke Fraser
+11297	Penguin Cafe Orchestra
+24451275	The School
+206	Faith Hill
+69840	Nellie McKay
+2257	Kay Starr
+1059	Harry Belafonte
+212	Powerman 5000
+12501	The Microphones
+123094	El Ten Eleven
+216	The Fresh & Onlys
+102617	13 & God
+6362	Pharoah Sanders
+11123	Nick Lowe
+6369	Morton Feldman
+18658	My Morning Jacket
+227	Mudhoney
+196836	Grouper
+49381	Patrick Park
+6376	Kronos Quartet
+69866	Jack White & Alicia Keys
+444652	Cymbals Eat Guitars
+12665641	Suuns
+230781	Eric Church
+14576	Keller Williams
+10482	Johnny Mathis
+244	Gordon Lightfoot
+10485	Burning Spear
+47350	Frog Eyes
+12535	Van der Graaf Generator
+249	Sonique
+284922	Alix Perez
+20732	Damien Jurado
+456958	Schuyler Fisk
+256	Lonestar
+13095	Tristeza
+259	Joe
+24477957	Sir Simon Rattle
+98689	Juicy J
+352521	Jennifer Rostock
+37591	The Hidden Cameras
+10508	Spiritualized
+270	The Aquabats
+371189	Future Islands
+272	Ben E. King
+274	Blues Traveler
+8467	Eddie Floyd
+459028	Om Unit
+12334	Tommy Emmanuel
+279	Crazy Town
+26513688	Richard O'Brien
+283	Dave Matthews Band
+285	Eagle-Eye Cherry
+12577	Moby Grape
+291	Ja Rule
+6436	Coil
+317733	The Airborne Toxic Event
+2348	Freddie Hubbard
+301	Stone Temple Pilots
+8497	Jimmy Ruffin
+114996	Gary Puckett & The Union Gap
+252213	Winds of Plague
+96569	Michael Gray
+6460	Bette Midler
+8510	Albert Collins
+6467	Terry Riley
+16708	Angela Lansbury
+286774	Nadja
+131400	Lo-Fi-Fnk
+8521	The Dramatics
+2378	Johnny Mercer
+6475	Lee Morgan
+216873	Joy Wants Eternity
+2382	Marilyn Monroe
+14333325	Destiny's Child
+381020	Vivian Girls
+6482	The Association
+407892	Emily Wells
+342	La Bouche
+287460	Health
+8539	Reba McEntire
+184668	Stolen Babies
+246109	Crippled Black Phoenix
+13793635	Kreayshawn
+358	Hanson
+293935	Le Loup
+285035	Coconut Records
+24770924	The Rock Masters
+151917	Bear in Heaven
+6515	Zombie Nation
+254324	Andy McKee
+8568	Kaoma
+219514	DJ Khaled
+6523	George Gershwin
+16765	CJ Bolland
+13885824	Dubstep KIngs
+12673	Dillinger
+494172	Real Estate
+41350	Kaleidoscope
+30103	Black Tambourine
+481677	Toro y Moi
+65937	J-Kwon
+274834	Polarkreis 18
+18664	The Miracles
+13818263	Woods
+148518	Art Blakey & The Jazz Messengers
+49562	Gogol Bordello
+170980	Judy Kuhn
+2464	Benny Goodman
+92578	Bobina
+421	Ben Folds Five
+39338	Darius Rucker
+10668	Sun Ra
+28783022	Tribute Mega Stars
+227741	Goldfish
+14002612	.38 Special
+61877	Arnold Schönberg
+8631	Lena Horne
+2488	Fletcher Henderson
+441	Shania Twain
+2490	Count Basie & His Orchestra
+53480	The Fiery Furnaces
+296693	Kat DeLuna
+449	Lords of Acid
+451	Big Bad Voodoo Daddy
+96711	Castanets
+8648	Sonny Rollins
+459	The Mighty Mighty Bosstones
+461	Wyclef Jean
+3399	Angelo Badalamenti
+14318032	Snoop Lion
+33363	Devendra Banhart
+27703	The Black Dog
+55717	Shearwater
+10721	Miles Davis Quintet
+6627	Bill Evans
+360932	Rye Rye
+227925	Lights Out Asia
+486	George Carlin
+8682	Arvo Pärt
+497	Jonathan Richman
+13887895	Brandy
+28938741	Witchcraft
+6647	Jill Scott
+195064	Eli Young Band
+506	Jackson Browne
+260603	Gifts From Enola
+12714	Spiderbait
+43519	The McGuire Sisters
+186883	Magrudergrind
+517	Juliana Hatfield
+6662	Einstürzende Neubauten
+33537	Styles of Beyond
+16812	Al Jolson
+498186	Michael Mind Project
+6231	Cephalic Carnage
+6670	Richard Strauss
+8719	Horace Silver
+8721	Plaid
+465428	Aura Dione
+90646	Culcha Candela
+535	The Breeders
+469528	Meaghan Smith
+13945604	Capital Cities
+538	Jacques Brel
+6684	Steve Miller Band
+10782	Bill Evans Trio
+111135	The Sound of Animals Fighting
+64033	Colour Haze
+546	The Connells
+229019	Fisz Emade
+13410853	Andrew Rayel
+306950	Greenleaf
+49703	Antony and the Johnsons
+553	Wes Montgomery
+18987	Acid House Kings
+125485	Karnivool
+558	Barbra Streisand
+553521	Diddy - Dirty Money
+8756	Joshua Redman
+2616	Junior Kimbrough
+13822521	Ella Fitzgerald & Louis Armstrong
+307770	Causa Sui
+572	Bif Naked
+6717	Naked City
+50955	Tammi Terrell
+68167	Peeping Tom
+31309	The Four Seasons
+173441	Intronaut
+594	The Beta Band
+21075	The John Butler Trio
+250452	Alesha Dixon
+31317	Kelly Clarkson
+465494	Smith Westerns
+51799	Textures
+59492	Ana Popovic
+56079	Kayo Dot
+6748	Los Del Rio
+442	Dean Martin
+6761	The Verve Pipe
+37487	Lea Salonga
+10865	Christmas
+8819	Doves
+37495	Destroyer
+301689	Marketa Irglova
+10874	The Waitresses
+8639	Bobby Vinton
+25214	Wayne Wonder
+639	Insane Clown Posse
+227969	David Nail
+112203	Black Mountain
+6787	John Barry
+31366	Delta Goodrem
+455303	Mayer Hawthorne
+4746	Om
+10892	Michelle
+6797	Steve Reich
+17039	Peabo Bryson
+29755	Young Marble Giants
+80531	JoJo
+6705	The Presidents of the United States of America
+21142	Rockabye Baby!
+260889	The Bird and the Bee
+8857	North Mississippi Allstars
+6810	Urge Overkill
+670	Eddie Money
+5573	Bratmobile
+3091	Bolt Thrower
+60870	Lucky Dragons
+53926	Oceansize
+25255	Holger Czukay
+476710	Julian Lynch
+306973	Omega Massif
+10928	Blue Cheer
+13881800	Bleached
+555698	Forest Swords
+13847667	Echo Lake
+27317	Saul Williams
+23222	The Adverts
+5577	Deerhoof
+10936	The Delfonics
+14379124	Magma
+6842	Clifford Brown
+699	INXS
+33471	Chavela Vargas
+58048	Air Traffic
+14314177	Rameses B
+24629956	Heimataerde
+717	The Faint
+8653	Dave Holland
+721	Charlie Parker
+725	Billy Ray Cyrus
+6870	Ozric Tentacles
+727	Trisha Yearwood
+3535	The Wedding Present
+223964	Saltillo
+328951	Mariee Sioux
+410335	Rosi Golan
+7632	Hefner
+283363	Trevor Hall
+504548	Dirty Beaches
+10981	Bell Biv DeVoe
+742	James Brown & The Famous Flames
+743	The Wallflowers
+745	George Strait
+31466	The Slits
+281383	Tera Melos
+749	Bonnie Raitt
+750	Montell Jordan
+13937395	Thomas Rhett
+19189	Charley Patton
+443127	Love and Theft
+760	Fred Astaire
+3199	Avishai Cohen
+13052	Ben Lee
+49917	Lindsay Lohan
+13781	Infernal
+49921	Ashlee Simpson
+15106	Charles Ives
+121603	Ville Valo & Natalia Avelon
+11012	Peter, Paul & Mary
+6919	J.B.O.
+31496	Hella
+357129	Innerpartysystem
+14011146	Anna Kendrick
+289551	Dan Deacon
+19928	Songs: Ohia
+267353	If These Trees Could Talk
+365335	Crystal Stilts
+97048	Data
+129817	The Veronicas
+254746	Jonquil
+12643101	Rebecca Ferguson
+12643104	Cher Lloyd
+9009	Ambrosia
+9000	Brian May
+19241	Joe Nichols
+15146	Dub Pistols
+170796	The Evpatoria Report
+10529	Xploding Plastix
+67336	Espers
+19249	Jamie Foxx
+115508	Sonny Clark
+41781	Jon Bon Jovi
+12541748	Exitmusic
+6974	Blackstreet
+6978	Mandy Moore
+148292	Noisettes
+150343	Jace Everett
+353097	Metrik
+9037	Aaron Copland
+138064	Birdman & Lil' Wayne
+203601	Brad Kane
+6994	They Might Be Giants
+12771	Lovage
+31572	The Bad Plus
+12772	Maserati
+861	The Psychedelic Furs
+478046	Peggy Sue
+44424	The Butterfly Effect
+26830651	Theme Songs
+2916	Ash Ra Tempel
+330214	Northern Kings
+11110	Mushroomhead
+11111	Farin Urlaub
+17257	Cave In
+9066	Stanley Clarke
+876	John Mellencamp
+193390	Jenny Owen Youngs
+880	Carlos Santana
+269169	Kleerup
+13783923	Tim Bendzko
+93044	K-Maro
+94357	Micah P. Hinson
+7041	Life of Agony
+551810	Baths
+900	Loona
+50631	The Blow
+17287	The Teardrop Explodes
+19337	Twista
+907	Sister Hazel
+909	Amber
+7055	Sisqó
+414608	Frankie Rose
+7057	Boney M.
+1518	Keith Jarrett
+225433	Maps & Atlases
+9028	The 5th Dimension
+121754	Anya Marina
+28652447	Bob Dylan and The Band
+267168	Birds of Tokyo
+271265	The Twilight Sad
+33700	Pérez Prado
+76710	Gaza
+28230567	Iron & Wine
+936	New Radicals
+372	Eros Ramazzotti
+938	Matchbox Twenty
+9134	Eric Dolphy
+13469	Consumed
+58290	Tiger Trap
+172981	Madcon
+50104	Eisley
+7099	The Nitty Gritty Dirt Band
+24419260	Haircut 100
+957	Six Feet Under
+21439	The Polyphonic Spree
+56256	Daughters
+21443	Buddy Miller
+484294	Garfunkel and Oates
+232391	Landon Pigg
+5066	The Flying Burrito Brothers
+24476620	Eugene Ormandy
+13261	John Travolta
+13263	The Contours
+295889	Earthless
+13266	The Tokens
+74707	Sido
+19741	Makoto
+7127	Krzysztof Penderecki
+68572	Eve
+7134	Donna Lewis
+11231	Ryan Adams
+170978	Samuel E. Wright
+103396	Gloriana
+1001	Anal Cunt
+9200	Gary Allan
+470001	2NE1
+29682	The Field Mice
+7155	Pink Martini
+1012	Candlebox
+24966654	Henryk Górecki
+383990	Guru Guru
+2900	Sid Vicious
+3066	Joe Tex
+8362	Elephant Man
+3070	Maurice Williams & The Zodiacs
+56320	The Concretes
+283649	Handsome Furs
+3074	The Heptones
+68611	Grails
+78857	Gretchen Wilson
+24419341	Sir Mix-A-Lot
+173	Fastball
+28863505	Maroon 5 feat. Christina Aguilera
+27666	Dr. Bombay
+7187	Gustav Holst
+283668	The Black Ghosts
+24765461	Swingin' Utters
+13773846	Nicola Roberts
+15383	Darren Hayes
+12334106	Sleep ∞ Over
+306204	Priscilla Ahn
+250910	Rolo Tomassi
+332831	Sam Hulick
+7200	Primordial
+7201	Big Bud
+62499	Jackson C. Frank
+1060	Iggy & The Stooges
+12806	The Appleseed Cast
+15398	Joseph Arthur
+130087	Caribou
+1064	Semisonic
+9258	The Feelies
+13984813	Caravan
+498734	Edward Maya & Vika Jigulina
+19503	Luther Allison
+13112499	Eternal Summers
+95284	Gregor Samsa
+359479	Kina Grannis
+3130	Scott Hamilton
+439355	Pogo
+1084	Gary Barlow
+24458301	Oscar Peterson Trio
+11326	The Marketts
+506945	SBTRKT
+33858	Saxon Shore
+3140	Charlie Byrd
+11333	Al Hirt
+11336	Martin Denny
+15436	The Velvelettes
+15437	Brenda Holloway
+11343	Roy Buchanan
+13396	Mountain
+420950	Red Fang
+1113	Buddy Guy
+50267	Kimya Dawson
+14522	Joey Ramone
+9311	Regina Belle
+14357263	Béla Fleck and the Flecktones
+19554	Tony Christie
+19302	X-Press 2
+14904	Captain Beyond
+15927	Soft Machine
+318573	High Places
+1213	Wynton Marsalis
+81008	Sly & Robbie
+306289	Dana Fuchs
+9330	Maria McKee
+11795	The Incredible String Band
+117879	The Wreckers
+453752	Animals as Leaders
+486932	4minute
+17530	Inon Zur
+24474748	Sir Neville Marriner
+79381	Architect
+11397	Patrice
+7302	Steve Earle
+13612170	The Babies
+2583	Bix Beiderbecke
+355468	Tonic
+13453	Sugarcult
+33940	Gin Blossoms
+9366	Cirrus
+14011513	Craft Spells
+11418	LEN
+1179	Dishwalla
+68122	Fear Before The March Of Flames
+3232	Oscar Peterson
+24431777	Shock One
+1186	Matt Monro
+390307	Dirty Elegance
+85156	Hanne Hukkelberg
+414577	Bob Acri
+3240	Stéphane Grappelli
+470186	Neon Indian
+7342	David Arnold
+1202	The Simpsons
+883	Harvey Danger
+21684	MIA.
+19637	Clipse
+16407	Ultra Bra
+1209	Rollins Band
+1212	White Zombie
+14374077	A Great Big World
+12401854	Anika
+9407	Alizée
+11457	RuPaul
+1218	Crystal Waters
+6347	Dexys Midnight Runners
+26997956	Sleepmakeswaves
+85190	Battles
+332321	Icicle
+9417	Nickel Creek
+14345418	Deee-Lite
+1227	Ravi Shankar
+7372	Bessie Smith
+317986	Tobacco
+9422	Mark Isham
+13792463	Darren Korb
+21712	Las Ketchup
+392401	Casiokids
+125134	Heartless Bastards
+410839	Geneva Jacuzzi
+7384	Dru Hill
+24419545	The City of Prague Philharmonic Orchestra
+7386	Mary J. Blige
+23774	Novaspace
+1247	Lambchop
+44240	Hocus Pocus
+33321	Hot Action Cop
+58598	Discordance Axis
+68839	Dosh
+11496	Sara Evans
+52457	Jamie Lidell
+13546	Ohgr
+5671	The Brand New Heavies
+93421	Mirrorthrone
+27887	Low
+81138	Jodi Benson
+162003	Indica
+7414	The Chiffons
+124151	The Samuel Jackson Five
+165112	Revolverheld
+1277	Naked Eyes
+130302	Jenny Wilson
+15616	Spongebob Squarepants
+13821185	Kip Moore
+97539	The Pussycat Dolls
+13841673	Pentatonix
+500610	Teengirl Fantasy
+13772046	Margot & the Nuclear So and So's
+40208	The Unicorns
+68882	Psyclon Nine
+11539	Harpo
+13944084	Cassadee Pope
+85270	The Duke Spirit
+11544	Модест Петрович Мусоргский
+414596	Blank Dogs
+11546	Jean-Luc Ponty
+337180	Ital Tek
+11224349	Clare Maguire
+24845599	Nikolai Rimsky-Korsakov
+34081	Lightning Bolt
+15652	Helen Forrest
+56613	Josh Turner
+1318	Katrina and the Waves
+128295	Brandi Carlile
+1320	Loverboy
+316713	Plants and Animals
+27947	Matt Nathanson
+385622	Lenzman
+9520	The Juliana Theory
+13617	Արամ Խաչատրյան
+1330	The Weather Girls
+14314718	SpectraSoul
+24436617	Girls
+15673	Alabama 3
+7482	Chris Montez
+38794	PVT
+11582	Trace Adkins
+7489	London Symphony Orchestra
+118086	The Tony Danza Tapdance Extravaganza
+136519	Big Boi
+9545	Bernard Herrmann
+24628555	Dubstep
+7500	Sportfreunde Stiller
+202003	My Brightest Diamond
+105808	Jana Hunter
+32081	Acceptance
+11602	Elisa
+114005	Daphne Loves Derby
+19800	Hermano
+1372	Lisa Loeb
+1373	Marc Cohn
+24612190	Tove Lo
+7520	Neneh Cherry
+416656	Sleepy Sun
+19814	Alexia
+11625	South
+1389	Don McLean
+42350	Special D.
+28017	Klaus Badelt
+3442	Culture
+11224442	BRAHMS
+17789	Sammy Kershaw
+43925	Television Personalities
+204160	Belong
+32129	Josh Ritter
+14339458	Brooks & Dunn
+17796	Mario
+17797	Puff Daddy
+17800	Junior Senior
+236	Antiloop
+361866	The Rural Alberta Advantage
+190359	Jukka Poika
+3468	Today Is The Day
+116109	Omarion
+13712	The Spencer Davis Group
+17810	Jamelia
+5526	Dressy Bessy
+3479	Nebula
+316748	Evelyn Evelyn
+3481	Nasum
+259311	George Thorogood
+7066	Nightmares on Wax
+1440	Blue Swede
+7585	Carl Douglas
+230819	The Puppini Sisters
+378280	Randy Houser
+1071	Suprême NTM
+1451	Mýa
+427437	De Staat
+10484	Julie Andrews
+17851	Mike Patton
+1468	Inner Circle
+19904	John Doe
+13216	Melt-Banana
+5571	Bikini Kill
+355781	Thee Oh Sees
+7622	Xavier Naidoo
+13958599	Ariana Grande
+26057	Necro
+16631	Basic Element
+7628	John Michael Montgomery
+54735	J. Karjalainen
+437712	Samsara Blues Experiment
+17876	Kenny Dorham
+28117	Styrofoam
+7638	Popol Vuh
+10489	Premiata Forneria Marconi
+50648	Dave Matthews
+36313	Little Big Town
+267172	Dead Letter Circus
+85470	Genghis Tron
+11743	André Rieu
+234976	Battle of Mice
+13793	Skeeter Davis
+14310885	Baauer
+73190	Jens Lekman
+24468967	Owl City & Carly Rae Jepsen
+60907	Róisín Murphy
+9708	Emma Bunton
+11758	B2K
+9711	The Andrews Sisters
+7665	Tarkan
+11763	Stacey Q
+19091	John Powell
+11769	Sarah Connor
+13960699	Divine Fits
+91646	The Go! Team
+597	Pulsedriver
+13824	Eddy Arnold
+50690	Herman Düne
+24419845	Carnage
+665	Jessica Simpson
+323083	Lento
+458991	Paul Leonard-Morgan
+116238	Juelz Santana
+7553	KC and The Sunshine Band
+13841	Mates of State
+208131	Nneka
+525844	Lena
+12326421	Mikky Ekko
+23170	Prefuse 73
+18009	Anton Webern
+226843	Kellie Pickler
+171551	Le Sport
+9760	Suffocation
+89635	Old Crow Medicine Show
+14376486	Vance Joy
+1575	Django Reinhardt
+1576	Gene Autry
+13898799	Now, Now
+24428076	Shapeshifters
+24765997	Pokémon
+265774	Long Distance Calling
+110130	Suburban Kids with Biblical Names
+374323	Cluster
+371906	Mooncake
+58633	Rodney Atkins
+181816	Jazmine Sullivan
+12351038	Thompson Square
+52802	Craig Morgan
+79427	Black Moth Super Rainbow
+13892	The Dictators
+75333	Blockhead
+73996	Aborted
+435787	Bo Burnham
+187980	Priestess
+12893774	OFWGKTA
+18001	Tullycraft
+36435	Pelican
+470612	Sun Araw
+124502	Tristan Prettyman
+30296	Calibre
+3673	Dennis Brown
+11866	Edgard Varèse
+193525	Metallic Falcons
+519772	Neon Trees
+458333	Dum Dum Girls
+24413790	Le Youth
+79120	Jónsi & Alex
+24536674	Kenny Wayne Shepherd Band
+26212	Bedhead
+12728564	Sun Airway
+1638	Anita O'Day
+26865256	Jim O'Rourke
+27244140	Toots and The Maytals
+2841	Klute
+7790	Jon Brion
+9840	Bubba Sparxxx
+11378290	Cali Swag District
+7795	Kirk Franklin
+1653	Judy Garland
+135785	Andre 3000
+11199	The Creatures
+20092	John Adams
+28849789	MGK
+1665	Eartha Kitt
+1666	Art Tatum
+1667	Gerry Mulligan
+50820	Los Lonely Boys
+3350	Gary Burton
+13958	Scott Joplin
+1674	Lionel Hampton
+480911	Billie Holiday and Her Orchestra
+18065	Andrew Hill
+81554	[:SITD:]
+368275	Jex Thoth
+355950	Fleet Foxes
+23833	Stateless
+179866	Holy Fuck
+10863	Ray Conniff
+165146	Dead Boys
+491166	Hot Chelle Rae
+368291	Erin McCarley
+329380	The-Dream
+491177	Harlem
+1309	Cutting Crew
+14000	Don Caballero
+24442547	Grace Potter & The Nocturnals
+7860	Widespread Panic
+7862	The Tornadoes
+381898	Women
+24424127	Tito & Tarantula
+1728	Humble Pie
+91841	Panda Bear
+24956610	Modern Jazz Quartet
+25445665	Alban Berg
+6809	Shawn Colvin
+534217	Shogun
+73419	Christopher Lennertz
+105761	Efterklang
+61141	Kurt Nilsen
+7895	Hootie & The Blowfish
+14182104	Angel Olsen
+11997	The Halo Benders
+220894	Mumm-Ra
+14375205	MAGIC!
+1761	Gentle Giant
+14051	Israel Kamakawiwo'ole
+7912	The Righteous Brothers
+7804	Buffalo Tom
+2582	Jelly Roll Morton
+16108	Albert Ayler
+36590	Richard Stoltzman
+339581	Khaled
+120564	Faunts
+24463093	Adventure Club
+9513	Rufus Wainwright
+14073	Jerry Douglas
+6783	Lene Marlin
+34558	Taraf de Haïdouks
+17497	Six Organs of Admittance
+26372	The Lucksmiths
+7941	Doris Day
+3846	Waylon Jennings
+104199	Morgan Page
+12183304	Brantley Gilbert
+27948	Mirah
+225034	Barry Louis Polisar
+18187	Juanes
+409357	Blood Ceremony
+16146	Sha Na Na
+25720	Marmalade
+100117	This Town Needs Guns
+5912	Brant Bjork
+12058	The Rapture
+26397	Wise Guys
+7966	Pur
+20260	Señor Coconut
+13808945	Laurel Halo
+7132	Gong
+154247	Field Music
+10028	The Archies
+22317	Themselves
+285187	Zombies
+55089	S.P.Y
+413491	Broken Note
+50996	Rachael Yamagata
+5941	Coalesce
+12132	Beat Happening
+244703	Diablo Swing Orchestra
+1289	Warrant
+22340	Gareth Gates
+51013	梶芽衣子
+13895495	Graveyard
+3422	Aceyalone
+6796	The Queers
+9814	Starsailor
+5971	Hate Eternal
+8021	Gil Scott-Heron
+8505	Bond
+300889	Sean Kingston
+17316	Faraquet
+350046	Igorrr
+149344	Rishloo
+352100	My Sleeping Karma
+24502119	Studio Group
+439311	Here We Go Magic
+13881193	Gigi d'Agostino
+145259	Kristin Chenoweth
+8048	John Cale
+462705	Jeremih
+95704	Little Wings
+420499	Ducktails
+49012	Puscifer
+448376	tUnE-yArDs
+8057	Ten Years After
+67454	Skalpel
+3967	Blind Lemon Jefferson
+470423	Mama Cass
+18306	Against Me!
+10117	Don Cherry
+2645	Rita Coolidge
+32650	G. Love
+663	E-Rotic
+124812	Jenny Lewis
+57325	Hilltop Hoods
+90000	Archie Bronson Outfit
+20370	Big Mama Thornton
+13125524	Peaking Lights
+3990	Beulah
+36759	The Sleepy Jackson
+83864	Diane Cluck
+307104	And So I Watch You From Afar
+92066	Thanksgiving
+196251	EDX
+148806	The Fray
+1351	Blessid Union Of Souls
+276398	Hannah Montana
+85935	Patton Oswalt
+8115	The Apples In Stereo
+14260	R. Dean Taylor
+19024	Opus
+1013	Cherry Poppin' Daddies
+286661	Andrew Jackson Jihad
+8137	Canadian Brass
+38859	The Muppets
+1362	Neil Diamond
+311629	Julia Holter
+53240	ASC
+83922	Centhron
+26306516	Omar A. Rodriguez-Lopez
+88024	Mount Eerie
+40936	moe.
+19111	The Carter Family
+9001	Miguel
+24700	Quarteto Em Cy
+16367	Freezepop
+8179	Cannonball Adderley
+354292	Stimming
+16376	Dirty Three
+20820	Matt Pond PA
+20475	Ying Yang Twins
+24639484	(hed) Planet Earth
+148821	Velvet
