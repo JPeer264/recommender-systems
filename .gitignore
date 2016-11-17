@@ -1,6 +1,6 @@
 .DS_STORE
 **/.idea/**
-**/*.pyc/**
+**/*.pyc
 
 PartA
 PartB
@@ -10,6 +10,11 @@ PartB
 **/output/wikipedia
 **/output/musixmatch/AAM.txt
 **/output/musixmatch/tfidfs.txt
+
+**/test_data/**
+
+# ignore temp files from MSOffice
+**/~$*
 
 AAM_mm.txt
 AAM_wiki.txt
