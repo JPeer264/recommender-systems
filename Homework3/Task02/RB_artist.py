@@ -1,51 +1,29 @@
+###########
+# IMPORTS #
+###########
 import os
-import json
 import csv
-import numpy as np
-from sklearn import cross_validation  # machine learning & evaluation module
+import time
+import json
 import random
-import csv
-# Machine learning & evaluation module
+import helper # helper.py
+import numpy as np
 from sklearn import cross_validation
-import json
-import os
+from run_recommender import * # run_recommender.py
 
-
-# Parameters
-TESTFILES = "../test_data/"
+####################
+# GLOBAL VARIABLES #
+####################
+TESTFILES    = "../test_data/"
 TASK2_OUTPUT = "../Task02/output"
-# User-artist-matrix (UAM)
-UAM_FILE = TESTFILES + "C1ku/C1ku_UAM.txt"
-# Artist names for UAM
+UAM_FILE     = TESTFILES + "C1ku/C1ku_UAM.txt"
 ARTISTS_FILE = TESTFILES + "C1ku_artists_extended.csv"
-# User names for UAM
-USERS_FILE = TESTFILES + "C1ku_users_extended.csv"
-# Recommendation method
-METHOD = "RB_Artists"
+USERS_FILE   = TESTFILES + "C1ku_users_extended.csv"
 
-# Define no of artists that should be recommended
-MIN_RECOMMENDED_ARTISTS = 300
-MAX_RECOMMENDED_ARTISTS = MIN_RECOMMENDED_ARTISTS
-
-# Number of folds to perform in cross-validation
-NF = 10
-
-# Verbose output?
-VERBOSE = False
-
-
-# Function to read metadata (users or artists)
-def read_from_file(filename):
-    data = []
-    with open(filename, 'r') as f:  # open file for reading
-        reader = csv.reader(f, delimiter='\t')  # create reader
-        headers = reader.next()  # skip header
-        for row in reader:
-            item = row[0]
-            data.append(item)
-    f.close()
-    return data
-
+NF      = 10
+METHOD  = "RB_Artists"
+VERBOSE = True
+MIN_RECOMMENDED_ARTISTS = 0
 
 def RB_artists(artists_idx, no_items):
     """
@@ -55,7 +33,6 @@ def RB_artists(artists_idx, no_items):
     :param no_items: no of items to predict
     :return: a dictionary of recommended artist indices (and corresponding scores)
     """
-
     # Let's predict a number of random items that equal the number of items in the user's test set
     random_aidx = random.sample(artists_idx, no_items)
 
@@ -67,24 +44,21 @@ def RB_artists(artists_idx, no_items):
     # Return dict of recommended artist indices as keys (and scores as values)
     return dict_random_aidx
 
-
-def run():
+def run(_K, _recommended_artists):
     """
     Function to run an evaluation experiment
 
     :return: a dictionary with MAP, MAR and F1-Score for the tested recommender
     """
+    global MIN_RECOMMENDED_ARTISTS
 
-    # Initialize variables to hold performance measures
-    avg_prec = 0;  # mean precision
-    avg_rec = 0;  # mean recall
-
-    # For all users in our data (UAM)
-    no_users = UAM.shape[0]
+    avg_prec   = 0
+    avg_rec    = 0
+    no_users   = UAM.shape[0]
     no_artists = UAM.shape[1]
+    MIN_RECOMMENDED_ARTISTS = _recommended_artists
 
     for u in range(0, no_users):
-
         # Get seed user's artists listened to
         u_aidx = np.nonzero(UAM[u, :])[0]
 
@@ -157,60 +131,33 @@ def run():
     if VERBOSE:
         print ("\nMAP: %.2f, MAR:  %.2f, F1-Score: %.2f" % (avg_prec, avg_rec, f1_score))
 
-    data_rb_artists = {'avg_prec': avg_prec, 'avg_rec': avg_rec, 'f1_score': f1_score}
-    return data_rb_artists
+    data = {}
+    data['avg_prec'] = avg_prec
+    data['avg_rec'] = avg_rec
+    data['f1_score'] = f1_score
+
+    return data
 
 
 # Main program, for experimentation.
 if __name__ == '__main__':
-    # Load metadata from provided files into lists
-    artists = read_from_file(ARTISTS_FILE)
-    users = read_from_file(USERS_FILE)
-    # Load UAM
+    artists = helper.read_csv(ARTISTS_FILE)
+    users   = helper.read_csv(USERS_FILE)
+
+    if VERBOSE:
+        helper.log_highlight('Loading UAM')
+
     UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)
 
-    runned_methods = {METHOD: []}
+    if VERBOSE:
+        print 'Successfully loaded UAM'
 
-    k_sorted = {}
-    r_sorted = {}
+    time_start = time.time()
 
-    # data
-    neighbors = [1, 2, 3, 5, 10, 20, 50]
-    recommender_artists = [10, 20, 30, 50, 100, 200, 300]
+    # run_recommender(run, METHOD, [1]) # serial
+    run_multithreading(run, METHOD, [1]) # parallel
 
-    output_filedir = TASK2_OUTPUT + '/results/' + METHOD + '/'
+    time_end = time.time()
+    elapsed_time = (time_end - time_start)
 
-    # ensure dir
-    if not os.path.exists(output_filedir):
-        os.makedirs(output_filedir)
-
-    for neighbor in neighbors:
-        k_sorted['K' + str(neighbor)] = []
-
-        K = neighbor
-
-        for recommender_artist in recommender_artists:
-            k_sorted['R' + str(recommender_artist)] = []
-
-            MIN_RECOMMENDED_ARTISTS = recommender_artist
-
-            # prepare for appending
-            data_to_append = {'neighbors': K, 'recommended_artists': MIN_RECOMMENDED_ARTISTS}
-
-            data = run()
-
-            data_to_append.update(data)
-            runned_methods[METHOD].append(data_to_append)
-
-            # write into file
-            content = json.dumps(data_to_append, indent=4, sort_keys=True)
-            f = open(output_filedir + 'K' + str(K) + '_recommended' + str(MIN_RECOMMENDED_ARTISTS) + '.json', 'w')
-
-            f.write(content)
-            f.close()
-
-    content = json.dumps(data_to_append, indent=4, sort_keys=True)
-    f = open(output_filedir + 'all.json', 'w')
-
-    f.write(content)
-    f.close()
+    print elapsed_time

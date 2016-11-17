@@ -26,14 +26,14 @@ ARTISTS_FILE = TESTFILES + "C1ku_artists_extended.csv"
 # User names for UAM
 USERS_FILE = TESTFILES + "C1ku_users_extended.csv"
 # Recommendation method
-METHOD = "HR_RB"
+METHOD = "HR_SCB_Lyrics"
 
-MAX_USER = 50
+MAX_USER = 1100
 # MAX_ARTISTS = 10119
-MAX_ARTISTS = 1000
+MAX_ARTISTS = 3000
 
 
-VERBOSE = True
+VERBOSE = False
 
 NF = 10              # number of folds to perform in cross-validation
 
@@ -136,10 +136,10 @@ def recommend_CF(UAM, seed_uidx, seed_aidx_train, K):
         new_dict_recommended_artists_idx[i[0]] = i[1] / max_value
 
     if len(new_dict_recommended_artists_idx.items()) <= MIN_RECOMMENDED_ARTISTS:
-        print "*"
+        #print "*"
         reco_art_RB = recommend_RB(np.setdiff1d(range(0, AAM.shape[1]), seed_aidx_train),
                                    MIN_RECOMMENDED_ARTISTS - len(new_dict_recommended_artists_idx.items()))
-        print "Recommended < 10: "
+        #print "Recommended < 10: "
         new_dict_recommended_artists_idx.update(reco_art_RB)
 
     new_dict_finish = {}
@@ -149,17 +149,17 @@ def recommend_CF(UAM, seed_uidx, seed_aidx_train, K):
             new_dict_finish[key] = value
         counter += 1
 
-    print '-----------'
-    print '-----------'
-    print '-----------'
-    print '-----------'
-    print '-----------'
-    print new_dict_finish
-    print '-----------'
-    print '-----------'
-    print '-----------'
-    print '-----------'
-    print '-----------'
+    #print '-----------'
+    #print '-----------'
+    #print '-----------'
+    #print '-----------'
+    #print '-----------'
+    #print new_dict_finish
+    #print '-----------'
+    #print '-----------'
+    #print '-----------'
+    #print '-----------'
+    #print '-----------'
 
     # Return dictionary of recommended artist indices (and scores)
     return new_dict_finish
@@ -179,9 +179,9 @@ def recommend_CB(AAM, seed_aidx_train, K):
     # Get nearest neighbors of train set artist of seed user
     # Sort AAM column-wise for each row
     sort_idx = np.argsort(AAM[seed_aidx_train, :], axis=1)
-    print '\n'
-    print sort_idx
-    print '\n'
+    ##print '\n'
+    #print sort_idx
+    #print '\n'
     # print "AAAAMMMM###"
     # print AAM[seed_aidx_train, :MAX_ARTISTS]
     # print "###"
@@ -196,9 +196,9 @@ def recommend_CB(AAM, seed_aidx_train, K):
 
     # Distill corresponding similarity scores and store in sims_neighbors_idx
     sims_neighbors_idx = np.zeros(shape=(len(seed_aidx_train), K), dtype=np.float32)
-    print "###"
-    print neighbor_idx.shape[0]
-    print "###"
+    #print "###"
+    #print neighbor_idx.shape[0]
+    #print "###"
     for i in range(0, neighbor_idx.shape[0]):
         sims_neighbors_idx[i] = AAM[seed_aidx_train[i], neighbor_idx[i]]
 
@@ -264,7 +264,7 @@ def recommend_CB(AAM, seed_aidx_train, K):
             new_dict_finish[key] = value
         counter += 1
 
-    print 'test'
+    #print 'test'
     # print "###"
     # print "###"
     # print new_dict_recommended_artists_idx
@@ -283,17 +283,17 @@ def recommend_CB(AAM, seed_aidx_train, K):
 
     # dict_recommended_artists_idx = dict((k, v) for k, v in dict_recommended_artists_idx.items() if v >= 0.15)
 
-    print '-----------'
-    print '-----------'
-    print '-----------'
-    print '-----------'
-    print '-----------'
-    print new_dict_finish
-    print '-----------'
-    print '-----------'
-    print '-----------'
-    print '-----------'
-    print '-----------'
+    #print '-----------'
+    #print '-----------'
+    #print '-----------'
+    #print '-----------'
+    #print '-----------'
+    #print new_dict_finish
+    #print '-----------'
+    ##print '-----------'
+    #print '-----------'
+    #print '-----------'
+    #print '-----------'
     #Return dictionary of recommended artist indices (and scores)
 
     return new_dict_finish
@@ -369,9 +369,9 @@ def run():
             # Sort and select top K_HR artists to recommend
             sorted_idx = np.argsort(scores_fused)
             sorted_idx_top = sorted_idx[- MIN_RECOMMENDED_ARTISTS:]
-            print "###"
-            print len(scores_fused)
-            print "###"
+            #print "###"
+            #print len(scores_fused)
+            #print "###"
             # Put (artist index, score) pairs of highest scoring artists in a dictionary
             dict_rec_aidx = {}
 
@@ -487,6 +487,9 @@ if __name__ == '__main__':
             k_sorted['R' + str(recommender_artist)] = []
 
             MIN_RECOMMENDED_ARTISTS = recommender_artist
+
+            print K
+            print MIN_RECOMMENDED_ARTISTS
 
             # prepare for appending
             data_to_append = {}

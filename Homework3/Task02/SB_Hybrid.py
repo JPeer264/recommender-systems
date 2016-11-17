@@ -21,18 +21,19 @@ import os.path
 TEST = "WIKI"
 # AAM | WIKI | LYRICS
 
+####################
+# GLOBAL VARIABLES #
+####################
+NF       = 10
+VERBOSE  = True
 MAX_USER = 1100
-MIN_RECOMMENDED_ARTISTS = 10
-NF = 10
-VERBOSE = True
-# -----------------------------
-
+MIN_RECOMMENDED_ARTISTS = 0
 
 TASK2_OUTPUT = "../Task02/output"
-TESTFILES = "../test_data/"
-UAM_FILE = TESTFILES + "C1ku/C1ku_UAM.txt"
+TESTFILES    = "../test_data/"
+UAM_FILE     = TESTFILES + "C1ku/C1ku_UAM.txt"
 ARTISTS_FILE = TESTFILES + "C1ku_artists_extended.csv"
-USERS_FILE = TESTFILES + "C1ku_users_extended.csv"
+USERS_FILE   = TESTFILES + "C1ku_users_extended.csv"
 
 if TEST == "AAM":
     MAX_ARTIST = 1000

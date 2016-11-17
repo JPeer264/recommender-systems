@@ -4,39 +4,30 @@
 __author__ = 'mms'
 
 # Load required modules
-import csv
-import numpy as np
-from sklearn import cross_validation            # machine learning & evaluation module
-import random
-import scipy.spatial.distance as scidist        # import distance computation module from scipy package
 import os
+import csv
+import time
 import json
 import operator
-
+import random
+import numpy as np
+import helper # helper.py
+import scipy.spatial.distance as scidist
+from sklearn import cross_validation
+from run_recommender import * # run_recommender.py
 
 # Parameters
-TESTFILES = "../test_data/"
+TESTFILES    = "../test_data/"
 TASK2_OUTPUT = "../Task02/output"
-# User-artist-matrix (UAM)
-UAM_FILE = TESTFILES + "C1ku/C1ku_UAM.txt"
-# AAM_FILE = TESTFILES + "AAM_wiki.txt"
-AAM_FILE = TESTFILES + "AAM.txt"
-# Artist names for UAM
+UAM_FILE     = TESTFILES + "C1ku/C1ku_UAM.txt"
+AAM_FILE     = TESTFILES + "AAM_lyrics_small.txt"
 ARTISTS_FILE = TESTFILES + "C1ku_artists_extended.csv"
-# User names for UAM
-USERS_FILE = TESTFILES + "C1ku_users_extended.csv"
-# Recommendation method
-METHOD = "HR_RB"
+USERS_FILE   = TESTFILES + "C1ku_users_extended.csv"
 
-# MAX_USER = 50
-# MAX_ARTISTS = 10119
+NF          = 10
+METHOD      = "HR_RB"
+VERBOSE     = True
 MAX_ARTISTS = 3000
-
-
-VERBOSE = True
-
-NF = 10              # number of folds to perform in cross-validation
-
 MIN_RECOMMENDED_ARTISTS = 10
 
 # Function to read metadata (users or artists)
@@ -50,7 +41,7 @@ def read_from_file(filename):
             data.append(item)
     f.close()
     return data
-
+# /read_from_file
 
 # Function that implements a PB recommender (popularity-based). It takes as input the UAM, computes the most popular
 # artists and recommends them to the user, irrespective of their music preferences.
@@ -106,9 +97,9 @@ def recommend_PB(UAM, seed_aidx_train, K):
     for index, key in enumerate(sorted_dict_reco_aidx, start=0):
         if index < MIN_RECOMMENDED_ARTISTS / 2 and index < len(sorted_dict_reco_aidx):
             new_dict_finish[key[0]] = key[1]
-    print "##########"
-    print new_dict_finish
-    print "##########"
+    #print "##########"
+    #print new_dict_finish
+    #print "##########"
     # Return dictionary of recommended artist indices (and scores)
     return new_dict_finish
 
@@ -267,20 +258,16 @@ def recommend_RB(artists_idx, no_items):
     return dict_random_aidx
 
 # Function to run an evaluation experiment.
-def run():
-    # Initialize variables to hold performance measures
-    avg_prec = 0;       # mean precision
-    avg_rec = 0;        # mean recall
-
-    # For all users in our data (UAM)
-    no_users = UAM.shape[0]
+def run(_K, _recommended_artists):
+    avg_prec   = 0
+    avg_rec    = 0
+    no_users   = UAM.shape[0]
     no_artists = UAM.shape[1]
+    MIN_RECOMMENDED_ARTISTS = _recommended_artists
 
     for u in range(0, no_users):
-
         # Get seed user's artists listened to
         u_aidx = np.nonzero(UAM[u, :MAX_ARTISTS])[0]
-        print len(u_aidx)
 
         if NF >= len(u_aidx) or u == no_users - 1:
             continue
@@ -296,8 +283,8 @@ def run():
             # Call recommend function
             copy_UAM = UAM.copy()       # we need to create a copy of the UAM, otherwise modifications within recommend function will effect the variable
 
-            dict_rec_aidx_CB = recommend_CB(AAM, u_aidx[train_aidx], K)
-            dict_rec_aidx_PB = recommend_PB(copy_UAM, u_aidx[train_aidx], K)
+            dict_rec_aidx_CB = recommend_CB(AAM, u_aidx[train_aidx], _K)
+            dict_rec_aidx_PB = recommend_PB(copy_UAM, u_aidx[train_aidx], _recommended_artists) # @JPEER check if _recommended artists is right here
 
             # Fuse scores given by CB and by PB recommenders
             # First, create matrix to hold scores per recommendation method per artist
@@ -374,65 +361,45 @@ def run():
     # Output mean average precision and recall
     if VERBOSE:
         print ("\nMAP: %.2f, MAR  %.2f" % (avg_prec, avg_rec))
-    print ("%.3f, %.3f" % (avg_prec, avg_rec))
+        print ("%.3f, %.3f" % (avg_prec, avg_rec))
+
+    f1_score = 2 * ((avg_prec * avg_rec) / (avg_prec + avg_rec))
+
+    data = {}
+    data['avg_prec'] = avg_prec
+    data['avg_rec'] = avg_rec
+    data['f1_score'] = f1_score
+
+    return data
 
 
 # Main program, for experimentation.
 if __name__ == '__main__':
-
     # Load metadata from provided files into lists
     artists = read_from_file(ARTISTS_FILE)
-    users = read_from_file(USERS_FILE)
-    # Load UAM
-    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:, :MAX_ARTISTS]
-    # Load AAM
-    AAM = np.loadtxt(AAM_FILE, delimiter='\t', dtype=np.float32)[:MAX_ARTISTS, :MAX_ARTISTS]
+    users   = read_from_file(USERS_FILE)
 
-    METHOD_two = "rank_hybrid_wiki" # hier aendern
+    if VERBOSE:
+        helper.log_highlight('Loading UAM')
 
-    runned_methods = {METHOD_two: []}
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)
 
-    k_sorted = {}
-    r_sorted = {}
+    if VERBOSE:
+        print 'Successfully loaded UAM'
 
-    # data
-    neighbors = [1, 2, 3, 5, 10, 20, 50]
-    recommender_artists = [10, 20, 30, 50, 100, 200, 300]
+    if VERBOSE:
+        helper.log_highlight('Loading AAM')
 
-    output_filedir = TASK2_OUTPUT + '/results/' + METHOD_two + '/'
+    AAM = np.loadtxt(AAM_FILE, delimiter='\t', dtype=np.float32)
 
-    # ensure dir
-    if not os.path.exists(output_filedir):
-        os.makedirs(output_filedir)
+    if VERBOSE:
+        print 'Successfully loaded AAM'
 
-    for neighbor in neighbors:
-        k_sorted['K' + str(neighbor)] = []
+    time_start = time.time()
 
-        K = neighbor
+    run_multithreading(run, METHOD)
 
-        for recommender_artist in recommender_artists:
-            k_sorted['R' + str(recommender_artist)] = []
+    time_end = time.time()
+    elapsed_time = (time_end - time_start)
 
-            MIN_RECOMMENDED_ARTISTS = recommender_artist
-
-            # prepare for appending
-            data_to_append = {'neighbors': K, 'recommended_artists': MIN_RECOMMENDED_ARTISTS}
-
-            data = run()
-
-            data_to_append.update(data)
-            runned_methods[METHOD_two].append(data_to_append)
-
-            # write into file
-            content = json.dumps(data_to_append, indent=4, sort_keys=True)
-            f = open(output_filedir + 'K' + str(K) + '_recommended' + str(MIN_RECOMMENDED_ARTISTS) + '.json', 'w')
-
-            f.write(content)
-            f.close()
-
-    content = json.dumps(data_to_append, indent=4, sort_keys=True)
-    f = open(output_filedir + 'all.json', 'w')
-
-    f.write(content)
-    f.close()
-
+    print elapsed_time

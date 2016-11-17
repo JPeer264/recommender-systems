@@ -9,6 +9,7 @@ __author__ = 'mms'
 ###########
 import os
 import csv
+import time
 import json
 import random
 import numpy as np
@@ -17,9 +18,6 @@ import scipy.spatial.distance as scidist
 from sklearn import cross_validation
 from operator import itemgetter
 from run_recommender import * # run_recommender.py
-
-import time
-
 
 ####################
 # GLOBAL VARIABLES #
@@ -30,21 +28,11 @@ UAM_FILE     = TESTFILES + "C1ku_UAM.txt"
 ARTISTS_FILE = TESTFILES + "artists.txt"
 USERS_FILE   = TESTFILES + "users.txt"
 OUTPUT_DIR   = "./output/"
-METHOD       = "PB"
-NF           = 10
-VERBOSE      = False
 
-# Function to read metadata (users or artists)
-def read_from_file(filename):
-    data = []
-    with open(filename, 'r') as f:  # open file for reading
-        reader = csv.reader(f, delimiter='\t')  # create reader
-        headers = reader.next()  # skip header
-        for row in reader:
-            item = row[0]
-            data.append(item)
-    f.close()
-    return data
+NF      = 10
+METHOD  = "PB"
+VERBOSE = True
+MIN_RECOMMENDED_ARTISTS = 0
 
 # Function that implements a dumb random recommender. It predicts a number of randomly chosen items.
 # It returns a dictionary of recommended artist indices (and corresponding scores).
@@ -108,9 +96,12 @@ def recommend_PB(UAM, seed_aidx_train, K):
 
 # Function to run an evaluation experiment.
 def run(_K, _recommended_artists):
+    global MIN_RECOMMENDED_ARTISTS
+
     # Initialize variables to hold performance measures
-    avg_prec = 0;       # mean precision
-    avg_rec = 0;        # mean recall
+    avg_prec = 0
+    avg_rec  = 0
+    MIN_RECOMMENDED_ARTISTS = _recommended_artists
 
     # For all users in our data (UAM)
     no_users = UAM.shape[0]
@@ -134,7 +125,7 @@ def run(_K, _recommended_artists):
             copy_UAM = UAM.copy()       # we need to create a copy of the UAM, otherwise modifications within recommend function will effect the variable
 
 
-            dict_rec_aidx = recommend_PB(copy_UAM, u_aidx[train_aidx], _K) # len(test_aidx))
+            dict_rec_aidx = recommend_PB(copy_UAM, u_aidx[train_aidx], _recommended_artists) # len(test_aidx))
 
             # Distill recommended artist indices from dictionary returned by the recommendation functions
             rec_aidx = dict_rec_aidx.keys()
@@ -193,8 +184,8 @@ def run(_K, _recommended_artists):
 # Main program, for experimentation.
 if __name__ == '__main__':
     # Load metadata from provided files into lists
-    artists = read_from_file(ARTISTS_FILE)
-    users   = read_from_file(USERS_FILE)
+    artists = helper.read_csv(ARTISTS_FILE)
+    users   = helper.read_csv(USERS_FILE)
 
     if VERBOSE:
         helper.log_highlight('Loading UAM')
@@ -206,7 +197,8 @@ if __name__ == '__main__':
 
     time_start = time.time()
 
-    run_multithreading(run, METHOD)
+    # run_recommender(run, METHOD, [1]) # serial
+    run_multithreading(run, METHOD, [1]) # parallel
 
     time_end = time.time()
     elapsed_time = (time_end - time_start)
