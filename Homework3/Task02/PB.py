@@ -4,37 +4,35 @@
 # hybrid methods (score-based and rank-based fusion).
 __author__ = 'mms'
 
-# Load required modules
+###########
+# IMPORTS #
+###########
+import os
 import csv
 import json
-import os
-import numpy as np
-from sklearn import cross_validation            # machine learning & evaluation module
 import random
-import scipy.spatial.distance as scidist        # import distance computation module from scipy package
-from operator import itemgetter                 # for sorting dictionaries w.r.t. values
-import helper
-from run_recommender import run_recommender
-from run_recommender import run_multiprocessing
+import numpy as np
+import helper # helper.py
+import scipy.spatial.distance as scidist
+from sklearn import cross_validation
+from operator import itemgetter
+from run_recommender import * # run_recommender.py
+
 import time
 
 
-# Parameters
-ROOT_DIR = "./"
-TESTFILES = "../test_data/"
-UAM_FILE = TESTFILES + "C1ku_UAM.txt"                # user-artist-matrix (UAM)
-#UAM_FILE = "UAM_100u_raw.txt"                # user-artist-matrix (UAM)
-ARTISTS_FILE = TESTFILES + "artists.txt"    # artist names for UAM
-USERS_FILE = TESTFILES + "users.txt"        # user names for UAM
-OUTPUT_DIR = "./output/"
-METHOD = "PB_test"                       # recommendation method
-                                    # ["RB", "PB", "CF", "CB", "HR_RB", "HR_SCB"]
-K = 10
-NF = 10              # number of folds to perform in cross-validation
-VERBOSE = True     # verbose output?
-
-MAX_USERS = 100
-MAX_ARTIST = 3000
+####################
+# GLOBAL VARIABLES #
+####################
+ROOT_DIR     = "./"
+TESTFILES    = "../test_data/"
+UAM_FILE     = TESTFILES + "C1ku_UAM.txt"
+ARTISTS_FILE = TESTFILES + "artists.txt"
+USERS_FILE   = TESTFILES + "users.txt"
+OUTPUT_DIR   = "./output/"
+METHOD       = "PB"
+NF           = 10
+VERBOSE      = False
 
 # Function to read metadata (users or artists)
 def read_from_file(filename):
@@ -136,14 +134,6 @@ def run(_K, _recommended_artists):
             copy_UAM = UAM.copy()       # we need to create a copy of the UAM, otherwise modifications within recommend function will effect the variable
 
 
-            # Run recommendation method specified in METHOD
-            # NB: u_aidx[train_aidx] gives the indices of training artists
-
-            #K_RB = 10          # for RB: number of randomly selected artists to recommend
-            #K_PB = 10          # for PB: number of most frequently played artists to recommend
-            #K_CB = 3           # for CB: number of nearest neighbors to consider for each artist in seed user's training set
-            #K_CF = 3           # for CF: number of nearest neighbors to consider for each user
-            #K_HR = 10          # for hybrid: number of artists to recommend at most
             dict_rec_aidx = recommend_PB(copy_UAM, u_aidx[train_aidx], _K) # len(test_aidx))
 
             # Distill recommended artist indices from dictionary returned by the recommendation functions
@@ -188,7 +178,7 @@ def run(_K, _recommended_artists):
     # Output mean average precision and recall
     if VERBOSE:
         print ("\nMAP: %.2f, MAR  %.2f" % (avg_prec, avg_rec))
-    print ("%.3f, %.3f" % (avg_prec, avg_rec))
+        print ("%.3f, %.3f" % (avg_prec, avg_rec))
 
     f1_score = 2 * ((avg_prec * avg_rec) / (avg_prec + avg_rec))
 
@@ -209,16 +199,16 @@ if __name__ == '__main__':
     if VERBOSE:
         helper.log_highlight('Loading UAM')
 
-    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:MAX_USERS, :MAX_ARTIST]
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)
 
     if VERBOSE:
         print 'Successfully loaded UAM'
 
     time_start = time.time()
 
-    #run_multiprocessing(run, METHOD, [1,2,3,4,50])
-    run_recommender(run, METHOD, [1,2,3,4,50])
+    run_multithreading(run, METHOD)
 
     time_end = time.time()
+    elapsed_time = (time_end - time_start)
 
-    print (time_end - time_start)
+    print elapsed_time
