@@ -28,9 +28,10 @@ OUTPUT_DIR = ''
 
 def generate_csv(method):
     """
-    This will generate a csv file
+    This will generate and save a csv file
     The folder in the METHOD_FOLDERS must be available in the RESULT_OUTPUT
     Also in this directory there must be json files with "neighbors", "avg_prec", "avg_rec" and "f1_score"
+    The output for the csv is the same as the input directory
 
     :param method: the folder/method name
     """
