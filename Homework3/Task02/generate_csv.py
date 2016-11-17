@@ -8,25 +8,34 @@ import os
 
 # Parameters
 RESULT_OUTPUT = './output/results/'
-METHOD_FOLDER = 'CB_musixmatch'
-# METHOD_FOLDER = 'CB_wiki'
-# METHOD_FOLDER = 'CF'
-# METHOD_FOLDER = 'HR_RB_Wiki'
-# METHOD_FOLDER = 'HR_SCB_Lyrics'
-# METHOD_FOLDER = 'HR_RB_Lyrics'
-# METHOD_FOLDER = 'HR_SEB_Wiki'
-# METHOD_FOLDER = 'HR_SEB_Lyrics'
-# METHOD_FOLDER = 'PB'
-# METHOD_FOLDER = 'RB_Artists'
-# METHOD_FOLDER = 'RB_user'
 
-OUTPUT_DIR = RESULT_OUTPUT + METHOD_FOLDER
+METHOD_FOLDERS = [
+    'RB_user',
+    'RB_Artists',
+    'PB',
+    'HR_SEB_Lyrics',
+    'HR_SEB_Wiki',
+    'HR_RB_Wiki',
+    'HR_RB_Lyrics',
+    'HR_SCB_Wiki',
+    'HR_SCB_Lyrics',
+    'CB_Wiki',
+    'CB_Musixmatch',
+    'CF',
+]
 
+OUTPUT_DIR = ''
 
-# Main program, for experimentation.
-if __name__ == '__main__':
+def generate_csv(method):
+    """
+    This will generate a csv file
+    The folder in the METHOD_FOLDERS must be available in the RESULT_OUTPUT
+    Also in this directory there must be json files with "neighbors", "avg_prec", "avg_rec" and "f1_score"
+
+    :param method: the folder/method name
+    """
     runned_methods = {}
-    runned_methods[METHOD_FOLDER] = []
+    runned_methods[method] = []
 
     k_sorted = {}
     r_sorted = {}
@@ -54,15 +63,13 @@ if __name__ == '__main__':
 
     all_jsons = sorted(glob.glob(OUTPUT_DIR + '/*.json'), key=os.path.getmtime)
 
-    print all_jsons
-
     for one_json in all_jsons:
         with open(one_json) as data_file:
             data = json.load(data_file)
 
-        runned_methods[METHOD_FOLDER].append(data)
+        runned_methods[method].append(data)
 
-    for result_obj in runned_methods[METHOD_FOLDER]:
+    for result_obj in runned_methods[method]:
         data_neighbors = [
             result_obj['neighbors'],
             result_obj['avg_prec'],
@@ -77,10 +84,18 @@ if __name__ == '__main__':
             result_obj['f1_score']
         ]
 
-        k_sorted['K' + str(result_obj['neighbors'])].append(data_recommended_artists)
-        r_sorted['R' + str(result_obj['recommended_artists'])].append(data_neighbors)
+        try:
+            k_sorted['K' + str(result_obj['neighbors'])].append(data_recommended_artists)
+            r_sorted['R' + str(result_obj['recommended_artists'])].append(data_neighbors)
 
+        except:
+            k_sorted['K' + str(result_obj['neighbors'])] = []
+            r_sorted['R' + str(result_obj['recommended_artists'])] = []
 
+            k_sorted['K' + str(result_obj['neighbors'])].append(data_recommended_artists)
+            r_sorted['R' + str(result_obj['recommended_artists'])].append(data_neighbors)
+
+    # sort items by K or R to compare values and get the best
     for key, value in r_sorted.items():
         if key[0] == 'R':
             # fill with meta info
@@ -110,3 +125,12 @@ if __name__ == '__main__':
 
     a.writerows(csv_recommended_sorted_header)
     b.close()
+# /generate_csv
+
+
+# Main program, for experimentation.
+if __name__ == '__main__':
+    for method in METHOD_FOLDERS:
+        OUTPUT_DIR = RESULT_OUTPUT + method
+
+        generate_csv(method)
