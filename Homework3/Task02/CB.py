@@ -45,7 +45,7 @@ def read_from_file(filename):
 # Function that implements a content-based recommender. It takes as input an artist-artist-matrix (AAM) containing pair-wise similarities
 # and the indices of the seed user's training artists.
 # It returns a dictionary of recommended artist indices (and corresponding scores).
-def recommend_CB(AAM, seed_aidx_train, items=False, K=1):
+def recommend_CB(AAM, seed_aidx_train, items=[], K=1):
     # AAM               artist-artist-matrix of pairwise similarities
     # seed_aidx_train   indices of training artists for seed user
     # K                 number of nearest neighbors (artists) to consider for each seed artist
@@ -106,8 +106,7 @@ def recommend_CB(AAM, seed_aidx_train, items=False, K=1):
         dictlist.append(temp)
 
     sorted_dict_reco_aidx = sorted(dict_recommended_artists_idx.items(), key=operator.itemgetter(1), reverse=True)
-
-
+    sorted_dict_reco_aidx = sorted_dict_reco_aidx+items
     max = sorted_dict_reco_aidx[0][1]
 
     new_dict_recommended_artists_idx = {}
@@ -115,21 +114,26 @@ def recommend_CB(AAM, seed_aidx_train, items=False, K=1):
     for i in sorted_dict_reco_aidx:
         new_dict_recommended_artists_idx[i[0]] = i[1] / max
 
-    sorted_dict_reco_aidx = np.unique(np.append(sorted_dict_reco_aidx, items))
-    print type(sorted_dict_reco_aidx)
-
-    #sorted_dict_reco_aidx = list(set(sorted_dict_reco_aidx))
-
+    sorted_dict_reco_aidx = list(set(sorted_dict_reco_aidx))
     if len(sorted_dict_reco_aidx) < MIN_RECOMMENDED_ARTISTS:
         return recommend_CB(UAM, seed_aidx_train, sorted_dict_reco_aidx, K + 1)
-        #reco_art_CB = reco_art_CB.items()
-        #sorted_dict_reco_aidx = sorted_dict_reco_aidx + reco_art_CB
-        #sorted_dict_reco_aidx = list(set(sorted_dict_reco_aidx))
 
     new_return = {}
 
     for index, key in enumerate(sorted_dict_reco_aidx, start=0):
-        if index < MIN_RECOMMENDED_ARTISTS and index < len(sorted_dict_reco_aidx):
+        print '-----'
+        print index
+        print '-----'
+        print '-----'
+        print key[0]
+        print '-----'
+        print '-----'
+        print MIN_RECOMMENDED_ARTISTS
+        print '-----'
+        print '-----'
+        print len(sorted_dict_reco_aidx)
+        print '-----'
+        if index < MIN_RECOMMENDED_ARTISTS or index < len(sorted_dict_reco_aidx):
             new_return[key[0]] = key[1]
 
 
@@ -138,8 +142,8 @@ def recommend_CB(AAM, seed_aidx_train, items=False, K=1):
 # Function to run an evaluation experiment.
 def run():
     # Initialize variables to hold performance measures
-    avg_prec = 0;  # mean precision
-    avg_rec = 0;  # mean recall
+    avg_prec = 0    # mean precision
+    avg_rec = 0     # mean recall
 
     # For all users in our data (UAM)
     no_users = UAM.shape[0]
@@ -171,11 +175,13 @@ def run():
             # Call recommend function
             copy_UAM = UAM.copy()  # we need to create a copy of the UAM, otherwise modifications within recommend function will effect the variable
 
-            dict_rec_aidx = recommend_CB(AAM, u_aidx[train_aidx], False, K)
+            dict_rec_aidx = recommend_CB(AAM, u_aidx[train_aidx], [], K)
 
 
             # Distill recommended artist indices from dictionary returned by the recommendation functions
             rec_aidx = dict_rec_aidx.keys()
+
+            print len(rec_aidx)
 
             if VERBOSE:
                 print "Recommended items: ", len(rec_aidx)
@@ -293,7 +299,7 @@ if __name__ == '__main__':
 
     # data
     neighbors = [ 1, 2, 3, 5, 10, 20, 50 ]
-    recommender_artists = [100, 200, 300 ]
+    recommender_artists = [300 ]
 
     output_filedir = TASK2_OUTPUT + '/results/' + METHOD_two + '/'
 
