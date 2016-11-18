@@ -23,7 +23,7 @@ USERS_FILE   = TESTFILES + "C1ku_artists_extended.csv" # user names for UAM
 UAM_FILE     = TESTFILES + "C1ku/C1ku_UAM.txt" # user-artist-matrix (UAM)
 
 NF      = 10
-METHOD  = "RB_user_test"
+METHOD  = "RB_user"
 VERBOSE = False
 MIN_RECOMMENDED_ARTISTS = 0
 
