@@ -1,3 +1,0 @@
-include *.txt
-recursive-include src/pycountry *
-global-exclude src/pycountry *.pyc
