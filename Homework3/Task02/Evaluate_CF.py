@@ -239,6 +239,7 @@ def run(_K, _recommended_artists):
     data['avg_prec'] = avg_prec
     data['avg_rec'] = avg_rec
     data['f1_score'] = f1_score
+    data['recommended'] = dict_rec_aidx
 
     return data
 # /run
