@@ -96,16 +96,17 @@ def ensure_dir(directory):
         os.makedirs(directory)
 # /ensure_dir
 
-def read_for_hybrid(method, neighbors, recommended_artists):
+def read_for_hybrid(method, neighbors, recommended_artists, user, fold):
     input_dir = './output/results/' + method + '/recommended/'
 
     with open(input_dir + 'K' + str(neighbors) + '_R' + str(recommended_artists) + '.json') as data_file:
         data = json.load(data_file)
 
     return_data = {}
+    picked_data = data[str(user)][str(fold)]
 
-    for item in data['order']:
-        return_data[item] = float(data['recommended'][str(item)])
+    for item in picked_data['order']:
+        return_data[item] = float(picked_data['recommended'][str(item)])
 
     return return_data
 # /read_for_hybrid

@@ -61,8 +61,6 @@ def run_recommender(run_function, run_method, neighbors=[1, 2, 5, 10, 20, 50], r
             data            = run_function(neighbor, recommender_artist)
             recommended     = data['recommended']
             formated_recommended = {}
-            formated_recommended['order']       = []
-            formated_recommended['recommended'] = {}
 
             # delete this
             # 1. not valid json
@@ -74,9 +72,21 @@ def run_recommender(run_function, run_method, neighbors=[1, 2, 5, 10, 20, 50], r
             for key, value in recommended.iteritems():
                 # convert everything to strings
                 # due to otherwise it is not a valid json
-                formated_recommended['recommended'][str(key)] = str(value)
-                formated_recommended['order'].append(key)
+                formated_recommended[key] = {}
 
+                if len(value) == 0:
+                    continue
+
+                for kf, fold_recommended in value.iteritems():
+                    formated_recommended[key][kf] = {}
+                    formated_recommended[key][kf]['recommended'] = {}
+                    formated_recommended[key][kf]['order'] = []
+
+                    for artist, ranking in fold_recommended.iteritems():
+                        formated_recommended[key][kf]['recommended'][str(artist)] = str(ranking)
+                        formated_recommended[key][kf]['order'].append(artist)
+
+            print formated_recommended
             # write json file for hybrids
             content = json.dumps(formated_recommended, indent=4, sort_keys=True)
             f = open(file_path_reco, 'w')

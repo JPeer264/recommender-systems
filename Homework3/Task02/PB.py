@@ -119,26 +119,23 @@ def recommend_PB(UAM, seed_aidx_train, K):
 
 # Function to run an evaluation experiment.
 def run(_K, _recommended_artists):
-    print "----------"
-    print _K
-    print "----------"
-    print _recommended_artists
-    print "----------"
-
     global MIN_RECOMMENDED_ARTISTS
 
     # Initialize variables to hold performance measures
-    avg_prec = 0
-    avg_rec  = 0
+    avg_prec   = 0
+    avg_rec    = 0
+    no_users   = UAM.shape[0]
+    no_artists = UAM.shape[1]
     MIN_RECOMMENDED_ARTISTS = _recommended_artists
 
-    # For all users in our data (UAM)
-    no_users = UAM.shape[0]
-    no_artists = UAM.shape[1]
+    recommended_artists = {}
+
     for u in range(0, no_users):
 
         # Get seed user's artists listened to
         u_aidx = np.nonzero(UAM[u, :])[0]
+
+        recommended_artists[str(u)] = {}
 
         if NF >= len(u_aidx) or u == no_users - 1:
             continue
@@ -155,6 +152,8 @@ def run(_K, _recommended_artists):
 
 
             dict_rec_aidx = recommend_PB(copy_UAM, u_aidx[train_aidx], _recommended_artists) # len(test_aidx))
+
+            recommended_artists[str(u)][str(fold)] = dict_rec_aidx
 
             # Distill recommended artist indices from dictionary returned by the recommendation functions
             rec_aidx = dict_rec_aidx.keys()
@@ -206,6 +205,7 @@ def run(_K, _recommended_artists):
     data['avg_prec'] = avg_prec
     data['avg_rec'] = avg_rec
     data['f1_score'] = f1_score
+    data['recommended'] = recommended_artists
 
     return data
 
@@ -227,7 +227,6 @@ if __name__ == '__main__':
     time_start = time.time()
 
     run_recommender(run, METHOD, [1]) # serial
-    #run_multithreading(run, METHOD, [1]) # parallel
 
     time_end = time.time()
     elapsed_time = (time_end - time_start)

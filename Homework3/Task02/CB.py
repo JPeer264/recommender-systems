@@ -115,43 +115,41 @@ def recommend_CB(AAM, seed_aidx_train, items=[], K=1):
         new_dict_recommended_artists_idx[i[0]] = i[1] / max
 
     sorted_dict_reco_aidx = list(set(sorted_dict_reco_aidx))
+
     if len(sorted_dict_reco_aidx) < MIN_RECOMMENDED_ARTISTS:
-        return recommend_CB(UAM, seed_aidx_train, sorted_dict_reco_aidx, K + 1)
+        K_users = K + 1
+
+        if K_users > AAM.shape[0]:
+            K_users = 1
+
+        return recommend_CB(AAM, seed_aidx_train, sorted_dict_reco_aidx, K_users)
 
     new_return = {}
 
     for index, key in enumerate(sorted_dict_reco_aidx, start=0):
-        print '-----'
-        print index
-        print '-----'
-        print '-----'
-        print key[0]
-        print '-----'
-        print '-----'
-        print MIN_RECOMMENDED_ARTISTS
-        print '-----'
-        print '-----'
-        print len(sorted_dict_reco_aidx)
-        print '-----'
-        if index < MIN_RECOMMENDED_ARTISTS or index < len(sorted_dict_reco_aidx):
+        if index < MIN_RECOMMENDED_ARTISTS or (index < len(sorted_dict_reco_aidx) and index < MIN_RECOMMENDED_ARTISTS):
             new_return[key[0]] = key[1]
 
-
     return new_return
+# /recommend_CB
 
 # Function to run an evaluation experiment.
-def run():
-    # Initialize variables to hold performance measures
-    avg_prec = 0    # mean precision
-    avg_rec = 0     # mean recall
+def run(_K, _recommended_artists):
+    global MIN_RECOMMENDED_ARTISTS
 
-    # For all users in our data (UAM)
-    no_users = UAM.shape[0]
-    no_artists = UAM.shape[1]
+    avg_prec            = 0
+    avg_rec             = 0
+    no_users            = UAM.shape[0]
+    no_artists          = UAM.shape[1]
+    recommended_artists = {}
+    MIN_RECOMMENDED_ARTISTS = _recommended_artists
+
     for u in range(0, no_users):
 
         # Get seed user's artists listened to
-        u_aidx = np.nonzero(UAM[u, :MAX_ARTISTS])[0]
+        u_aidx = np.nonzero(UAM[u, :])[0]
+
+        recommended_artists[str(u)] = {}
 
         if NF >= len(u_aidx) or u == no_users - 1:
             continue
@@ -175,8 +173,9 @@ def run():
             # Call recommend function
             copy_UAM = UAM.copy()  # we need to create a copy of the UAM, otherwise modifications within recommend function will effect the variable
 
-            dict_rec_aidx = recommend_CB(AAM, u_aidx[train_aidx], [], K)
+            dict_rec_aidx = recommend_CB(AAM, u_aidx[train_aidx], [], _K)
 
+            recommended_artists[str(u)][str(fold)] = dict_rec_aidx
 
             # Distill recommended artist indices from dictionary returned by the recommendation functions
             rec_aidx = dict_rec_aidx.keys()
@@ -228,193 +227,43 @@ def run():
     if VERBOSE:
         print ("\nMAP: %.2f, MAR  %.2f, F1 Scrore: %.2f" % (avg_prec, avg_rec, f1_score))
         print ("%.3f, %.3f" % (avg_prec, avg_rec))
-        print ("K neighbors " + str(K2))
+        print ("K neighbors " + str(_K))
         print AAM_FILE
 
     data = {}
     data['f1_score'] = f1_score
     data['avg_prec'] = avg_prec
     data['avg_rec'] = avg_rec
+    data['recommended'] = recommended_artists
 
     return data
 
-
-# Function that implements a dumb random recommender. It predicts a number of randomly chosen items.
-# It returns a dictionary of recommended artist indices (and corresponding scores).
-def recommend_RB(artists_idx, no_items):
-    # artists_idx           list of artist indices to draw random sample from
-    # no_items              no of items to predict
-
-    # Let's predict a number of random items that equal the number of items in the user's test set
-    random_aidx = random.sample(artists_idx, no_items)
-
-    # Insert scores into dictionary
-    dict_random_aidx = {}
-    for aidx in random_aidx:
-        dict_random_aidx[aidx] = 1.0  # for random recommendations, all scores are equal
-
-    # Return dict of recommended artist indices as keys (and scores as values)
-    return dict_random_aidx
-
-
 # Main program, for experimentation.
 if __name__ == '__main__':
+    artists = helper.read_csv(ARTISTS_FILE)
+    users   = helper.read_csv(USERS_FILE)
 
-    # Load metadata from provided files into lists
-    artists = read_from_file(ARTISTS_FILE)
-    users = read_from_file(USERS_FILE)
-    # Load UAM
-    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:, :MAX_ARTISTS]
-    # Load AAM
+    if VERBOSE:
+        helper.log_highlight('Loading UAM')
+
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)
+
+    if VERBOSE:
+        print 'Successfully loaded UAM'
+
+    if VERBOSE:
+        helper.log_highlight('Loading AAM')
+
     AAM = np.loadtxt(AAM_FILE, delimiter='\t', dtype=np.float32)
 
-    csv_k_sorted_header = [
-        ['Sorted by K values'],
-        ['']
-    ]
+    if VERBOSE:
+        print 'Successfully loaded AAM'
 
-    csv_recommended_sorted_header = [
-        ['Sorted by recommended artist values'],
-        ['']
-    ]
+    time_start = time.time()
 
-    """
-    format
-    {
-        "cb": [{
-            avg_prec: Number,
-            avg_rec: Number,
-            neighbors: Number,
-            f1_score: Number,
-            recommended_artists: Number,
-        }]
-    }
-    """
-    METHOD_two = "CB_wiki"
-    runned_methods = {}
-    runned_methods[METHOD_two] = []
+    run_recommender(run, METHOD) # serial
 
-    k_sorted = {}
-    r_sorted = {}
+    time_end = time.time()
+    elapsed_time = (time_end - time_start)
 
-    # data
-    neighbors = [ 1, 2, 3, 5, 10, 20, 50 ]
-    recommender_artists = [300 ]
-
-    output_filedir = TASK2_OUTPUT + '/results/' + METHOD_two + '/'
-
-    # ensure dir
-    if not os.path.exists(output_filedir):
-        os.makedirs(output_filedir)
-
-    for neighbor in neighbors:
-        k_sorted['K' + str(neighbor)] = []
-
-        K2 = neighbor
-
-        for recommender_artist in recommender_artists:
-            r_sorted['R' + str(recommender_artist)] = []
-
-            MIN_RECOMMENDED_ARTISTS = recommender_artist
-            print MIN_RECOMMENDED_ARTISTS
-            # prepare for appending
-            data_to_append = {}
-            data_to_append['neighbors'] = K2
-            data_to_append['recommended_artists'] = MIN_RECOMMENDED_ARTISTS
-
-            data = run()
-
-            data_to_append.update(data)
-            runned_methods[METHOD_two].append(data_to_append)
-
-            # write into file
-            content = json.dumps(data_to_append, indent=4, sort_keys=True)
-            f = open(output_filedir + 'K' + str(K2) + '_recommended' + str(MIN_RECOMMENDED_ARTISTS) + '.json', 'w')
-
-            f.write(content)
-            f.close()
-
-    content = json.dumps(data_to_append, indent=4, sort_keys=True)
-    f = open(output_filedir + 'all.json', 'w')
-
-    f.write(content)
-    f.close()
-
-    with open(output_filedir + 'all.json') as data_file:
-        runned_methods = json.load(data_file)
-
-    for result_obj in runned_methods[METHOD_two]:
-        data_neighbors = [
-            result_obj['neighbors'],
-            result_obj['avg_prec'],
-            result_obj['avg_rec'],
-            result_obj['f1_score']
-        ]
-
-        data_recommended_artists = [
-            result_obj['recommended_artists'],
-            result_obj['avg_prec'],
-            result_obj['avg_rec'],
-            result_obj['f1_score']
-        ]
-
-        k_sorted['K' + str(result_obj['neighbors'])].append(data_recommended_artists)
-        r_sorted['R' + str(result_obj['recommended_artists'])].append(data_neighbors)
-
-
-    for key, value in r_sorted.items():
-        if key[0] == 'R':
-            # fill with meta info
-            csv_recommended_sorted_header.append([''])
-            csv_recommended_sorted_header.append([str(key) + ' recommended artists. '])
-
-            for data in value:
-                csv_recommended_sorted_header.append(data)
-
-    for key, value in k_sorted.items():
-        if key[0] == 'K':
-            # fill with meta info
-            csv_k_sorted_header.append([''])
-            csv_k_sorted_header.append([str(key) + ' neighbors. '])
-
-            for data in value:
-                csv_k_sorted_header.append(data)
-
-    b = open(output_filedir + 'sorted_neighbors.csv', 'w')
-    a = csv.writer(b)
-
-    a.writerows(csv_k_sorted_header)
-    b.close()
-
-    b = open(output_filedir + 'sorted_recommender.csv', 'w')
-    a = csv.writer(b)
-
-    a.writerows(csv_recommended_sorted_header)
-    b.close()
-
-    # data = [
-    #     ["Test"],
-    #     ["K", "MAP", "MAR"],
-    #     [1, 0.12, 0.12]
-    # ]
-
-
-
-
-    # if METHOD == "HR_SCB":
-    #     print METHOD
-    #     K_CB = 3  # number of nearest neighbors to consider in CB (= artists)
-    #     K_CF = 3  # number of nearest neighbors to consider in CF (= users)
-    #     for K_HR in range(10, 100):
-    #         print (str(K_HR) + ","),
-    #         run()
-
-    # if METHOD == "CB":
-    #     print METHOD
-    #     run()
-
-    # if METHOD == "CF":
-    #     print METHOD
-    #     for K_CF in range(1, 100):
-    #         print (str(K_CF) + ","),
-    #         run()
+    print elapsed_time

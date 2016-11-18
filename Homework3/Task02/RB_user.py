@@ -24,7 +24,7 @@ UAM_FILE     = TESTFILES + "C1ku/C1ku_UAM.txt" # user-artist-matrix (UAM)
 
 NF      = 10
 METHOD  = "RB_user"
-VERBOSE = False
+VERBOSE = True
 MIN_RECOMMENDED_ARTISTS = 0
 
 
@@ -83,8 +83,12 @@ def run(_K, _recommended_artists):
     no_artists = UAM.shape[1]
     MIN_RECOMMENDED_ARTISTS = _recommended_artists
 
+    recommended_artists = {}
+
     for u in range(0, no_users):
         u_aidx = np.nonzero(UAM[u, :])[0]
+
+        recommended_artists[str(u)] = {}
 
         if NF >= len(u_aidx) or u == no_users - 1:
             continue
@@ -100,6 +104,8 @@ def run(_K, _recommended_artists):
             copy_UAM = UAM.copy()  # we need to create a copy of the UAM, otherwise modifications within recommend function will effect the variable
 
             dict_rec_aidx = recommend_random_user_RB(UAM, u_aidx[train_aidx])
+
+            recommended_artists[str(u)][str(fold)] = dict_rec_aidx
 
             rec_aidx = dict_rec_aidx.keys()
 
@@ -154,7 +160,7 @@ def run(_K, _recommended_artists):
     data['avg_prec'] = avg_prec
     data['avg_rec'] = avg_rec
     data['f1_score'] = f1_score
-    data['recommended'] = dict_rec_aidx
+    data['recommended'] = recommended_artists
 
     return data
 # /run
@@ -175,7 +181,7 @@ if __name__ == '__main__':
 
     time_start = time.time()
 
-    run_recommender(run, METHOD, [1]) # serial
+    run_recommender(run, METHOD, [1])
 
     time_end = time.time()
     elapsed_time = (time_end - time_start)

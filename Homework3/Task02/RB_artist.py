@@ -58,9 +58,13 @@ def run(_K, _recommended_artists):
     no_artists = UAM.shape[1]
     MIN_RECOMMENDED_ARTISTS = _recommended_artists
 
+    recommended_artists = {}
+
     for u in range(0, no_users):
         # Get seed user's artists listened to
         u_aidx = np.nonzero(UAM[u, :])[0]
+
+        recommended_artists[str(u)] = {}
 
         # Ignore users with less artists than the crossfold validation split maximum | NF
         if NF >= len(u_aidx) or u == no_users - 1:
@@ -83,45 +87,47 @@ def run(_K, _recommended_artists):
             dict_rec_aidx = RB_artists(np.setdiff1d(range(0, no_artists), u_aidx[train_aidx]),
                                        MIN_RECOMMENDED_ARTISTS)  # len(test_aidx))
 
-        # Distill recommended artist indices from dictionary returned by the recommendation functions
-        rec_aidx = dict_rec_aidx.keys()
+            recommended_artists[str(u)][str(fold)] = dict_rec_aidx
 
-        if VERBOSE:
-            print "Recommended items: ", len(rec_aidx)
+            # Distill recommended artist indices from dictionary returned by the recommendation functions
+            rec_aidx = dict_rec_aidx.keys()
 
-        ################################
-        # Compute performance measures #
-        ################################
+            if VERBOSE:
+                print "Recommended items: ", len(rec_aidx)
 
-        correct_aidx = np.intersect1d(u_aidx[test_aidx], rec_aidx)
+            ################################
+            # Compute performance measures #
+            ################################
 
-        # True Positives is amount of overlap in recommended artists and test artists
-        TP = len(correct_aidx)
+            correct_aidx = np.intersect1d(u_aidx[test_aidx], rec_aidx)
 
-        # Precision is percentage of correctly predicted among predicted
-        # Handle special case that not a single artist could be recommended -> by definition, precision = 100%
-        if len(rec_aidx) == 0:
-            prec = 100.0
-        else:
-            prec = 100.0 * TP / len(rec_aidx)
+            # True Positives is amount of overlap in recommended artists and test artists
+            TP = len(correct_aidx)
 
-        # Recall is percentage of correctly predicted among all listened to
-        # Handle special case that there is no single artist in the test set -> by definition, recall = 100%
-        if len(test_aidx) == 0:
-            rec = 100.0
-        else:
-            rec = 100.0 * TP / len(test_aidx)
+            # Precision is percentage of correctly predicted among predicted
+            # Handle special case that not a single artist could be recommended -> by definition, precision = 100%
+            if len(rec_aidx) == 0:
+                prec = 100.0
+            else:
+                prec = 100.0 * TP / len(rec_aidx)
 
-        # Add precision and recall for current user and fold to aggregate variables
-        avg_prec += prec / (NF * no_users)
-        avg_rec += rec / (NF * no_users)
+            # Recall is percentage of correctly predicted among all listened to
+            # Handle special case that there is no single artist in the test set -> by definition, recall = 100%
+            if len(test_aidx) == 0:
+                rec = 100.0
+            else:
+                rec = 100.0 * TP / len(test_aidx)
 
-        # Output precision and recall of current fold
-        if VERBOSE:
-            print ("\tPrecision: %.2f, Recall:  %.2f" % (prec, rec))
+            # Add precision and recall for current user and fold to aggregate variables
+            avg_prec += prec / (NF * no_users)
+            avg_rec += rec / (NF * no_users)
 
-        # Increase fold counter
-        fold += 1
+            # Output precision and recall of current fold
+            if VERBOSE:
+                print ("\tPrecision: %.2f, Recall:  %.2f" % (prec, rec))
+
+            # Increase fold counter
+            fold += 1
 
     # Output mean average precision and recall
     f1_score = 2 * ((avg_prec * avg_rec) / (avg_prec + avg_rec))
@@ -134,7 +140,7 @@ def run(_K, _recommended_artists):
     data['avg_prec'] = avg_prec
     data['avg_rec'] = avg_rec
     data['f1_score'] = f1_score
-    data['recommended'] = dict_rec_aidx
+    data['recommended'] = recommended_artists
 
     return data
 
@@ -154,8 +160,7 @@ if __name__ == '__main__':
 
     time_start = time.time()
 
-    # run_recommender(run, METHOD, [1]) # serial
-    run_multithreading(run, METHOD, [1]) # parallel
+    run_recommender(run, METHOD, [1]) # serial
 
     time_end = time.time()
     elapsed_time = (time_end - time_start)

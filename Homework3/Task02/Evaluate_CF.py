@@ -19,7 +19,7 @@ USERS_FILE   = TESTFILES + "C1ku_users_extended.csv" # user names for UAM
 UAM_FILE     = TESTFILES + "C1ku/C1ku_UAM.txt" # user-artist-matrix (UAM)
 
 NF          = 10
-METHOD      = "CF_test"
+METHOD      = "CF"
 VERBOSE     = True
 MAX_ARTISTS = 1000
 MAX_USERS   = 50
@@ -158,17 +158,20 @@ def run(_K, _recommended_artists):
     global MIN_RECOMMENDED_ARTISTS
 
     # Initialize variables to hold performance measures
-    avg_prec = 0;  # mean precision
-    avg_rec = 0;  # mean recall
+    avg_prec            = 0
+    avg_rec             = 0
+    no_users            = UAM.shape[0]
+    no_artists          = UAM.shape[1]
     MIN_RECOMMENDED_ARTISTS = _recommended_artists
 
-    # For all users in our data (UAM)
-    no_users = UAM.shape[0]
-    no_artists = UAM.shape[1]
+    recommended_artists = {}
+
     for u in range(0, no_users):
 
         # Get seed user's artists listened to
         u_aidx = np.nonzero(UAM[u, :])[0]
+
+        recommended_artists[str(u)] = {}
 
         if NF >= len(u_aidx) or u == no_users - 1:
             continue
@@ -185,6 +188,8 @@ def run(_K, _recommended_artists):
             copy_UAM = UAM.copy()  # we need to create a copy of the UAM, otherwise modifications within recommend function will effect the variable
 
             dict_rec_aidx = recommend_CF(copy_UAM, u, u_aidx[train_aidx], _K)
+
+            recommended_artists[str(u)][str(fold)] = dict_rec_aidx
 
             rec_aidx = dict_rec_aidx.keys()
 
@@ -239,7 +244,7 @@ def run(_K, _recommended_artists):
     data['avg_prec'] = avg_prec
     data['avg_rec'] = avg_rec
     data['f1_score'] = f1_score
-    data['recommended'] = dict_rec_aidx
+    data['recommended'] = recommended_artists
 
     return data
 # /run
@@ -253,7 +258,7 @@ if __name__ == '__main__':
     if VERBOSE:
         helper.log_highlight('Loading UAM')
 
-    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:MAX_USERS,:]
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)
 
     if VERBOSE:
         print 'Successfully loaded UAM'
@@ -261,7 +266,6 @@ if __name__ == '__main__':
     time_start = time.time()
 
     run_recommender(run, METHOD) # serial
-    # run_multithreading(run, METHOD) # parallel
 
     time_end = time.time()
     elapsed_time = (time_end - time_start)
