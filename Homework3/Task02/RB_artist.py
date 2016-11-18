@@ -80,9 +80,8 @@ def run(_K, _recommended_artists):
                     len(train_aidx)) + ", Test items: " + str(len(test_aidx))
 
             # K_RB = number of randomly selected artists to recommend
-            if METHOD == "RB_Artists":  # random baseline
-                dict_rec_aidx = RB_artists(np.setdiff1d(range(0, no_artists), u_aidx[train_aidx]),
-                                           MIN_RECOMMENDED_ARTISTS)  # len(test_aidx))
+            dict_rec_aidx = RB_artists(np.setdiff1d(range(0, no_artists), u_aidx[train_aidx]),
+                                       MIN_RECOMMENDED_ARTISTS)  # len(test_aidx))
 
         # Distill recommended artist indices from dictionary returned by the recommendation functions
         rec_aidx = dict_rec_aidx.keys()
@@ -135,6 +134,7 @@ def run(_K, _recommended_artists):
     data['avg_prec'] = avg_prec
     data['avg_rec'] = avg_rec
     data['f1_score'] = f1_score
+    data['recommended'] = dict_rec_aidx
 
     return data
 
