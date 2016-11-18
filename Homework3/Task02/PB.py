@@ -18,20 +18,23 @@ import scipy.spatial.distance as scidist
 from sklearn import cross_validation
 from operator import itemgetter
 from run_recommender import * # run_recommender.py
+import operator
 
 ####################
 # GLOBAL VARIABLES #
 ####################
-ROOT_DIR     = "./"
+# Parameters
 TESTFILES    = "../test_data/"
-UAM_FILE     = TESTFILES + "C1ku_UAM.txt"
-ARTISTS_FILE = TESTFILES + "artists.txt"
-USERS_FILE   = TESTFILES + "users.txt"
-OUTPUT_DIR   = "./output/"
+TASK2_OUTPUT = "../Task02/output/"
+ARTISTS_FILE = TESTFILES + "C1ku_artists_extended.csv" # artist names for UAM
+USERS_FILE   = TESTFILES + "C1ku_artists_extended.csv" # user names for UAM
+UAM_FILE     = TESTFILES + "C1ku/C1ku_UAM.txt" # user-artist-matrix (UAM)
 
-NF      = 10
-METHOD  = "PB"
-VERBOSE = True
+NF          = 10
+METHOD      = "PB"
+VERBOSE     = True
+MAX_ARTISTS = 1000
+MAX_USERS   = 50
 MIN_RECOMMENDED_ARTISTS = 0
 
 # Function that implements a dumb random recommender. It predicts a number of randomly chosen items.
@@ -75,27 +78,53 @@ def recommend_PB(UAM, seed_aidx_train, K):
     # Normalize popularity scores to range [0,1], to enable fusion with other approaches
     recommended_artists_scores = recommended_artists_scores / np.max(recommended_artists_scores)
 
-    #if len(sorted_dict_reco_aidx) <= MIN_RECOMMENDED_ARTISTS:
-    #    print "*"
-    #    reco_art_RB = recommend_RB(np.setdiff1d(range(0, AAM.shape[1]), seed_aidx_train),
-     #                              MIN_RECOMMENDED_ARTISTS - len(sorted_dict_reco_aidx))
-    #    print "Recommended < 10: "
-     #   sorted_dict_reco_aidx = sorted_dict_reco_aidx + reco_art_RB.items()
-
     # Insert indices and scores into dictionary
     dict_recommended_artists_idx = {}
     for i in range(0, len(recommended_artists_idx)):
-
         dict_recommended_artists_idx[recommended_artists_idx[i]] = recommended_artists_scores[i]
-#        print artists[recommended_artists_idx[i]] + ": " + str(recommended_artists_scores[i])
+        #        print artists[recommended_artists_idx[i]] + ": " + str(recommended_artists_scores[i])
+
+    dictlist = []
+
+    for key, value in dict_recommended_artists_idx.iteritems():
+        temp = [key, value]
+        dictlist.append(temp)
+
+    sorted_dict_reco_aidx = sorted(dict_recommended_artists_idx.items(), key=operator.itemgetter(1), reverse=True)
+
+    max_value = sorted_dict_reco_aidx[0][1]
+
+    new_dict_recommended_artists_idx = {}
+
+    for i in sorted_dict_reco_aidx:
+        new_dict_recommended_artists_idx[i[0]] = i[1] / max_value
+
+    sorted_dict_reco_aidx = list(set(sorted_dict_reco_aidx))
+
+    if len(sorted_dict_reco_aidx) < MIN_RECOMMENDED_ARTISTS:
+        reco_art_CF = recommend_PB(UAM, seed_aidx_train, K + 1)
+        reco_art_CF = reco_art_CF.items()
+        sorted_dict_reco_aidx = sorted_dict_reco_aidx + reco_art_CF
+        sorted_dict_reco_aidx = list(set(sorted_dict_reco_aidx))
+
+    new_dict_finish = {}
+    for index, key in enumerate(sorted_dict_reco_aidx, start=0):
+        if index < MIN_RECOMMENDED_ARTISTS and index < len(sorted_dict_reco_aidx):
+            new_dict_finish[key[0]] = key[1]
 
     # Return dictionary of recommended artist indices (and scores)
-    return dict_recommended_artists_idx
+    return new_dict_finish
 
 
 
 # Function to run an evaluation experiment.
 def run(_K, _recommended_artists):
+    print "----------"
+    print _K
+    print "----------"
+    print _recommended_artists
+    print "----------"
+
     global MIN_RECOMMENDED_ARTISTS
 
     # Initialize variables to hold performance measures
@@ -197,8 +226,8 @@ if __name__ == '__main__':
 
     time_start = time.time()
 
-    # run_recommender(run, METHOD, [1]) # serial
-    run_multithreading(run, METHOD, [1]) # parallel
+    run_recommender(run, METHOD, [1]) # serial
+    #run_multithreading(run, METHOD, [1]) # parallel
 
     time_end = time.time()
     elapsed_time = (time_end - time_start)

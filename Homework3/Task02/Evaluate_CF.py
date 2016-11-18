@@ -21,7 +21,7 @@ UAM_FILE     = TESTFILES + "C1ku/C1ku_UAM.txt" # user-artist-matrix (UAM)
 NF          = 10
 METHOD      = "CF_test"
 VERBOSE     = True
-MAX_ARTISTS = 3000
+MAX_ARTISTS = 1000
 MAX_USERS   = 50
 MIN_RECOMMENDED_ARTISTS = 0
 
@@ -116,10 +116,13 @@ def recommend_CF(UAM, seed_uidx, seed_aidx_train, K):
     for i in sorted_dict_reco_aidx:
         new_dict_recommended_artists_idx[i[0]] = i[1] / max_value
 
+    sorted_dict_reco_aidx = list(set(sorted_dict_reco_aidx))
 
     if len(sorted_dict_reco_aidx) < MIN_RECOMMENDED_ARTISTS:
-        reco_art_RB = recommend_RB(np.setdiff1d(range(0, UAM.shape[1]), seed_aidx_train), MIN_RECOMMENDED_ARTISTS-len(sorted_dict_reco_aidx))
-        sorted_dict_reco_aidx =  sorted_dict_reco_aidx+reco_art_RB.items()
+        reco_art_CF = recommend_CF(UAM, seed_uidx, seed_aidx_train, K+1)
+        reco_art_CF = reco_art_CF.items()
+        sorted_dict_reco_aidx = sorted_dict_reco_aidx + reco_art_CF
+        sorted_dict_reco_aidx = list(set(sorted_dict_reco_aidx))
 
 
     new_dict_finish ={}
@@ -249,15 +252,15 @@ if __name__ == '__main__':
     if VERBOSE:
         helper.log_highlight('Loading UAM')
 
-    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:MAX_USERS,:]
 
     if VERBOSE:
         print 'Successfully loaded UAM'
 
     time_start = time.time()
 
-    # run_recommender(run, METHOD) # serial
-    run_multithreading(run, METHOD) # parallel
+    run_recommender(run, METHOD) # serial
+    # run_multithreading(run, METHOD) # parallel
 
     time_end = time.time()
     elapsed_time = (time_end - time_start)
