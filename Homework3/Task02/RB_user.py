@@ -27,35 +27,51 @@ METHOD  = "RB_user"
 VERBOSE = True
 MIN_RECOMMENDED_ARTISTS = 0
 
-def recommend_random_user_RB(UAM, u_idx):
 
-    all_idx = range(0, UAM.shape[0])
-    random_u_idx = random.sample(np.setdiff1d(all_idx, [u_idx]), 1)[0]
+# Function that implements a dumb random recommender. It predicts a number of artists from randomly chosen users.
+# It returns a dictionary of recommended artist indices (and corresponding scores).
+def recommend_random_user_RB(UAM, seed_aidx_train, items=False, K_users = 1):
+    global MIN_RECOMMENDED_ARTISTS
+    # UAM                   user-artist-matrix
+    # artists_idx           list of artist indices to draw random sample from
+    # no_items              no of items to predict
+    # K_users               no of random users selected
 
-    # cannot generate the own user
-    if random_u_idx == u_idx:
-        recommend_random_user_RB(UAM, u_idx)
+    # Select a random sample of users
+    random_uidx = random.sample(range(0,UAM.shape[0]), K_users)
+    # Get artits of these
+    random_aidx_nz = np.nonzero(UAM[random_uidx,:])[:MIN_RECOMMENDED_ARTISTS]      # only interested in artists, hence [1]
+    # Remove artists in training set of seed user
+    random_aidx = np.setdiff1d(random_aidx_nz, seed_aidx_train)
 
-    random_u_aidx = np.nonzero(UAM[random_u_idx, :])[0]
+    if VERBOSE:
+        print str(K_users) + ' user(s) randomly chosen, ' + str(MIN_RECOMMENDED_ARTISTS) + ' recommendations requested, ' + str(len(random_aidx)) + ' found' # restart with K=' + str(K_users+1)
 
+    # Insert scores into dictionary
     dict_random_aidx = {}
-    for aidx in random_u_aidx:
+    for aidx in random_aidx:
         dict_random_aidx[aidx] = 1.0
+        # for random recommendations, all scores are equal
 
-    new_dict_recommended_artists_idx = {}
+    dict_random_aidx = dict_random_aidx.items()
 
-    sorted_dict_reco_aidx = sorted(dict_random_aidx.items(), key=operator.itemgetter(1), reverse=True)
+    if len(dict_random_aidx) < MIN_RECOMMENDED_ARTISTS:
+        reco_art_RB = recommend_random_user_RB(UAM, seed_aidx_train, random_aidx, K_users)
+        reco_art_RB = reco_art_RB.items()
+        dict_random_aidx = dict_random_aidx + reco_art_RB
+        dict_random_aidx = list(set(dict_random_aidx))
 
-    if len(dict_random_aidx) <= MIN_RECOMMENDED_ARTISTS:
-        # @JPEER bug - too many recurse callings!!! maybe like that -> rb(UAM, u_idx, new_dicts) <- and append to new generated artists
-        reco_art_RB = recommend_random_user_RB(UAM,u_idx)
-        sorted_dict_reco_aidx = sorted_dict_reco_aidx + reco_art_RB.items()
 
-    for index, key in enumerate(sorted_dict_reco_aidx, start=0):
-        if index < MIN_RECOMMENDED_ARTISTS and index < len(sorted_dict_reco_aidx):
-            new_dict_recommended_artists_idx[key[0]] = key[1]
+    new_dict_finish = {}
+    for index, key in enumerate(dict_random_aidx, start=0):
+        if index < MIN_RECOMMENDED_ARTISTS and index < len(dict_random_aidx):
+            new_dict_finish[key[0]] = key[1]
 
-    return new_dict_recommended_artists_idx
+    new_dict_finish = {}
+
+
+    # Return dict of recommended artist indices as keys (and scores as values)
+    return new_dict_finish
 
 # Function to run an evaluation experiment.
 def run(_K, _recommended_artists):
@@ -83,7 +99,7 @@ def run(_K, _recommended_artists):
             # Call recommend function
             copy_UAM = UAM.copy()  # we need to create a copy of the UAM, otherwise modifications within recommend function will effect the variable
 
-            dict_rec_aidx = recommend_random_user_RB(copy_UAM, u)
+            dict_rec_aidx = recommend_random_user_RB(UAM, u_aidx[train_aidx])
 
             rec_aidx = dict_rec_aidx.keys()
 
