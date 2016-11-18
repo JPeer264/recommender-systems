@@ -4,41 +4,61 @@ import csv
 import json
 import time
 import random
-import helper  # helper.py
+import helper # helper.py
 import operator
 import numpy as np
 import scipy.spatial.distance as scidist
 from sklearn import cross_validation
-from run_recommender import *  # run_recommender.py
+from run_recommender import * # run_recommender.py
 import pycountry
 
 # Parameters
-TESTFILES = "../test_data/"
+TESTFILES    = "../test_data/"
 TASK2_OUTPUT = "../Task02/output/"
-ARTISTS_FILE = TESTFILES + "C1ku_artists_extended.csv"  # artist names for UAM
-USERS_FILE = TESTFILES + "C1ku_users_extended.csv"  # user names for UAM
-UAM_FILE = TESTFILES + "C1ku/C1ku_UAM.txt"  # user-artist-matrix (UAM)
+ARTISTS_FILE = TESTFILES + "C1ku_artists_extended.csv" # artist names for UAM
+USERS_FILE   = TESTFILES + "C1ku_users_extended.csv" # user names for UAM
+UAM_FILE     = TESTFILES + "C1ku/C1ku_UAM.txt" # user-artist-matrix (UAM)
 
-NF = 10
-METHOD = "CF_test"
-VERBOSE = True
+NF          = 10
+METHOD      = "CF_test"
+VERBOSE     = True
 MAX_ARTISTS = 1000
-MAX_USERS = 50
+MAX_USERS   = 50
 MIN_RECOMMENDED_ARTISTS = 0
 
 
-# Function to read metadata (users or artists)
-def read_from_file(filename, row):
+# Function to read the artists file
+def read_artists_file(filename):
     data = []
+
     with open(filename, 'r') as f:  # open file for reading
         reader = csv.reader(f, delimiter='\t')  # create reader
         headers = reader.next()  # skip header
-        for rownr in reader:
-            item = rownr[row]
+        for row in reader:
+            item = row[0]
             data.append(item)
     f.close()
     return data
 
+# Function to read the users file
+def read_users_file(filename, rownr):
+    data = []
+    idx_count = 0
+
+    with open(filename, 'r') as f:  # open file for reading
+        reader = csv.reader(f, delimiter='\t')  # create reader
+        headers = reader.next()  # skip header
+        for row in reader:
+            content = row[rownr]
+            item = [idx_count] + [content]
+            data.append(item)
+            idx_count += 1
+    f.close()
+    return data
+
+def list_cleaning():
+
+    return data
 
 # Function that implements a CF recommender. It takes as input the UAM,
 # the index of the seed user (to make predictions for) and the indices of the seed user's training artists.
@@ -53,10 +73,9 @@ def recommend_CF(UAM, seed_uidx, seed_aidx_train, K):
     pc_vec = UAM[seed_uidx, :]
 
     # Remove information on test artists from seed's listening vector
-    aidx_nz = np.nonzero(pc_vec)[0]  # artists with non-zero listening events
-    aidx_test = np.intersect1d(aidx_nz,
-                               seed_aidx_train)  # intersection between all artist indices of user and train indices gives test artist indices
-    #    print aidx_test
+    aidx_nz = np.nonzero(pc_vec)[0]                             # artists with non-zero listening events
+    aidx_test = np.intersect1d(aidx_nz, seed_aidx_train)        # intersection between all artist indices of user and train indices gives test artist indices
+#    print aidx_test
 
     # Set to 0 the listening events of seed user user for testing (in UAM; pc_vec just points to UAM, is thus automatically updated)
     UAM[seed_uidx, aidx_test] = 0.0
@@ -68,29 +87,29 @@ def recommend_CF(UAM, seed_uidx, seed_aidx_train, K):
     # Compute similarities as inverse cosine distance between pc_vec of user and all users via UAM (assuming that UAM is normalized)
     sim_users = np.zeros(shape=(UAM.shape[0]), dtype=np.float32)
     for u in range(0, UAM.shape[0]):
-        sim_users[u] = 1.0 - scidist.cosine(pc_vec, UAM[u, :])
+        sim_users[u] = 1.0 - scidist.cosine(pc_vec, UAM[u,:])
 
     # Sort similarities to all others
     sort_idx = np.argsort(sim_users)  # sort in ascending order
 
     # Select the closest neighbor to seed user (which is the last but one; last one is user u herself!)
-    neighbor_idx = sort_idx[-1 - K:-1]
+    neighbor_idx = sort_idx[-1-K:-1]
 
     # Get all artist indices the seed user and her closest neighbor listened to, i.e., element with non-zero entries in UAM
-    artist_idx_u = seed_aidx_train  # indices of artists in training set user
+    artist_idx_u = seed_aidx_train                      # indices of artists in training set user
     # for k=1:
     # artist_idx_n = np.nonzero(UAM[neighbor_idx, :])     # indices of artists user u's neighbor listened to
     # for k>1:
-    artist_idx_n = np.nonzero(UAM[neighbor_idx, :])[
-        1]  # [1] because we are only interested in non-zero elements among the artist axis
+    artist_idx_n = np.nonzero(UAM[neighbor_idx, :])[1]    # [1] because we are only interested in non-zero elements among the artist axis
 
     # Compute the set difference between seed user's neighbor and seed user,
     # i.e., artists listened to by the neighbor, but not by seed user.
     # These artists are recommended to seed user.
     recommended_artists_idx = np.setdiff1d(artist_idx_n, artist_idx_u)
 
+
     ##### ADDED FOR SCORE-BASED FUSION  #####
-    dict_recommended_artists_idx = {}  # dictionary to hold recommended artists and corresponding scores
+    dict_recommended_artists_idx = {}           # dictionary to hold recommended artists and corresponding scores
     # Compute artist scores. Here, just derived from max-to-1-normalized play count vector of nearest neighbor (neighbor_idx)
     # for k=1:
     # scores = UAM[neighbor_idx, recommended_artists_idx] / np.max(UAM[neighbor_idx, recommended_artists_idx])
@@ -113,6 +132,8 @@ def recommend_CF(UAM, seed_uidx, seed_aidx_train, K):
 
     max_value = sorted_dict_reco_aidx[0][1]
 
+
+
     new_dict_recommended_artists_idx = {}
 
     for i in sorted_dict_reco_aidx:
@@ -121,20 +142,20 @@ def recommend_CF(UAM, seed_uidx, seed_aidx_train, K):
     sorted_dict_reco_aidx = list(set(sorted_dict_reco_aidx))
 
     if len(sorted_dict_reco_aidx) < MIN_RECOMMENDED_ARTISTS:
-        reco_art_CF = recommend_CF(UAM, seed_uidx, seed_aidx_train, K + 1)
+        reco_art_CF = recommend_CF(UAM, seed_uidx, seed_aidx_train, K+1)
         reco_art_CF = reco_art_CF.items()
         sorted_dict_reco_aidx = sorted_dict_reco_aidx + reco_art_CF
         sorted_dict_reco_aidx = list(set(sorted_dict_reco_aidx))
 
-    new_dict_finish = {}
+
+    new_dict_finish ={}
     for index, key in enumerate(sorted_dict_reco_aidx, start=0):
         if index < MIN_RECOMMENDED_ARTISTS and index < len(sorted_dict_reco_aidx):
             new_dict_finish[key[0]] = key[1]
 
+
     # Return dictionary of recommended artist indices (and scores)
     return new_dict_finish
-
-
 # /recommend_CF
 
 # Function that implements a dumb random recommender. It predicts a number of randomly chosen items.
@@ -153,7 +174,6 @@ def recommend_RB(artists_idx, no_items):
 
     # Return dict of recommended artist indices as keys (and scores as values)
     return dict_random_aidx
-
 
 # Function to run an evaluation experiment.
 def run(_K, _recommended_artists):
@@ -243,19 +263,19 @@ def run(_K, _recommended_artists):
     data['f1_score'] = f1_score
 
     return data
-
-
 # /run
 
 # Main program, for experimentation.
 if __name__ == '__main__':
     # Load metadata from provided files into lists
-    artists = read_from_file(ARTISTS_FILE, 0)
+    artists = read_artists_file(ARTISTS_FILE)
 
-    users_age = read_from_file(USERS_FILE, 1)
-    users_country = read_from_file(USERS_FILE, 2)
-    users_gender = read_from_file(USERS_FILE, 5)
+    users_age = read_users_file(USERS_FILE, 1)
+    users_country = read_users_file(USERS_FILE, 2)
+    users_gender = read_users_file(USERS_FILE, 5)
 
+    print users_age
+    print users_country
     print users_gender
 
     # if VERBOSE:
