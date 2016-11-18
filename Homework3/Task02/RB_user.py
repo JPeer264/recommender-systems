@@ -23,8 +23,8 @@ USERS_FILE   = TESTFILES + "C1ku_artists_extended.csv" # user names for UAM
 UAM_FILE     = TESTFILES + "C1ku/C1ku_UAM.txt" # user-artist-matrix (UAM)
 
 NF      = 10
-METHOD  = "RB_user"
-VERBOSE = True
+METHOD  = "RB_user_test"
+VERBOSE = False
 MIN_RECOMMENDED_ARTISTS = 0
 
 
@@ -40,9 +40,11 @@ def recommend_random_user_RB(UAM, seed_aidx_train, items=False, K_users = 1):
     # Select a random sample of users
     random_uidx = random.sample(range(0,UAM.shape[0]), K_users)
     # Get artits of these
-    random_aidx_nz = np.nonzero(UAM[random_uidx,:])[:MIN_RECOMMENDED_ARTISTS]      # only interested in artists, hence [1]
+    random_aidx_nz = np.nonzero(UAM[random_uidx,:])[1]   # only interested in artists, hence [1]
     # Remove artists in training set of seed user
     random_aidx = np.setdiff1d(random_aidx_nz, seed_aidx_train)
+
+    random_aidx = np.unique(np.append(random_aidx, items))
 
     if VERBOSE:
         print str(K_users) + ' user(s) randomly chosen, ' + str(MIN_RECOMMENDED_ARTISTS) + ' recommendations requested, ' + str(len(random_aidx)) + ' found' # restart with K=' + str(K_users+1)
@@ -56,19 +58,17 @@ def recommend_random_user_RB(UAM, seed_aidx_train, items=False, K_users = 1):
     dict_random_aidx = dict_random_aidx.items()
 
     if len(dict_random_aidx) < MIN_RECOMMENDED_ARTISTS:
-        reco_art_RB = recommend_random_user_RB(UAM, seed_aidx_train, random_aidx, K_users)
-        reco_art_RB = reco_art_RB.items()
-        dict_random_aidx = dict_random_aidx + reco_art_RB
-        dict_random_aidx = list(set(dict_random_aidx))
+        K_users += 1
 
+        if K_users > UAM.shape[0]:
+            K_users = 1
+
+        return recommend_random_user_RB(UAM, seed_aidx_train, random_aidx, K_users)
 
     new_dict_finish = {}
     for index, key in enumerate(dict_random_aidx, start=0):
         if index < MIN_RECOMMENDED_ARTISTS and index < len(dict_random_aidx):
             new_dict_finish[key[0]] = key[1]
-
-    new_dict_finish = {}
-
 
     # Return dict of recommended artist indices as keys (and scores as values)
     return new_dict_finish
@@ -154,6 +154,7 @@ def run(_K, _recommended_artists):
     data['avg_prec'] = avg_prec
     data['avg_rec'] = avg_rec
     data['f1_score'] = f1_score
+    data['recommended'] = dict_rec_aidx
 
     return data
 # /run
@@ -167,7 +168,7 @@ if __name__ == '__main__':
     if VERBOSE:
         helper.log_highlight('Loading UAM')
 
-    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:50, :500]
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)
 
     if VERBOSE:
         print 'Successfully loaded UAM'
@@ -175,7 +176,6 @@ if __name__ == '__main__':
     time_start = time.time()
 
     run_recommender(run, METHOD, [1]) # serial
-    # run_multithreading(run, METHOD, [1]) # parallel
 
     time_end = time.time()
     elapsed_time = (time_end - time_start)
