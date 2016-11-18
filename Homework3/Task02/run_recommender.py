@@ -33,7 +33,8 @@ def run_recommender(run_function, run_method, neighbors=[1, 2, 5, 10, 20, 50], r
     :param recommender_artists: a list of different artists to recommend
     """
     # for threading
-    global NUM_THREADS, THREAD_STARTED
+    global NUM_THREADS, THREAD_STARTED, LOCK
+
     LOCK.acquire()
     NUM_THREADS += 1
     THREAD_STARTED = True
@@ -47,20 +48,42 @@ def run_recommender(run_function, run_method, neighbors=[1, 2, 5, 10, 20, 50], r
     output_filedir = OUTPUT_DIR + run_method + '/'
     all_files_path = output_filedir + 'all.json'
 
-    helper.ensure_dir(output_filedir)
+    helper.ensure_dir(output_filedir + 'recommended/')
 
     for neighbor in neighbors:
         k_sorted['K' + str(neighbor)] = []
 
         for recommender_artist in recommender_artists:
             k_sorted['R' + str(recommender_artist)] = []
-            file_path      = output_filedir + 'K' + str(neighbor) + '_R' + str(recommender_artist) + '.json'
-            data_to_append = {'neighbors': neighbor, 'recommended_artists': recommender_artist}
-            data           = run_function(neighbor, recommender_artist)
+            file_path       = output_filedir + 'K' + str(neighbor) + '_R' + str(recommender_artist) + '.json'
+            file_path_reco  = output_filedir + 'recommended/' + 'K' + str(neighbor) + '_R' + str(recommender_artist) + '.json'
+            data_to_append  = {'neighbors': neighbor, 'recommended_artists': recommender_artist}
+            data            = run_function(neighbor, recommender_artist)
+            recommended     = data['recommended']
+            formated_recommended = {}
+            formated_recommended['order']       = []
+            formated_recommended['recommended'] = {}
+
+            # delete this
+            # 1. not valid json
+            # 2. not necessary for the specific files
+            del data['recommended']
 
             data_to_append.update(data)
 
-            # write json file
+            for key, value in recommended.iteritems():
+                # convert everything to strings
+                # due to otherwise it is not a valid json
+                formated_recommended['recommended'][str(key)] = str(value)
+                formated_recommended['order'].append(key)
+
+            # write json file for hybrids
+            content = json.dumps(formated_recommended, indent=4, sort_keys=True)
+            f = open(file_path_reco, 'w')
+            f.write(content)
+            f.close()
+
+            # write json file for csv
             content = json.dumps(data_to_append, indent=4, sort_keys=True)
             f = open(file_path, 'w')
             f.write(content)
@@ -84,6 +107,8 @@ def run_multithreading(run_function, run_method, neighbors=[1, 2, 5, 10, 20, 50]
     :param neighbors: a list of different neighbors
     :param recommender_artists: a list of different artists to recommend
     """
+    global THREAD_STARTED, NUM_THREADS
+
     for index, value in enumerate(recommender_artists, start = 1):
         start_new_thread(run_recommender, (run_function, run_method, neighbors, [ value ],))
 

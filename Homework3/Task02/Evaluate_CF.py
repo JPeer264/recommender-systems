@@ -15,7 +15,7 @@ from run_recommender import * # run_recommender.py
 TESTFILES    = "../test_data/"
 TASK2_OUTPUT = "../Task02/output/"
 ARTISTS_FILE = TESTFILES + "C1ku_artists_extended.csv" # artist names for UAM
-USERS_FILE   = TESTFILES + "C1ku_artists_extended.csv" # user names for UAM
+USERS_FILE   = TESTFILES + "C1ku_users_extended.csv" # user names for UAM
 UAM_FILE     = TESTFILES + "C1ku/C1ku_UAM.txt" # user-artist-matrix (UAM)
 
 NF          = 10
