@@ -8,7 +8,8 @@ import numpy as np
 import scipy.spatial.distance as scidist
 from sklearn import cross_validation
 from run_recommender import *  # run_recommender.py
-import pycountry
+import json
+
 
 # Parameters
 TESTFILES = "../test_data/"
@@ -100,8 +101,7 @@ def clean_list_from_empty_value(old_list, column_no, value):
         print "################################"
         print "# CLEAN LIST FROM EMPTY VALUES #"
         print "################################"
-        print "Length of old_list: "
-        print str(len(old_list))
+        print "Length of old_list: " + str(len(old_list))
 
     for row in old_list:
         row_content = row[column_no]
@@ -113,8 +113,8 @@ def clean_list_from_empty_value(old_list, column_no, value):
             cleaned_list.append(item)
 
     if VERBOSE:
-        print "Length of cleaned-list: "
-        print str(len(cleaned_list))
+        print "Length of cleaned-list: " + str(len(cleaned_list))
+
     return cleaned_list
 
 
@@ -128,26 +128,74 @@ def check_if_list_contains_user(user_idx, list_to_check):
     :return: True if value is in the list, False if value is not in the list
     """
 
+    if VERBOSE:
+        print""
+        print "###############################"
+        print "# CHECK IF LIST CONTAINS USER #"
+        print "###############################"
+
     user_has_df_attr = False
 
     for i in range(0, len(list_to_check)):
 
         # If user_idx is in list, return true and stop looking
         if user_idx == list_to_check[i][0]:
+            if VERBOSE:
+                print "YEAHHH... List contains user " + str(user_idx) + "!"
             user_has_df_attr = True
             break
+
+    if VERBOSE:
+        if not user_has_df_attr:
+            print "OHHOHHH... List does NOT contain user " + str(user_idx) + "!"
 
     # When whole list was checked, return whether user_idx was found or not (True|False)
     return user_has_df_attr
 
 
 
-def get_neighbours_with_age_attr(user_idx, age_range):
-    return True
+def check_if_member_of_age_group(user_idx, json_file_age_group, age_group):
+    """
+    Function checks if a given user is member of a specific age group
+
+    :param user_idx: user index to check
+    :param json_file_age_group: json-file containing age_group information
+    :return: True if user is member of age-group, False if user is not a member of age group
+    """
+    if VERBOSE:
+        print""
+        print "########################################"
+        print "# CHECK IF USER IS MEMBER OF AGE-GROUP #"
+        print "########################################"
+
+    user_in_age_group = False
+
+    with open(TESTFILES + json_file_age_group) as json_file:
+        age_group_json = json.load(json_file)
+
+    # Get users age from users_age list
+    user_age = int(users_age[user_idx][1])
+    if VERBOSE:
+        print("User " + str(user_idx) + " has age: " + str(user_age))
+
+    # Loop through ages in age_group - if user_age in age-group break and return True
+    for key, age in age_group_json[age_group].items():
+        if age == user_age:
+            if VERBOSE:
+                print "YEAHHH... User is member of " + age_group + "!"
+            user_in_age_group = True
+            break
+
+    if VERBOSE:
+        if not user_in_age_group:
+            print "OHHOHHH... User is NOT a member of " + age_group + "!"
+
+    # When whole age-group was checked, return whether user_idx was found or not (True|False)
+    return user_in_age_group
 
 
 
-def recommend_DF(UAM, seed_uidx, seed_aidx_train, K, df_list):
+def recommend_age_DF(UAM, seed_uidx, seed_aidx_train, K):
     """
     Function that implements a Demographic Filtering Recommender
 
@@ -159,11 +207,8 @@ def recommend_DF(UAM, seed_uidx, seed_aidx_train, K, df_list):
     :return: a dictionary of recommended artists
     """
 
-    neighbour_has_attr = False
-
     # Get playcount vector for seed user
     pc_vec = UAM[seed_uidx, :]
-
 
     # Remove information on test artists from seed's playcount vector
     # Artists with non-zero listening events
@@ -234,7 +279,7 @@ def recommend_DF(UAM, seed_uidx, seed_aidx_train, K, df_list):
     sorted_dict_reco_aidx = list(set(sorted_dict_reco_aidx))
 
     if len(sorted_dict_reco_aidx) < MIN_RECOMMENDED_ARTISTS:
-        reco_art_CF = recommend_DF(UAM, seed_uidx, seed_aidx_train, K + 1, df_list)
+        reco_art_CF = recommend_age_DF(UAM, seed_uidx, seed_aidx_train, K + 1)
         reco_art_CF = reco_art_CF.items()
         sorted_dict_reco_aidx = sorted_dict_reco_aidx + reco_art_CF
         sorted_dict_reco_aidx = list(set(sorted_dict_reco_aidx))
@@ -272,10 +317,7 @@ def run(_K, _recommended_artists):
 
     for u in range(0, no_users):
 
-        print ""
-        print "User: " + str(u) + ":"
         user_has_attr = check_if_list_contains_user(u, users_age_clean)
-        print "User has attribute: " + str(user_has_attr)
 
         # Only perform test for seed_user who has attribute
         if user_has_attr:
@@ -302,7 +344,7 @@ def run(_K, _recommended_artists):
                 # Call recommend function
                 copy_UAM = UAM.copy()  # we need to create a copy of the UAM, otherwise modifications within recommend function will effect the variable
 
-                dict_rec_aidx = recommend_DF(copy_UAM, u, u_aidx[train_aidx], _K, users_age_clean)
+                dict_rec_aidx = recommend_age_DF(copy_UAM, u, u_aidx[train_aidx], _K)
 
                 recommended_artists[str(u)][str(fold)] = dict_rec_aidx
 
@@ -382,8 +424,7 @@ if __name__ == '__main__':
 
     global users_age_clean
     users_age_clean = clean_list_from_empty_value(users_age, 1, '-1')
-    users_country_clean = clean_list_from_empty_value(users_country, 1, '')
-    users_gender_clean = clean_list_from_empty_value(users_gender, 1, 'n')
+
 
     if VERBOSE:
         helper.log_highlight('Loading UAM')
@@ -422,3 +463,5 @@ if __name__ == '__main__':
     # print "###########################"
     # print " Users with attribute: " + str(counter)
     # print "###########################"
+    #
+    # (check_if_member_of_age_group(0, "age_range.json", "group_late_twenties"))
