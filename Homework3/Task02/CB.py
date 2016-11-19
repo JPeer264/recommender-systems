@@ -21,7 +21,7 @@ AAM_FILE     = TESTFILES + "AAM_lyrics_small.txt"
 
 NF          = 10
 METHOD      = "CB"
-VERBOSE     = True
+VERBOSE     = False
 MAX_ARTISTS = 500
 MAX_USERS   = 50
 MIN_RECOMMENDED_ARTISTS = 0
@@ -179,8 +179,6 @@ def run(_K, _recommended_artists):
 
             # Distill recommended artist indices from dictionary returned by the recommendation functions
             rec_aidx = dict_rec_aidx.keys()
-
-            print len(rec_aidx)
 
             if VERBOSE:
                 print "Recommended items: ", len(rec_aidx)
