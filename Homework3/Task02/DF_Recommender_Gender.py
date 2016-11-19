@@ -148,23 +148,13 @@ def generate_gender_lists(users):
 
 
 
-def check_if_same_gender(user):
-    """
-    Function checks if a given user has the same gender
-
-    :param user_idx: user index to check
-    :param json_file_age_group: json-file containing age_group information
-    :return: True if user is member of age-group, False if user is not a member of age group
-    """
-    if VERBOSE:
-        helper.log_highlight("CHECK IF USER HAS THE SAME GENDER")
+def generate_gender_UAM(UAM, gender):
+    # alle user mit gender = 'm' durchgehen
+    # und diese werte 0 setzen
 
 
-    print user_idx
 
-    same_age = False
-
-    return same_age
+    return True
 
 
 
@@ -294,10 +284,8 @@ def run(_K, _recommended_artists):
 
         if u in genderLists[0]:
             user_gender_list = genderLists[0]
-            print "Jop, HE is in the list"
         elif u in genderLists[1]:
             user_gender_list = genderLists[1]
-            print "Jop, SHE is in the list"
 
         # Only perform test for seed_user who has attribute
         if user_gender_list:
@@ -402,28 +390,39 @@ if __name__ == '__main__':
     global genderLists
     genderLists = generate_gender_lists(users_gender)
 
-    # print genderLists
+    print genderLists[0]
+    print genderLists[1]
 
     if VERBOSE:
         helper.log_highlight('Loading UAM')
 
-    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:MAX_USERS, :]
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)
 
-    if VERBOSE:
-        print 'Successfully loaded UAM'
+    UAM_MALE = UAM.copy()
+    UAM_FEMALE = UAM.copy()
 
+    UAM_MALE[genderLists[0].keys()] = 0.0
+    UAM_FEMALE[genderLists[1].keys()] = 0.0
 
-    time_start = time.time()
+    print UAM[[5, 17], :6]
+    print UAM_MALE[[5,17], :6]
+    print UAM_FEMALE[[5,17], :6]
 
-    run_recommender(run, METHOD)  # serial
-
-    time_end = time.time()
-    elapsed_time = (time_end - time_start)
-
-    print ""
-    print "Elapsed time: " + str(elapsed_time)
-
-
+    # if VERBOSE:
+    #     print 'Successfully loaded UAM'
+    #
+    #
+    # time_start = time.time()
+    #
+    # run_recommender(run, METHOD)  # serial
+    #
+    # time_end = time.time()
+    # elapsed_time = (time_end - time_start)
+    #
+    # print ""
+    # print "Elapsed time: " + str(elapsed_time)
+    #
+    #
 
 
 
