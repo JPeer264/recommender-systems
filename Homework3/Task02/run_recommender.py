@@ -69,24 +69,24 @@ def run_recommender(run_function, run_method, neighbors=[1, 2, 5, 10, 20, 50], r
 
             data_to_append.update(data)
 
-            for key, value in recommended.iteritems():
-                # convert everything to strings
-                # due to otherwise it is not a valid json
-                formated_recommended[key] = {}
+            if type(recommended) is not bool:
+                for key, value in recommended.iteritems():
+                    # convert everything to strings
+                    # due to otherwise it is not a valid json
+                    formated_recommended[key] = {}
 
-                if len(value) == 0:
-                    continue
+                    if len(value) == 0:
+                        continue
 
-                for kf, fold_recommended in value.iteritems():
-                    formated_recommended[key][kf] = {}
-                    formated_recommended[key][kf]['recommended'] = {}
-                    formated_recommended[key][kf]['order'] = []
+                    for kf, fold_recommended in value.iteritems():
+                        formated_recommended[key][kf] = {}
+                        formated_recommended[key][kf]['recommended'] = {}
+                        formated_recommended[key][kf]['order'] = []
 
-                    for artist, ranking in fold_recommended.iteritems():
-                        formated_recommended[key][kf]['recommended'][str(artist)] = str(ranking)
-                        formated_recommended[key][kf]['order'].append(artist)
+                        for artist, ranking in fold_recommended.iteritems():
+                            formated_recommended[key][kf]['recommended'][str(artist)] = str(ranking)
+                            formated_recommended[key][kf]['order'].append(artist)
 
-            print formated_recommended
             # write json file for hybrids
             content = json.dumps(formated_recommended, indent=4, sort_keys=True)
             f = open(file_path_reco, 'w')
