@@ -142,6 +142,11 @@ def check_if_list_contains_user(user_idx, list_to_check):
 
 
 
+def get_neighbours_with_age_attr(user_idx, age_range):
+    return True
+
+
+
 def recommend_DF(UAM, seed_uidx, seed_aidx_train, K, df_list):
     """
     Function that implements a Demographic Filtering Recommender
@@ -241,7 +246,6 @@ def recommend_DF(UAM, seed_uidx, seed_aidx_train, K, df_list):
 
     # Return dictionary of recommended artist indices (and scores)
     return new_dict_finish
-# /recommend_CF
 
 
 
