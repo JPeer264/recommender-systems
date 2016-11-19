@@ -1,14 +1,17 @@
 __author__ = 'jpeer'
 
-# Load required modules
-import json
-import csv
-import glob
+###########
+# IMPORTS #
+###########
 import os
+import csv
+import json
+import glob
 
-# Parameters
-RESULT_OUTPUT = './output/results/'
-
+####################
+# GLOBAL VARIABLES #
+####################
+RESULT_OUTPUT  = './output/results/'
 METHOD_FOLDERS = [
     'RB_user',
     'RB_Artists',
@@ -30,28 +33,17 @@ def generate_csv(method):
     """
     This will generate and save a csv file
     The folder in the METHOD_FOLDERS must be available in the RESULT_OUTPUT
-    Also in this directory there must be json files with "neighbors", "avg_prec", "avg_rec" and "f1_score"
-    The output for the csv is the same as the input directory
+    Also in this directory there must be json files with "neighbors", "avg_prec", "avg_rec" and "f1_score" in it
+    The output dir for the csv is the same as the input directory
 
     :param method: the folder/method name
     """
+    k_sorted       = {}
+    r_sorted       = {}
     runned_methods = {}
     runned_methods[method] = []
 
-    k_sorted = {}
-    r_sorted = {}
-
-    # data
-    neighbors = [ 1, 2, 3, 5, 10, 20, 50 ]
-    recommender_artists = [ 10, 20, 30, 50, 100, 200, 300 ]
-
-    for neighbor in neighbors:
-        k_sorted['K' + str(neighbor)] = []
-
-        for recommender_artist in recommender_artists:
-            r_sorted['R' + str(recommender_artist)] = []
-
-    # write csv
+    # csv headers
     csv_k_sorted_header = [
         ['Sorted by K values'],
         ['']
@@ -62,7 +54,8 @@ def generate_csv(method):
         ['']
     ]
 
-    all_jsons = sorted(glob.glob(OUTPUT_DIR + '/*.json'), key=os.path.getmtime)
+    sub_header = ['', 'MAP', 'MAR', 'F1 score']
+    all_jsons  = sorted(glob.glob(OUTPUT_DIR + '/*.json'), key=os.path.getmtime)
 
     for one_json in all_jsons:
         with open(one_json) as data_file:
@@ -86,34 +79,35 @@ def generate_csv(method):
         ]
 
         try:
-            k_sorted['K' + str(result_obj['neighbors'])].append(data_recommended_artists)
-            r_sorted['R' + str(result_obj['recommended_artists'])].append(data_neighbors)
-
+            k_sorted[result_obj['neighbors']].append(data_recommended_artists)
         except:
-            k_sorted['K' + str(result_obj['neighbors'])] = []
-            r_sorted['R' + str(result_obj['recommended_artists'])] = []
+            k_sorted[result_obj['neighbors']] = []
+            k_sorted[result_obj['neighbors']].append(sub_header)
+            k_sorted[result_obj['neighbors']].append(data_recommended_artists)
 
-            k_sorted['K' + str(result_obj['neighbors'])].append(data_recommended_artists)
-            r_sorted['R' + str(result_obj['recommended_artists'])].append(data_neighbors)
+        try:
+            r_sorted[result_obj['recommended_artists']].append(data_neighbors)
+        except:
+            r_sorted[result_obj['recommended_artists']] = []
+            r_sorted[result_obj['recommended_artists']].append(sub_header)
+            r_sorted[result_obj['recommended_artists']].append(data_neighbors)
 
     # sort items by K or R to compare values and get the best
     for key, value in r_sorted.items():
-        if key[0] == 'R':
-            # fill with meta info
-            csv_recommended_sorted_header.append([''])
-            csv_recommended_sorted_header.append([str(key) + ' recommended artists. '])
+        # fill with meta info
+        csv_recommended_sorted_header.append([''])
+        csv_recommended_sorted_header.append([str(key) + ' recommended artists. '])
 
-            for data in value:
-                csv_recommended_sorted_header.append(data)
+        for data in value:
+            csv_recommended_sorted_header.append(data)
 
     for key, value in k_sorted.items():
-        if key[0] == 'K':
-            # fill with meta info
-            csv_k_sorted_header.append([''])
-            csv_k_sorted_header.append([str(key) + ' neighbors. '])
+        # fill with meta info
+        csv_k_sorted_header.append([''])
+        csv_k_sorted_header.append([str(key) + ' neighbors. '])
 
-            for data in value:
-                csv_k_sorted_header.append(data)
+        for data in value:
+            csv_k_sorted_header.append(data)
 
     b = open(OUTPUT_DIR + '/sorted_neighbors.csv', 'w')
     a = csv.writer(b)
@@ -128,8 +122,7 @@ def generate_csv(method):
     b.close()
 # /generate_csv
 
-
-# Main program, for experimentation.
+# self executing
 if __name__ == '__main__':
     for method in METHOD_FOLDERS:
         OUTPUT_DIR = RESULT_OUTPUT + method
