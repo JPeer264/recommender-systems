@@ -63,38 +63,55 @@ def recommend_CB(AAM, seed_aidx_train, items=[], K=1):
     # To this end, we compute their average similarity to the seed artists
     uniq_neighbor_idx = set(neighbor_idx.flatten())  # First, we obtain a unique set of artists neighboring the seed user's artists.
 
+    # Now, we find the positions of each unique neighbor in neighbor_idx.
     for nidx in uniq_neighbor_idx:
         mask = np.where(neighbor_idx == nidx)
-        #print mask
+
+        # print mask
         # Apply this mask to corresponding similarities and compute average similarity
         avg_sim = np.mean(sims_neighbors_idx[mask])
+        the_sum = np.sum(sims_neighbors_idx[mask])
+
         # Store artist index and corresponding aggregated similarity in dictionary of artists to recommend
-        # Length of mask[0] = count of recommendations for this artist
-
-        # Normalization
-        # scores can be normalized like this:  score_normalized = (score - min) / (max - min)
-        # score calculation for our CB is:      dict_recommended_artists_idx[nidx] = avg_sim * len(mask[0])
-        # so the max possible score should be:                                 max =   1     * NO_RECOMMENDED_ARTISTS
-        # the min score should be                                              min =   0     * 0
-
-        score = avg_sim * len(mask[0])
-        max_score = 1 * MIN_RECOMMENDED_ARTISTS
-        min_score = 0
-        score_normalized = (score - min_score) / (max_score - min_score)
-
-        dict_recommended_artists_idx[nidx] = score_normalized
+        dict_recommended_artists_idx[nidx] = the_sum
     #########################################
 
-    # Remove all artists that are in the training set of seed user
     for aidx in seed_aidx_train:
-        dict_recommended_artists_idx.pop(aidx, None)            # drop (key, value) from dictionary if key (i.e., aidx) exists; otherwise return None
+        dict_recommended_artists_idx.pop(aidx, None)  # drop (key, value) from dictionary if key (i.e., aidx) exists; otherwise return None
 
-    # Sort dictionary by similarity; returns list of tuples(artist_idx, sim)
-    recommendations = sorted(dict_recommended_artists_idx.items(), key=operator.itemgetter(1), reverse=True)[:MIN_RECOMMENDED_ARTISTS]
-    # recommendations = sorted([(key,value) for (key,value) in dict_recommended_artists_idx.items()], reverse=False)[:no_recommendations]
+    temp = []
+    dictlist = []
 
-    # Return sorted list of recommended artist indices (and scores)
-    return dict(recommendations)
+    for key, value in dict_recommended_artists_idx.iteritems():
+        temp = [key, value]
+        dictlist.append(temp)
+
+    sorted_dict_reco_aidx = sorted(dict_recommended_artists_idx.items(), key=operator.itemgetter(1), reverse=True)
+    sorted_dict_reco_aidx = sorted_dict_reco_aidx+items
+    max = sorted_dict_reco_aidx[0][1]
+
+    new_dict_recommended_artists_idx = {}
+
+    for i in sorted_dict_reco_aidx:
+        new_dict_recommended_artists_idx[i[0]] = i[1] / max
+
+    sorted_dict_reco_aidx = list(set(sorted_dict_reco_aidx))
+
+    if len(sorted_dict_reco_aidx) < MIN_RECOMMENDED_ARTISTS:
+        K_users = K + 1
+
+        if K_users > AAM.shape[0]:
+            K_users = 1
+
+        return recommend_CB(AAM, seed_aidx_train, sorted_dict_reco_aidx, K_users)
+
+    new_return = {}
+
+    for index, key in enumerate(sorted_dict_reco_aidx, start=0):
+        if index < MIN_RECOMMENDED_ARTISTS or (index < len(sorted_dict_reco_aidx) and index < MIN_RECOMMENDED_ARTISTS):
+            new_return[key[0]] = key[1]
+
+    return new_return
 # /recommend_CB
 
 # Function to run an evaluation experiment.
