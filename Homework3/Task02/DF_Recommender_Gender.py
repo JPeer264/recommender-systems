@@ -1,6 +1,4 @@
-import collections
-
-__author__ = 'beelee'
+__author__ = 'Mata Mata'
 
 # Load required modules
 import csv
@@ -11,7 +9,7 @@ import scipy.spatial.distance as scidist
 from sklearn import cross_validation
 from run_recommender import *  # run_recommender.py
 import json
-import helper  # helper.py
+
 
 # Parameters
 TESTFILES = "../test_data/"
@@ -20,17 +18,16 @@ ARTISTS_FILE = TESTFILES + "C1ku_artists_extended.csv"  # artist names for UAM
 USERS_FILE = TESTFILES + "C1ku_users_extended.csv"  # user names for UAM
 UAM_FILE = TESTFILES + "C1ku/C1ku_UAM.txt"  # user-artist-matrix (UAM)
 
+
 # Define test-parameters here:
-# -----------------------------
+#-----------------------------
 VERBOSE = True
 NF = 10
 MAX_ARTISTS = 1000
 MAX_USERS = 10
 MIN_RECOMMENDED_ARTISTS = 0
-METHOD = "DF_test"
-
-
-# -----------------------------
+METHOD = "DF_test_gender"
+#-----------------------------
 
 
 
@@ -100,7 +97,10 @@ def clean_list_from_empty_value(old_list, column_no, value):
     cleaned_list = []
 
     if VERBOSE:
-        helper.log_highlight("CLEAN LIST FROM EMPTY VALUES")
+        print""
+        print "################################"
+        print "# CLEAN LIST FROM EMPTY VALUES #"
+        print "################################"
         print "Length of old_list: " + str(len(old_list))
 
     for row in old_list:
@@ -119,142 +119,46 @@ def clean_list_from_empty_value(old_list, column_no, value):
 
 
 
-def check_if_list_contains_user(user_idx, list_to_check):
+def generate_gender_lists(users):
     """
-    Function checks if given user_idx is in a given list
+    Function generates a dictionary for each gender
 
-    :param user_idx: the user-index to look for
-    :param list_to_check: the list to check
-    :return: True if value is in the list, False if value is not in the list
+    :param users: xxx
+    :return: xxx
     """
+    users_gender_clean = clean_list_from_empty_value(users, 1, 'n')
+    gender_m = {}
+    gender_f = {}
+
+    # Checks if the user is male or female and adds them into the correct array
+    for user in users_gender_clean:
+        if user[1] == 'm':
+            gender_m[user[0]] = 'm'
+        else:
+            gender_f[user[0]] = 'f'
 
     if VERBOSE:
-        helper.log_highlight("CHECK IF LIST CONTAINS USER")
+        helper.log_highlight("GENDER STATISTICS")
+        print "Male: " + str(len(gender_m))
+        print "Female: " + str(len(gender_f))
 
-    user_has_df_attr = False
+    gender_lists = [gender_m] + [gender_f]
 
-    for i in range(0, len(list_to_check)):
-
-        # If user_idx is in list, return true and stop looking
-        if user_idx == list_to_check[i][0]:
-            if VERBOSE:
-                print "YEAHHH... List contains user " + str(user_idx) + "!"
-            user_has_df_attr = True
-            break
-
-    if VERBOSE:
-        if not user_has_df_attr:
-            print "OHHOHHH... List does NOT contain user " + str(user_idx) + "!"
-
-    # When whole list was checked, return whether user_idx was found or not (True|False)
-    return user_has_df_attr
+    return gender_lists
 
 
 
-def check_if_member_of_age_group(user_idx, json_file_age_group, age_group):
-    """
-    Function checks if a given user is member of a specific age group
-
-    :param user_idx: user index to check
-    :param json_file_age_group: json-file containing age_group information
-    :param age_group: string-name of age group (e.g. group_teenager)
-    :return: True if user is member of age-group, False if user is not a member of age group
-    """
-    if VERBOSE:
-        helper.log_highlight("CHECK IF USER IS MEMBER OF AGE-GROUP")
-
-    user_in_age_group = False
-
-    with open(TESTFILES + json_file_age_group) as json_file:
-        age_group_json = json.load(json_file)
-
-    # Get users age from users_age list
-    user_age = int(users_age[user_idx][1])
-    if VERBOSE:
-        print("User " + str(user_idx) + " has age: " + str(user_age))
-
-    # Loop through ages in age_group - if user_age in age-group break and return True
-    for key, age in age_group_json[age_group].items():
-        if age == user_age:
-            if VERBOSE:
-                print "YEAHHH... User is member of " + age_group + "!"
-            user_in_age_group = True
-            break
-
-    if VERBOSE:
-        if not user_in_age_group:
-            print "OHHOHHH... User is NOT a member of " + age_group + "!"
-
-    # When whole age-group was checked, return whether user_idx was found or not (True|False)
-    return user_in_age_group
+def generate_gender_UAM(UAM, gender):
+    # alle user mit gender = 'm' durchgehen
+    # und diese werte 0 setzen
 
 
 
-def get_all_users_within_age_group(user_idx, json_file_age_group):
-    """
-    Function collects all available users that are a member of the seed users age group.
-    If the amount of available users within the age group is smaller then the amount of neighbours (K):
-    --> alternately fills the list with additional users from age groups above and below.
-
-    :param user_idx: the user index of the seed user
-    :param json_file_age_group:
-    :return: list of all users within seed users age group
-    """
-
-    global user_age_group
-    user_age_group = []
-
-    global all_users_in_age_group
-    all_users_in_age_group = []
-
-    helper.log_highlight("GET NEIGHBOURS FROM USERS AGE GROUP")
-
-    # Load Json-File with age group information in dict
-    with open(TESTFILES + json_file_age_group) as json_file:
-        age_group_dict = json.load(json_file)
-
-    # Get users age
-    user_age = int(users_age[user_idx][1])
-
-    if VERBOSE:
-        print("User " + str(user_idx) + " has age: " + str(user_age))
-
-    index_counter = -1
-
-    # Find users age group and save index of that age group
-    for ages in age_group_dict:
-        index_counter += 1
-        for i in ages:
-            if ages[i] == user_age:
-                user_age_group = ages
-                index_user_age_group = index_counter
-
-    if VERBOSE:
-        print("User " + str(user_idx) + " is member of age group: " + str(user_age_group))
-        print "Index of age group: " + str(index_user_age_group)
-
-    # Get list from all users that are member of the users age group
-    for row in users_age_clean:
-        row_content = int(row[1])
-
-        for i in user_age_group:
-            if row_content == user_age_group[i]:
-                user = [row[0]] + [row_content]
-                all_users_in_age_group.append(user)
-
-    if VERBOSE:
-        print("Amount of users within the same age group: " + str(len(all_users_in_age_group)))
-
-
-    """
-    TODO: behaviour when amount < K
-    """
-
-    return all_users_in_age_group
+    return True
 
 
 
-def recommend_age_DF(UAM, seed_uidx, seed_aidx_train, K):
+def recommend_gender_DF(UAM, seed_uidx, seed_aidx_train, K):
     """
     Function that implements a Demographic Filtering Recommender
 
@@ -262,6 +166,7 @@ def recommend_age_DF(UAM, seed_uidx, seed_aidx_train, K):
     :param seed_uidx: user index of seed user
     :param seed_aidx_train: indices of training artists for seed user
     :param K: number of nearest neighbors (users) to consider for each seed users
+    :param df_list: list containing all users that have defined attribute
     :return: a dictionary of recommended artists
     """
 
@@ -337,7 +242,7 @@ def recommend_age_DF(UAM, seed_uidx, seed_aidx_train, K):
     sorted_dict_reco_aidx = list(set(sorted_dict_reco_aidx))
 
     if len(sorted_dict_reco_aidx) < MIN_RECOMMENDED_ARTISTS:
-        reco_art_CF = recommend_age_DF(UAM, seed_uidx, seed_aidx_train, K + 1)
+        reco_art_CF = recommend_gender_DF(UAM, seed_uidx, seed_aidx_train, K + 1)
         reco_art_CF = reco_art_CF.items()
         sorted_dict_reco_aidx = sorted_dict_reco_aidx + reco_art_CF
         sorted_dict_reco_aidx = list(set(sorted_dict_reco_aidx))
@@ -375,11 +280,15 @@ def run(_K, _recommended_artists):
 
     for u in range(0, no_users):
 
-        # Check if user has age attribute
-        user_has_attr = check_if_list_contains_user(u, users_age_clean)
+        user_gender_list = False
+
+        if u in genderLists[0]:
+            user_gender_list = genderLists[0]
+        elif u in genderLists[1]:
+            user_gender_list = genderLists[1]
 
         # Only perform test for seed_user who has attribute
-        if user_has_attr:
+        if user_gender_list:
 
             user_with_attr_counter += 1
 
@@ -403,7 +312,7 @@ def run(_K, _recommended_artists):
                 # Call recommend function
                 copy_UAM = UAM.copy()  # we need to create a copy of the UAM, otherwise modifications within recommend function will effect the variable
 
-                dict_rec_aidx = recommend_age_DF(copy_UAM, u, u_aidx[train_aidx], _K)
+                dict_rec_aidx = recommend_gender_DF(copy_UAM, u, u_aidx[train_aidx], _K)
 
                 recommended_artists[str(u)][str(fold)] = dict_rec_aidx
 
@@ -471,27 +380,34 @@ def run(_K, _recommended_artists):
     return data
 
 
-
 # Main program, for experimentation.
 if __name__ == '__main__':
+
     # Load metadata from provided files into lists
     artists = read_artists_file(ARTISTS_FILE)
 
-    users_age = read_users_file(USERS_FILE, 1)
-    users_country = read_users_file(USERS_FILE, 2)
     users_gender = read_users_file(USERS_FILE, 5)
+    global genderLists
+    genderLists = generate_gender_lists(users_gender)
 
-    global users_age_clean
-    users_age_clean = clean_list_from_empty_value(users_age, 1, '-1')
+    print genderLists[0]
+    print genderLists[1]
 
-    get_all_users_within_age_group(18, "age_range.json")
+    if VERBOSE:
+        helper.log_highlight('Loading UAM')
 
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)
 
-    # if VERBOSE:
-    #     helper.log_highlight('Loading UAM')
-    #
-    # UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:MAX_USERS, :]
-    #
+    UAM_MALE = UAM.copy()
+    UAM_FEMALE = UAM.copy()
+
+    UAM_MALE[genderLists[0].keys()] = 0.0
+    UAM_FEMALE[genderLists[1].keys()] = 0.0
+
+    print UAM[[5, 17], :6]
+    print UAM_MALE[[5,17], :6]
+    print UAM_FEMALE[[5,17], :6]
+
     # if VERBOSE:
     #     print 'Successfully loaded UAM'
     #
@@ -505,6 +421,10 @@ if __name__ == '__main__':
     #
     # print ""
     # print "Elapsed time: " + str(elapsed_time)
+    #
+    #
+
+
 
 
     # no_users = UAM.shape[0]
