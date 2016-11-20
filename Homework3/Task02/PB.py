@@ -3,6 +3,12 @@
 # content-based recommendation, random recommendation, popularity-based recommendation, and
 # hybrid methods (score-based and rank-based fusion).
 __author__ = 'mms'
+__authors_updated_version__ = [
+    'Aichbauer Lukas',
+    'Leitner Bianca',
+    'Stoecklmair Jan Peer',
+    'Taferner Mario'
+]
 
 ###########
 # IMPORTS #
@@ -11,48 +17,28 @@ import os
 import csv
 import time
 import json
-import random
 import numpy as np
+import random
 import helper # helper.py
+import operator
 import scipy.spatial.distance as scidist
 from sklearn import cross_validation
 from operator import itemgetter
 from run_recommender import * # run_recommender.py
-import operator
 
 ####################
 # GLOBAL VARIABLES #
 ####################
-# Parameters
 TESTFILES    = "../test_data/"
 TASK2_OUTPUT = "../Task02/output/"
 ARTISTS_FILE = TESTFILES + "C1ku_artists_extended.csv" # artist names for UAM
 USERS_FILE   = TESTFILES + "C1ku_artists_extended.csv" # user names for UAM
 UAM_FILE     = TESTFILES + "C1ku/C1ku_UAM.txt" # user-artist-matrix (UAM)
 
-NF          = 10
-METHOD      = "PB"
-VERBOSE     = True
-MAX_ARTISTS = 1000
-MAX_USERS   = 50
+NF      = 10
+METHOD  = "PB"
+VERBOSE = True
 MIN_RECOMMENDED_ARTISTS = 0
-
-# Function that implements a dumb random recommender. It predicts a number of randomly chosen items.
-# It returns a dictionary of recommended artist indices (and corresponding scores).
-def recommend_RB(artists_idx, no_items):
-    # artists_idx           list of artist indices to draw random sample from
-    # no_items              no of items to predict
-
-    # Let's predict a number of random items that equal the number of items in the user's test set
-    random_aidx = random.sample(artists_idx, no_items)
-
-    # Insert scores into dictionary
-    dict_random_aidx = {}
-    for aidx in random_aidx:
-        dict_random_aidx[aidx] = 1.0  # for random recommendations, all scores are equal
-
-    # Return dict of recommended artist indices as keys (and scores as values)
-    return dict_random_aidx
 
 # Function that implements a PB recommender (popularity-based). It takes as input the UAM, computes the most popular
 # artists and recommends them to the user, irrespective of their music preferences.
@@ -114,8 +100,7 @@ def recommend_PB(UAM, seed_aidx_train, K):
 
     # Return dictionary of recommended artist indices (and scores)
     return new_dict_finish
-
-
+# /recommend_PB
 
 # Function to run an evaluation experiment.
 def run(_K, _recommended_artists):
@@ -202,13 +187,13 @@ def run(_K, _recommended_artists):
     f1_score = 2 * ((avg_prec * avg_rec) / (avg_prec + avg_rec))
 
     data = {}
-    data['avg_prec'] = avg_prec
-    data['avg_rec'] = avg_rec
-    data['f1_score'] = f1_score
+    data['avg_prec']    = avg_prec
+    data['avg_rec']     = avg_rec
+    data['f1_score']    = f1_score
     data['recommended'] = recommended_artists
 
     return data
-
+# /run
 
 # Main program, for experimentation.
 if __name__ == '__main__':
@@ -219,7 +204,7 @@ if __name__ == '__main__':
     if VERBOSE:
         helper.log_highlight('Loading UAM')
 
-    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:50, :500]
 
     if VERBOSE:
         print 'Successfully loaded UAM'
@@ -228,7 +213,7 @@ if __name__ == '__main__':
 
     run_recommender(run, METHOD, [1]) # serial
 
-    time_end = time.time()
+    time_end     = time.time()
     elapsed_time = (time_end - time_start)
 
     print elapsed_time

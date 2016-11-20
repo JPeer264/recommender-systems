@@ -1,4 +1,13 @@
-# Load required modules
+__authors_updated_version__ = [
+    'Aichbauer Lukas',
+    'Leitner Bianca',
+    'Stoecklmair Jan Peer',
+    'Taferner Mario'
+]
+
+###########
+# IMPORTS #
+###########
 import os
 import csv
 import json
@@ -11,31 +20,19 @@ import scipy.spatial.distance as scidist
 from sklearn import cross_validation
 from run_recommender import * # run_recommender.py
 
-# Parameters
+####################
+# GLOBAL VARIABLES #
+####################
 TESTFILES    = "../test_data/"
 TASK2_OUTPUT = "../Task02/output/"
 ARTISTS_FILE = TESTFILES + "C1ku_artists_extended.csv" # artist names for UAM
 USERS_FILE   = TESTFILES + "C1ku_users_extended.csv" # user names for UAM
 UAM_FILE     = TESTFILES + "C1ku/C1ku_UAM.txt" # user-artist-matrix (UAM)
 
-NF          = 10
-METHOD      = "CF"
-VERBOSE     = True
-MAX_ARTISTS = 1000
-MAX_USERS   = 50
+NF      = 10
+METHOD  = "CF"
+VERBOSE = True
 MIN_RECOMMENDED_ARTISTS = 0
-
-# Function to read metadata (users or artists)
-def read_from_file(filename):
-    data = []
-    with open(filename, 'r') as f:  # open file for reading
-        reader = csv.reader(f, delimiter='\t')  # create reader
-        headers = reader.next()  # skip header
-        for row in reader:
-            item = row[0]
-            data.append(item)
-    f.close()
-    return data
 
 # Function that implements a CF recommender. It takes as input the UAM,
 # the index of the seed user (to make predictions for) and the indices of the seed user's training artists.
@@ -109,8 +106,6 @@ def recommend_CF(UAM, seed_uidx, seed_aidx_train, K):
 
     max_value = sorted_dict_reco_aidx[0][1]
 
-
-
     new_dict_recommended_artists_idx = {}
 
     for i in sorted_dict_reco_aidx:
@@ -134,24 +129,6 @@ def recommend_CF(UAM, seed_uidx, seed_aidx_train, K):
     # Return dictionary of recommended artist indices (and scores)
     return new_dict_finish
 # /recommend_CF
-
-# Function that implements a dumb random recommender. It predicts a number of randomly chosen items.
-# It returns a dictionary of recommended artist indices (and corresponding scores).
-def recommend_RB(artists_idx, no_items):
-    # artists_idx           list of artist indices to draw random sample from
-    # no_items              no of items to predict
-
-    # Let's predict a number of random items that equal the number of items in the user's test set
-    random_aidx = random.sample(artists_idx, no_items)
-
-    # Insert scores into dictionary
-    dict_random_aidx = {}
-    for aidx in random_aidx:
-        dict_random_aidx[aidx] = 1.0  # for random recommendations, all scores are equal
-
-    # Return dict of recommended artist indices as keys (and scores as values)
-    return dict_random_aidx
-
 
 # Function to run an evaluation experiment.
 def run(_K, _recommended_artists):
@@ -241,9 +218,9 @@ def run(_K, _recommended_artists):
         print ("Recommendation: " + str(_recommended_artists))
 
     data = {}
-    data['avg_prec'] = avg_prec
-    data['avg_rec'] = avg_rec
-    data['f1_score'] = f1_score
+    data['avg_prec']    = avg_prec
+    data['avg_rec']     = avg_rec
+    data['f1_score']    = f1_score
     data['recommended'] = recommended_artists
 
     return data
@@ -252,8 +229,8 @@ def run(_K, _recommended_artists):
 # Main program, for experimentation.
 if __name__ == '__main__':
     # Load metadata from provided files into lists
-    artists = read_from_file(ARTISTS_FILE)
-    users   = read_from_file(USERS_FILE)
+    artists = helper.read_csv(ARTISTS_FILE)
+    users   = helper.read_csv(USERS_FILE)
 
     if VERBOSE:
         helper.log_highlight('Loading UAM')
@@ -267,7 +244,7 @@ if __name__ == '__main__':
 
     run_recommender(run, METHOD) # serial
 
-    time_end = time.time()
+    time_end     = time.time()
     elapsed_time = (time_end - time_start)
 
     print elapsed_time

@@ -1,4 +1,13 @@
-# Load required modules
+__authors_updated_version__ = [
+    'Aichbauer Lukas',
+    'Leitner Bianca',
+    'Stoecklmair Jan Peer',
+    'Taferner Mario'
+]
+
+###########
+# IMPORTS #
+###########
 import os
 import csv
 import json
@@ -11,36 +20,20 @@ import scipy.spatial.distance as scidist
 from sklearn import cross_validation
 from run_recommender import * # run_recommender.py
 
-# Parameters
+####################
+# GLOBAL VARIABLES #
+####################
 TESTFILES    = "../test_data/"
 TASK2_OUTPUT = "../Task02/output/"
 ARTISTS_FILE = TESTFILES + "C1ku_artists_extended.csv" # artist names for UAM
 USERS_FILE   = TESTFILES + "C1ku_users_extended.csv" # user names for UAM
 UAM_FILE     = TESTFILES + "C1ku/C1ku_UAM.txt" # user-artist-matrix (UAM)
-AAM_FILE     = TESTFILES + "AAM_lyrics_small.txt"
+AAM_FILE     = TESTFILES + "AAM.txt"
 
-NF          = 10
-METHOD      = "CB"
-VERBOSE     = False
-MAX_ARTISTS = 500
-MAX_USERS   = 50
+NF      = 10
+METHOD  = "CB"
+VERBOSE = True
 MIN_RECOMMENDED_ARTISTS = 0
-K = 1
-
-
-# Function to read metadata (users or artists)
-def read_from_file(filename):
-    data = []
-    with open(filename, 'r') as f:  # open file for reading
-        reader = csv.reader(f, delimiter='\t')  # create reader
-        headers = reader.next()  # skip header
-        for row in reader:
-            item = row[0]
-            data.append(item)
-    f.close()
-    return data
-
-
 
 # Function that implements a content-based recommender. It takes as input an artist-artist-matrix (AAM) containing pair-wise similarities
 # and the indices of the seed user's training artists.
@@ -53,12 +46,6 @@ def recommend_CB(AAM, seed_aidx_train, items=[], K=1):
     # Get nearest neighbors of train set artist of seed user
     # Sort AAM column-wise for each row
     sort_idx = np.argsort(AAM[seed_aidx_train, :], axis=1)
-
-    # print "AAAAMMMM###"
-    # print AAM[seed_aidx_train, :MAX_ARTISTS]
-    # print "###"
-    # print sort_idx
-    # print "###"
 
     # Select the K closest artists to all artists the seed user listened to
     neighbor_idx = sort_idx[:, -1 - K:-1]
@@ -76,61 +63,38 @@ def recommend_CB(AAM, seed_aidx_train, items=[], K=1):
     # To this end, we compute their average similarity to the seed artists
     uniq_neighbor_idx = set(neighbor_idx.flatten())  # First, we obtain a unique set of artists neighboring the seed user's artists.
 
-    # Now, we find the positions of each unique neighbor in neighbor_idx.
     for nidx in uniq_neighbor_idx:
         mask = np.where(neighbor_idx == nidx)
-
-        # print mask
+        #print mask
         # Apply this mask to corresponding similarities and compute average similarity
         avg_sim = np.mean(sims_neighbors_idx[mask])
-        the_sum = np.sum(sims_neighbors_idx[mask])
-
         # Store artist index and corresponding aggregated similarity in dictionary of artists to recommend
-        dict_recommended_artists_idx[nidx] = the_sum
+        # Length of mask[0] = count of recommendations for this artist
+
+        # Normalization
+        # scores can be normalized like this:  score_normalized = (score - min) / (max - min)
+        # score calculation for our CB is:      dict_recommended_artists_idx[nidx] = avg_sim * len(mask[0])
+        # so the max possible score should be:                                 max =   1     * NO_RECOMMENDED_ARTISTS
+        # the min score should be                                              min =   0     * 0
+
+        score = avg_sim * len(mask[0])
+        max_score = 1 * MIN_RECOMMENDED_ARTISTS
+        min_score = 0
+        score_normalized = (score - min_score) / (max_score - min_score)
+
+        dict_recommended_artists_idx[nidx] = score_normalized
     #########################################
-    # print "###"
-    # print "###"
-    # print dict_recommended_artists_idx
-    # print "###"
-    # print "###"
 
+    # Remove all artists that are in the training set of seed user
     for aidx in seed_aidx_train:
-        dict_recommended_artists_idx.pop(aidx,
-                                         None)  # drop (key, value) from dictionary if key (i.e., aidx) exists; otherwise return None
+        dict_recommended_artists_idx.pop(aidx, None)            # drop (key, value) from dictionary if key (i.e., aidx) exists; otherwise return None
 
-    temp = []
-    dictlist = []
+    # Sort dictionary by similarity; returns list of tuples(artist_idx, sim)
+    recommendations = sorted(dict_recommended_artists_idx.items(), key=operator.itemgetter(1), reverse=True)[:MIN_RECOMMENDED_ARTISTS]
+    # recommendations = sorted([(key,value) for (key,value) in dict_recommended_artists_idx.items()], reverse=False)[:no_recommendations]
 
-    for key, value in dict_recommended_artists_idx.iteritems():
-        temp = [key, value]
-        dictlist.append(temp)
-
-    sorted_dict_reco_aidx = sorted(dict_recommended_artists_idx.items(), key=operator.itemgetter(1), reverse=True)
-    sorted_dict_reco_aidx = sorted_dict_reco_aidx+items
-    max = sorted_dict_reco_aidx[0][1]
-
-    new_dict_recommended_artists_idx = {}
-
-    for i in sorted_dict_reco_aidx:
-        new_dict_recommended_artists_idx[i[0]] = i[1] / max
-
-    sorted_dict_reco_aidx = list(set(sorted_dict_reco_aidx))
-
-    if len(sorted_dict_reco_aidx) < MIN_RECOMMENDED_ARTISTS:
-        K_users = K + 1
-
-        if K_users > AAM.shape[0]:
-            K_users = 1
-
-        return recommend_CB(AAM, seed_aidx_train, sorted_dict_reco_aidx, K_users)
-
-    new_return = {}
-
-    for index, key in enumerate(sorted_dict_reco_aidx, start=0):
-        if index < MIN_RECOMMENDED_ARTISTS or (index < len(sorted_dict_reco_aidx) and index < MIN_RECOMMENDED_ARTISTS):
-            new_return[key[0]] = key[1]
-
-    return new_return
+    # Return sorted list of recommended artist indices (and scores)
+    return dict(recommendations)
 # /recommend_CB
 
 # Function to run an evaluation experiment.
@@ -162,19 +126,14 @@ def run(_K, _recommended_artists):
 
             test_aidx_plus = len(test_aidx) * 1.15
 
-            # print train_aidx
-            # print "###"
-            # print "###"
-            # print test_aidx
             # Show progress
             if VERBOSE:
                 print "User: " + str(u) + ", Fold: " + str(fold) + ", Training items: " + str(
                     len(train_aidx)) + ", Test items: " + str(len(test_aidx)),  # the comma at the end avoids line break
+
             # Call recommend function
-            copy_UAM = UAM.copy()  # we need to create a copy of the UAM, otherwise modifications within recommend function will effect the variable
-
+            copy_UAM      = UAM.copy()
             dict_rec_aidx = recommend_CB(AAM, u_aidx[train_aidx], [], _K)
-
             recommended_artists[str(u)][str(fold)] = dict_rec_aidx
 
             # Distill recommended artist indices from dictionary returned by the recommendation functions
@@ -207,8 +166,7 @@ def run(_K, _recommended_artists):
 
             # add precision and recall for current user and fold to aggregate variables
             avg_prec += prec / (NF * no_users)
-
-            avg_rec += rec / (NF * no_users)
+            avg_rec  += rec / (NF * no_users)
 
             # Output precision and recall of current fold
             if VERBOSE:
@@ -219,22 +177,20 @@ def run(_K, _recommended_artists):
 
     f1_score = 2 * ((avg_prec * avg_rec) / (avg_prec + avg_rec))
 
-
-
     # Output mean average precision and recall
     if VERBOSE:
         print ("\nMAP: %.2f, MAR  %.2f, F1 Scrore: %.2f" % (avg_prec, avg_rec, f1_score))
         print ("%.3f, %.3f" % (avg_prec, avg_rec))
         print ("K neighbors " + str(_K))
-        print AAM_FILE
 
     data = {}
-    data['f1_score'] = f1_score
-    data['avg_prec'] = avg_prec
-    data['avg_rec'] = avg_rec
+    data['f1_score']    = f1_score
+    data['avg_prec']    = avg_prec
+    data['avg_rec']     = avg_rec
     data['recommended'] = recommended_artists
 
     return data
+# /run
 
 # Main program, for experimentation.
 if __name__ == '__main__':
@@ -261,7 +217,7 @@ if __name__ == '__main__':
 
     run_recommender(run, METHOD) # serial
 
-    time_end = time.time()
+    time_end     = time.time()
     elapsed_time = (time_end - time_start)
 
     print elapsed_time

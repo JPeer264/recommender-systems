@@ -1,3 +1,10 @@
+__authors_updated_version__ = [
+    'Aichbauer Lukas',
+    'Leitner Bianca',
+    'Stoecklmair Jan Peer',
+    'Taferner Mario'
+]
+
 ###########
 # IMPORTS #
 ###########
@@ -72,6 +79,7 @@ def recommend_random_user_RB(UAM, seed_aidx_train, items=False, K_users = 1):
 
     # Return dict of recommended artist indices as keys (and scores as values)
     return new_dict_finish
+# /recommend_random_user_RB
 
 # Function to run an evaluation experiment.
 def run(_K, _recommended_artists):
@@ -157,9 +165,9 @@ def run(_K, _recommended_artists):
         print ("Recommendation: " + str(MIN_RECOMMENDED_ARTISTS))
 
     data = {}
-    data['avg_prec'] = avg_prec
-    data['avg_rec'] = avg_rec
-    data['f1_score'] = f1_score
+    data['avg_prec']    = avg_prec
+    data['avg_rec']     = avg_rec
+    data['f1_score']    = f1_score
     data['recommended'] = recommended_artists
 
     return data
@@ -183,7 +191,7 @@ if __name__ == '__main__':
 
     run_recommender(run, METHOD, [1])
 
-    time_end = time.time()
+    time_end     = time.time()
     elapsed_time = (time_end - time_start)
 
     print elapsed_time

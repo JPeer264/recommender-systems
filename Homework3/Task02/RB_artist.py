@@ -1,3 +1,10 @@
+__authors_updated_version__ = [
+    'Aichbauer Lukas',
+    'Leitner Bianca',
+    'Stoecklmair Jan Peer',
+    'Taferner Mario'
+]
+
 ###########
 # IMPORTS #
 ###########
@@ -43,6 +50,7 @@ def RB_artists(artists_idx, no_items):
 
     # Return dict of recommended artist indices as keys (and scores as values)
     return dict_random_aidx
+# /RB_Artists
 
 def run(_K, _recommended_artists):
     """
@@ -137,13 +145,13 @@ def run(_K, _recommended_artists):
         print ("\nMAP: %.2f, MAR:  %.2f, F1-Score: %.2f" % (avg_prec, avg_rec, f1_score))
 
     data = {}
-    data['avg_prec'] = avg_prec
-    data['avg_rec'] = avg_rec
-    data['f1_score'] = f1_score
+    data['avg_prec']    = avg_prec
+    data['avg_rec']     = avg_rec
+    data['f1_score']    = f1_score
     data['recommended'] = recommended_artists
 
     return data
-
+# /run
 
 # Main program, for experimentation.
 if __name__ == '__main__':
@@ -162,7 +170,7 @@ if __name__ == '__main__':
 
     run_recommender(run, METHOD, [1]) # serial
 
-    time_end = time.time()
+    time_end     = time.time()
     elapsed_time = (time_end - time_start)
 
     print elapsed_time

@@ -1,3 +1,10 @@
+__authors__ = [
+    'Aichbauer Lukas',
+    'Leitner Bianca',
+    'Stoecklmair Jan Peer',
+    'Taferner Mario'
+]
+
 import os
 import csv
 import glob
@@ -101,6 +108,9 @@ def read_for_hybrid(method, neighbors, recommended_artists, user, fold):
 
     with open(input_dir + 'K' + str(neighbors) + '_R' + str(recommended_artists) + '.json') as data_file:
         data = json.load(data_file)
+
+    if len(data[str(user)]) == 0:
+        return {}
 
     return_data = {}
     picked_data = data[str(user)][str(fold)]

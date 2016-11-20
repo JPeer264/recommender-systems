@@ -4,9 +4,9 @@ __author__ = 'jpeer'
 ###########
 # IMPORTS #
 ###########
-import helper # helper.py
 import os
 import json
+import helper # helper.py
 import multiprocessing
 from multiprocessing import Pool
 from functools import partial
@@ -15,11 +15,11 @@ from thread import start_new_thread, allocate_lock
 ####################
 # GLOBAL VARIABLES #
 ####################
+LOCK           = allocate_lock()
 VERBOSE        = True
 OUTPUT_DIR     = './output/results/'
 NUM_THREADS    = 0
 THREAD_STARTED = False
-LOCK           = allocate_lock()
 
 def run_recommender(run_function, run_method, neighbors=[1, 2, 5, 10, 20, 50], recommender_artists=[10, 20, 30, 50, 100, 200, 300]):
     """
