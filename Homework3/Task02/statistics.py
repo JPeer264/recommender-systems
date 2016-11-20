@@ -97,13 +97,15 @@ def count_mm_terms():
     :return: an dictionary with meta information
     """
     ps = PorterStemmer()
-    lyrics_contents  = {}
-    terms_df         = {}
-    term_list        = []
-    total_string = ''
+    languages       = {}
+    lyrics_contents = {}
+    terms_df        = {}
+    term_list       = []
+    total_string    = ''
+    found_artist    = 0
 
     musixmatch_artists = read_txt(GENERATED_ARTISTS_FILE)
-    artists_file = helper.read_csv(ARTIST_FILE)[:MAX_ARTISTS]
+    artists_file = helper.read_csv(ARTIST_FILE)
 
     ###########################
     ## keep artist structure ##
@@ -138,6 +140,7 @@ def count_mm_terms():
                             lyrics_translated = {}
                             lyrics_translated[artist_mm_id] = []
                             lang_global = False
+                            found_artist += 1
 
                             for string in data_by_artist:
                                 # remove all non english
@@ -150,6 +153,11 @@ def count_mm_terms():
                                     if lang != 'en' and should_translate:
                                         lang_global = True
                                         total_string += lyrics
+
+                                        try:
+                                            languages[lang] += 1
+                                        except:
+                                            languages[lang] = 1
 
                                         # translation = TRANSLATE_CLIENT.translate(lyrics, target_language = 'en')
                                         # translated_string = translation['translatedText'].encode('utf-8')
@@ -228,6 +236,10 @@ def count_mm_terms():
     stats['len_all'] = len_all
     stats['len_limited'] = len_limited
     stats['best_five'] = terms_df[:5]
+    stats['all'] = terms_df
+    stats['len_total_string'] = len(total_string)
+    stats['lang_stats'] = languages
+    stats['found_artist'] = found_artist
 
     return stats
 # /count_mm_terms
@@ -343,7 +355,7 @@ def count_wiki_terms():
 
 if __name__ == '__main__':
     loop_me = {}
-    loop_me['wiki'] = count_wiki_terms()
+    #loop_me['wiki'] = count_wiki_terms()
     loop_me['mm']   = count_mm_terms()
 
     helper.ensure_dir(OUTPUT)
