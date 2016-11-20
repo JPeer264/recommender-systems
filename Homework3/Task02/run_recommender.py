@@ -106,7 +106,7 @@ def run_recommender(run_function, run_method, neighbors=[1, 2, 5, 10, 20, 50], r
     # for threading
 # /run_recommender
 
-def run_multithreading(run_function, run_method, neighbors=[1, 2, 5, 10, 20, 50], recommender_artists=[1, 3, 5, 7, 10, 20, 30, 50, 100, 200]):
+def run_multithreading(run_function, run_method, neighbors=[1, 2, 5, 10, 20, 50], recommender_artists=[1, 3, 5, 7, 10, 20, 30, 50, 100, 200, 300]):
     """
     Starts a new thread and runs internally run_recommender
     / Speed boost / 80%-20% - depends on the processor and other opened programms
