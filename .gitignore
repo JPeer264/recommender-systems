@@ -15,6 +15,6 @@ PartB
 
 # ignore temp files from MSOffice
 **/~$*
-
+**/results/**/recommended
 AAM_mm.txt
 AAM_wiki.txt
