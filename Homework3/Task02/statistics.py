@@ -102,7 +102,8 @@ def count_mm_terms():
     terms_df        = {}
     term_list       = []
     total_string    = ''
-    found_artist    = 0
+    found_artists   = 0
+    total_songs     = 0
 
     musixmatch_artists = read_txt(GENERATED_ARTISTS_FILE)
     artists_file = helper.read_csv(ARTIST_FILE)
@@ -128,10 +129,6 @@ def count_mm_terms():
                     should_translate = True
                     filename = MUSIXMATCH_FILES + str(artist_mm_id) + '.json'
 
-                    if os.path.isfile(MUSIXMATCH_FILES + str(artist_mm_id) + '_translated.json'):
-                        filename = MUSIXMATCH_FILES + str(artist_mm_id) + '_translated.json'
-                        should_translate = False
-
                     try:
                         with open(filename, 'r') as f:
                             data  = json.load(f)      # create reader
@@ -140,27 +137,27 @@ def count_mm_terms():
                             lyrics_translated = {}
                             lyrics_translated[artist_mm_id] = []
                             lang_global = False
-                            found_artist += 1
+                            found_artists += 1
 
                             for string in data_by_artist:
                                 # remove all non english
+
+                                if len(string) != 0:
+                                    total_songs += 1
 
                                 try:
                                     lyrics = re.sub(r'\*.*\*(\s|\S)*$', '', string)
                                     lang = detect(lyrics)
 
+                                    try:
+                                        languages[lang] += 1
+                                    except:
+                                        languages[lang] = 1
+
                                     # translate non-english strings
-                                    if lang != 'en' and should_translate:
-                                        lang_global = True
+                                    if lang != 'en':
                                         total_string += lyrics
 
-                                        try:
-                                            languages[lang] += 1
-                                        except:
-                                            languages[lang] = 1
-
-                                        # translation = TRANSLATE_CLIENT.translate(lyrics, target_language = 'en')
-                                        # translated_string = translation['translatedText'].encode('utf-8')
                                         translated_string = ''
 
                                     else:
@@ -171,8 +168,6 @@ def count_mm_terms():
                                 except Exception, e:
                                     continue
 
-                            if lang_global:
-                                save_json(lyrics_translated,  MUSIXMATCH_FILES + str(artist_mm_id) + '_translated.json')
                             #####################################
                             ## sorting | stamming | stopwords ##
                             #####################################
@@ -237,9 +232,10 @@ def count_mm_terms():
     stats['len_limited'] = len_limited
     stats['best_five'] = terms_df[:5]
     stats['all'] = terms_df
-    stats['len_total_string'] = len(total_string)
+    stats['len_to_translate_char'] = len(total_string)
     stats['lang_stats'] = languages
-    stats['found_artist'] = found_artist
+    stats['found_artists'] = found_artists
+    stats['total_songs'] = total_songs
 
     return stats
 # /count_mm_terms
@@ -281,6 +277,7 @@ def count_wiki_terms():
     html_contents = {}
     terms_df      = {}
     term_list     = []
+    found_artists = 0
 
     # read artist names from file
     artists = helper.read_csv(ARTIST_FILE)   # using functions and parameters defined in o1_Wikipedia_Fetcher.py
@@ -296,6 +293,9 @@ def count_wiki_terms():
         if os.path.exists(html_fn):
             # Read entire file
             html_content = open(html_fn, 'r').read()
+
+            if len(html_content) == 0:
+                found_artists += 1
 
             # Next we perform some text processing:
             # Strip content off HTML tags
@@ -324,6 +324,7 @@ def count_wiki_terms():
             print "File " + html_fn + " --- total tokens: " + str(len(tokens)) + "; after filtering and stopping: " + str(len(tokens_filtered_stopped))
         else:           # Inform user if target file does not exist
             print "Target file " + html_fn + " does not exist!"
+            found_artists += 1
             html_contents[i] = ''
 
     # Start computing term weights, in particular, document frequencies and term frequencies.
@@ -349,6 +350,7 @@ def count_wiki_terms():
     stats['len_limited'] = len_limited
     stats['best_five'] = terms_df[:5]
     stats['all'] = terms_df
+    stats['found_artists'] = found_artists
 
     return stats
 # /count_wiki_terms
