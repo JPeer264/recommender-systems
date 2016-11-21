@@ -22,6 +22,7 @@ import operator
 import numpy as np
 import scipy.spatial.distance as scidist        # import distance computation module from scipy package
 from sklearn import cross_validation            # machine learning & evaluation module
+from FileCache import FileCache
 from run_recommender import * # run_recommender.py
 
 ####################
@@ -44,6 +45,9 @@ def run(_K, _recommended_artists):
     # Initialize variables to hold performance measures
     avg_prec = 0  # mean precision
     avg_rec = 0 # mean recall
+
+    cb_file = FileCache("CB", _K, _recommended_artists)
+    cf_file = FileCache("CF", _K, _recommended_artists)
 
     # For all users in our data (UAM)
     no_users = UAM.shape[0]
@@ -71,8 +75,8 @@ def run(_K, _recommended_artists):
             ## Combine CB and CF together so we get a HF ##
             ###############################################
 
-            dict_rec_aidx_CB = helper.read_for_hybrid("CB", _K, _recommended_artists, u, fold) # recommend_CB(AAM, u_aidx[train_aidx], _K)
-            dict_rec_aidx_CF = helper.read_for_hybrid("CF", _K, _recommended_artists, u, fold) # recommend_CF(copy_UAM, u, u_aidx[train_aidx], _recommended_artists) # @JPEER check if recommended_artists is rig
+            dict_rec_aidx_CB = cb_file.read_for_hybrid(u, fold) # recommend_CB(AAM, u_aidx[train_aidx], _K)
+            dict_rec_aidx_CF = cf_file.read_for_hybrid(u, fold) # recommend_CF(copy_UAM, u, u_aidx[train_aidx], _recommended_artists) # @JPEER check if recommended_artists is rig
 
             # @JPEER check in group if that solution is fair enough
             if len(dict_rec_aidx_CB) == 0 or len(dict_rec_aidx_CF) == 0:

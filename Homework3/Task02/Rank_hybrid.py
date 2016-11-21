@@ -22,6 +22,7 @@ import helper # helper.py
 import operator
 import scipy.spatial.distance as scidist
 from sklearn import cross_validation
+from FileCache import FileCache
 from run_recommender import * # run_recommender.py
 
 ####################
@@ -46,6 +47,9 @@ def run(_K, _recommended_artists):
     no_users   = UAM.shape[0]
     no_artists = UAM.shape[1]
 
+    cb_file = FileCache("CB", _K, _recommended_artists)
+    pb_file = FileCache("PB", _K, _recommended_artists)
+
     recommended_artists = {}
 
     for u in range(0, no_users):
@@ -66,8 +70,8 @@ def run(_K, _recommended_artists):
             # Call recommend function
             copy_UAM = UAM.copy()       # we need to create a copy of the UAM, otherwise modifications within recommend function will effect the variable
 
-            dict_rec_aidx_CB = helper.read_for_hybrid("CB", _K, _recommended_artists, u, fold) #recommend_CB(AAM, u_aidx[train_aidx], _K)
-            dict_rec_aidx_PB = helper.read_for_hybrid("PB", 1, _recommended_artists, u, fold) #recommend_PB(copy_UAM, u_aidx[train_aidx], _recommended_artists)
+            dict_rec_aidx_CB = cb_file.read_for_hybrid(u, fold) #recommend_CB(AAM, u_aidx[train_aidx], _K)
+            dict_rec_aidx_PB = pb_file.read_for_hybrid(u, fold) #recommend_PB(copy_UAM, u_aidx[train_aidx], _recommended_artists)
 
             # @JPEER check in group if that solution is fair enough
             if len(dict_rec_aidx_CB) == 0 or len(dict_rec_aidx_PB) == 0:

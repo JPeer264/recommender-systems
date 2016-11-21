@@ -16,6 +16,7 @@ import os.path
 import numpy as np
 import scipy.spatial.distance as scidist
 from sklearn import cross_validation
+from FileCache import FileCache
 from run_recommender import * # run_recommender.py
 
 ####################
@@ -39,6 +40,9 @@ def run(_K, _recommended_artists):
     # Initialize variables to hold performance measures
     avg_prec = 0  # mean precision
     avg_rec = 0  # mean recall
+
+    cb_file = FileCache("CB", _K, _recommended_artists)
+    cf_file = FileCache("CF", _K, _recommended_artists)
 
     # For all users in our data (UAM)
     no_users = UAM.shape[0]
@@ -68,8 +72,8 @@ def run(_K, _recommended_artists):
             copy_UAM = UAM.copy()
 
             # Call recommend function
-            rec_aidx_CF = helper.read_for_hybrid("CF", _K, _recommended_artists, u, fold) # recommend_CF(copy_UAM, u, u_aidx[train_aidx])
-            rec_aidx_CB = helper.read_for_hybrid("CB", _K, _recommended_artists, u, fold) # recommend_CB(AAM, u_aidx[train_aidx], _K)
+            rec_aidx_CF = cf_file.read_for_hybrid(u, fold) # recommend_CF(copy_UAM, u, u_aidx[train_aidx])
+            rec_aidx_CB = cb_file.read_for_hybrid(u, fold) # recommend_CB(AAM, u_aidx[train_aidx], _K)
 
             # @JPEER check in group if that solution is fair enough
             if len(rec_aidx_CF) == 0 or len(rec_aidx_CB) == 0:
