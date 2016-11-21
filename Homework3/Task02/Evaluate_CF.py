@@ -107,20 +107,16 @@ def recommend_CF(UAM, seed_uidx, seed_aidx_train, K):
     max_value = sorted_dict_reco_aidx[0][1]
 
     new_dict_recommended_artists_idx = {}
-
     for i in sorted_dict_reco_aidx:
         new_dict_recommended_artists_idx[i[0]] = i[1] / max_value
 
-    sorted_dict_reco_aidx = list(set(sorted_dict_reco_aidx))
+    if len(new_dict_recommended_artists_idx) < MIN_RECOMMENDED_ARTISTS:
+        reco_art_CF = recommend_CF(UAM, seed_uidx, seed_aidx_train, K + 1)
+        new_dict_recommended_artists_idx.update(reco_art_CF)
 
-    if len(sorted_dict_reco_aidx) < MIN_RECOMMENDED_ARTISTS:
-        reco_art_CF = recommend_CF(UAM, seed_uidx, seed_aidx_train, K+1)
-        reco_art_CF = reco_art_CF.items()
-        sorted_dict_reco_aidx = sorted_dict_reco_aidx + reco_art_CF
-        sorted_dict_reco_aidx = list(set(sorted_dict_reco_aidx))
+    sorted_dict_reco_aidx = sorted(new_dict_recommended_artists_idx.items(), key=operator.itemgetter(1), reverse=True)
 
-
-    new_dict_finish ={}
+    new_dict_finish = {}
     for index, key in enumerate(sorted_dict_reco_aidx, start=0):
         if index < MIN_RECOMMENDED_ARTISTS and index < len(sorted_dict_reco_aidx):
             new_dict_finish[key[0]] = key[1]
