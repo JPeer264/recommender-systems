@@ -3,6 +3,7 @@ __author__ = 'Mata Mata'
 # Load required modules
 import csv
 import time
+import math
 import operator
 import numpy as np
 import scipy.spatial.distance as scidist
@@ -21,12 +22,10 @@ UAM_FILE = TESTFILES + "C1ku/C1ku_UAM.txt"  # user-artist-matrix (UAM)
 
 # Define test-parameters here:
 #-----------------------------
-VERBOSE = True
-NF = 10
-MAX_ARTISTS = 10000
-MAX_USERS = 1050
+NF      = 10
+VERBOSE = False
+METHOD  = "DF_test_gender"
 MIN_RECOMMENDED_ARTISTS = 0
-METHOD = "DF_test_gender"
 #-----------------------------
 
 
@@ -160,6 +159,106 @@ def generate_gender_UAM(UAM, gender):
 
     return True
 
+# Function that implements a CF recommender. It takes as input the UAM,
+# the index of the seed user (to make predictions for) and the indices of the seed user's training artists.
+# It returns a dictionary of recommended artist indices (and corresponding scores).
+def recommend_gender_DF(UAM, seed_uidx, seed_aidx_train, K):
+    # UAM               user-artist-matrix
+    # seed_uidx         user index of seed user
+    # seed_aidx_train   indices of training artists for seed user
+    # K                 number of nearest neighbors (users) to consider for each seed users
+
+    # Get playcount vector for seed user
+    pc_vec = UAM[seed_uidx, :]
+
+    # Remove information on test artists from seed's listening vector
+    aidx_nz = np.nonzero(pc_vec)[0]                             # artists with non-zero listening events
+    aidx_test = np.intersect1d(aidx_nz, seed_aidx_train)        # intersection between all artist indices of user and train indices gives test artist indices
+#    print aidx_test
+
+    # Set to 0 the listening events of seed user user for testing (in UAM; pc_vec just points to UAM, is thus automatically updated)
+    UAM[seed_uidx, aidx_test] = 0.0
+
+    # Seed user needs to be normalized again
+    # Perform sum-to-1 normalization
+    UAM[seed_uidx, :] = UAM[seed_uidx, :] / np.sum(UAM[seed_uidx, :])
+
+    # Compute similarities as inverse cosine distance between pc_vec of user and all users via UAM (assuming that UAM is normalized)
+    sim_users = np.zeros(shape=(UAM.shape[0]), dtype=np.float32)
+    for u in range(0, UAM.shape[0]):
+        number = 1.0 - scidist.cosine(pc_vec, UAM[u,:])
+        if math.isnan(number):
+            number = 0.0
+
+        sim_users[u] = number
+
+    # Sort similarities to all others
+    sort_idx = np.argsort(sim_users)  # sort in ascending order
+
+    # Select the closest neighbor to seed user (which is the last but one; last one is user u herself!)
+    neighbor_idx = sort_idx[-1-K:-1]
+
+    # Get all artist indices the seed user and her closest neighbor listened to, i.e., element with non-zero entries in UAM
+    artist_idx_u = seed_aidx_train                      # indices of artists in training set user
+    # for k=1:
+    # artist_idx_n = np.nonzero(UAM[neighbor_idx, :])     # indices of artists user u's neighbor listened to
+    # for k>1:
+    artist_idx_n = np.nonzero(UAM[neighbor_idx, :])[1]    # [1] because we are only interested in non-zero elements among the artist axis
+
+    # Compute the set difference between seed user's neighbor and seed user,
+    # i.e., artists listened to by the neighbor, but not by seed user.
+    # These artists are recommended to seed user.
+    recommended_artists_idx = np.setdiff1d(artist_idx_n, artist_idx_u)
+
+
+    ##### ADDED FOR SCORE-BASED FUSION  #####
+    dict_recommended_artists_idx = {}           # dictionary to hold recommended artists and corresponding scores
+    # Compute artist scores. Here, just derived from max-to-1-normalized play count vector of nearest neighbor (neighbor_idx)
+    # for k=1:
+    # scores = UAM[neighbor_idx, recommended_artists_idx] / np.max(UAM[neighbor_idx, recommended_artists_idx])
+    # for k>1:
+    scores = np.mean(UAM[neighbor_idx][:, recommended_artists_idx], axis=0)
+    sum = np.sum(UAM[neighbor_idx][:, recommended_artists_idx], axis=0)
+
+    # Write (artist index, score) pairs to dictionary of recommended artists
+    for i in range(0, len(recommended_artists_idx)):
+        dict_recommended_artists_idx[recommended_artists_idx[i]] = sum[i]
+    #########################################
+
+    dictlist = []
+
+    for key, value in dict_recommended_artists_idx.iteritems():
+        temp = [key, value]
+        dictlist.append(temp)
+
+    sorted_dict_reco_aidx = sorted(dict_recommended_artists_idx.items(), key=operator.itemgetter(1), reverse=True)
+    print sorted_dict_reco_aidx
+    max_value = sorted_dict_reco_aidx[0][1]
+
+    new_dict_recommended_artists_idx = {}
+
+    for i in sorted_dict_reco_aidx:
+        new_dict_recommended_artists_idx[i[0]] = i[1] / max_value
+
+    sorted_dict_reco_aidx = list(set(sorted_dict_reco_aidx))
+
+    if len(sorted_dict_reco_aidx) < MIN_RECOMMENDED_ARTISTS:
+        reco_art_CF = recommend_gender_DF(UAM, seed_uidx, seed_aidx_train, K+1)
+        reco_art_CF = reco_art_CF.items()
+        sorted_dict_reco_aidx = sorted_dict_reco_aidx + reco_art_CF
+        sorted_dict_reco_aidx = list(set(sorted_dict_reco_aidx))
+
+
+    new_dict_finish ={}
+    for index, key in enumerate(sorted_dict_reco_aidx, start=0):
+        if index < MIN_RECOMMENDED_ARTISTS and index < len(sorted_dict_reco_aidx):
+            new_dict_finish[key[0]] = key[1]
+
+
+    # Return dictionary of recommended artist indices (and scores)
+    return new_dict_finish
+# /recommend_gender_DF
+
 
 
 def recommend_gender_DF(UAM, seed_uidx, seed_aidx_train, K):
@@ -173,17 +272,15 @@ def recommend_gender_DF(UAM, seed_uidx, seed_aidx_train, K):
     :param df_list: list containing all users that have defined attribute
     :return: a dictionary of recommended artists
     """
-
     # Get playcount vector for seed user
     pc_vec = UAM[seed_uidx, :]
 
-    # Remove information on test artists from seed's playcount vector
-    # Artists with non-zero listening events
-    aidx_nz = np.nonzero(pc_vec)[0]
-    # Test artist indices: intersection between all artist indices of user and train indices
-    aidx_test = np.intersect1d(aidx_nz, seed_aidx_train)
+    # Remove information on test artists from seed's listening vector
+    aidx_nz = np.nonzero(pc_vec)[0]                             # artists with non-zero listening events
+    aidx_test = np.intersect1d(aidx_nz, seed_aidx_train)        # intersection between all artist indices of user and train indices gives test artist indices
+    # print aidx_test
 
-    # Set listening events of seed user to 0 (in UAM; pc_vec just points to UAM, is thus automatically updated)
+    # Set to 0 the listening events of seed user user for testing (in UAM; pc_vec just points to UAM, is thus automatically updated)
     UAM[seed_uidx, aidx_test] = 0.0
 
     # Seed user needs to be normalized again
@@ -193,29 +290,33 @@ def recommend_gender_DF(UAM, seed_uidx, seed_aidx_train, K):
     # Compute similarities as inverse cosine distance between pc_vec of user and all users via UAM (assuming that UAM is normalized)
     sim_users = np.zeros(shape=(UAM.shape[0]), dtype=np.float32)
     for u in range(0, UAM.shape[0]):
-        sim_users[u] = 1.0 - scidist.cosine(pc_vec, UAM[u, :])
+        number = 1.0 - scidist.cosine(pc_vec, UAM[u,:])
+        if math.isnan(number):
+            number = 0.0
+
+        sim_users[u] = number
 
     # Sort similarities to all others
     sort_idx = np.argsort(sim_users)  # sort in ascending order
 
     # Select the closest neighbor to seed user (which is the last but one; last one is user u herself!)
-    neighbor_idx = sort_idx[-1 - K:-1]
+    neighbor_idx = sort_idx[-1-K:-1]
 
     # Get all artist indices the seed user and her closest neighbor listened to, i.e., element with non-zero entries in UAM
-    artist_idx_u = seed_aidx_train  # indices of artists in training set user
+    artist_idx_u = seed_aidx_train                      # indices of artists in training set user
     # for k=1:
     # artist_idx_n = np.nonzero(UAM[neighbor_idx, :])     # indices of artists user u's neighbor listened to
     # for k>1:
-    artist_idx_n = np.nonzero(UAM[2, :])[
-        1]  # [1] because we are only interested in non-zero elements among the artist axis
+    artist_idx_n = np.nonzero(UAM[neighbor_idx, :])[1]    # [1] because we are only interested in non-zero elements among the artist axis
 
     # Compute the set difference between seed user's neighbor and seed user,
     # i.e., artists listened to by the neighbor, but not by seed user.
     # These artists are recommended to seed user.
     recommended_artists_idx = np.setdiff1d(artist_idx_n, artist_idx_u)
 
+
     ##### ADDED FOR SCORE-BASED FUSION  #####
-    dict_recommended_artists_idx = {}  # dictionary to hold recommended artists and corresponding scores
+    dict_recommended_artists_idx = {}           # dictionary to hold recommended artists and corresponding scores
     # Compute artist scores. Here, just derived from max-to-1-normalized play count vector of nearest neighbor (neighbor_idx)
     # for k=1:
     # scores = UAM[neighbor_idx, recommended_artists_idx] / np.max(UAM[neighbor_idx, recommended_artists_idx])
@@ -236,9 +337,6 @@ def recommend_gender_DF(UAM, seed_uidx, seed_aidx_train, K):
 
     sorted_dict_reco_aidx = sorted(dict_recommended_artists_idx.items(), key=operator.itemgetter(1), reverse=True)
 
-    if len(sorted_dict_reco_aidx) < 1:
-        return False
-
     max_value = sorted_dict_reco_aidx[0][1]
 
     new_dict_recommended_artists_idx = {}
@@ -249,18 +347,21 @@ def recommend_gender_DF(UAM, seed_uidx, seed_aidx_train, K):
     sorted_dict_reco_aidx = list(set(sorted_dict_reco_aidx))
 
     if len(sorted_dict_reco_aidx) < MIN_RECOMMENDED_ARTISTS:
-        reco_art_CF = recommend_gender_DF(UAM, seed_uidx, seed_aidx_train, K + 1)
+        reco_art_CF = recommend_gender_DF(UAM, seed_uidx, seed_aidx_train, K+1)
         reco_art_CF = reco_art_CF.items()
         sorted_dict_reco_aidx = sorted_dict_reco_aidx + reco_art_CF
         sorted_dict_reco_aidx = list(set(sorted_dict_reco_aidx))
 
-    new_dict_finish = {}
+
+    new_dict_finish ={}
     for index, key in enumerate(sorted_dict_reco_aidx, start=0):
         if index < MIN_RECOMMENDED_ARTISTS and index < len(sorted_dict_reco_aidx):
             new_dict_finish[key[0]] = key[1]
 
+
     # Return dictionary of recommended artist indices (and scores)
     return new_dict_finish
+# /recommend_gender_DF
 
 
 
@@ -286,7 +387,6 @@ def run(_K, _recommended_artists):
     user_with_attr_counter = 0
 
     for u in range(0, no_users):
-
         user_gender_list = False
         gender = False
 
@@ -308,13 +408,13 @@ def run(_K, _recommended_artists):
             else:
                u_aidx = np.nonzero(UAM_FEMALE[u, :])[0]
 
+            if NF >= len(u_aidx) or u == no_users - 1:
+                continue
             # Get seed user's artists listened to
             #u_aidx = np.nonzero(UAM[u, :])[0]
 
             recommended_artists[str(u)] = {}
 
-            if NF >= len(u_aidx) or u == no_users - 1:
-                continue
 
             # Split user's artists into train and test set for cross-fold (CV) validation
             fold = 0
@@ -327,16 +427,15 @@ def run(_K, _recommended_artists):
                         len(test_aidx)),  # the comma at the end avoids line break
 
                 if gender == 'm':
-                    copy_UAM = UAM_MALE.copy()
+                    copy_UAM = UAM_MALE
                 else:
-                    copy_UAM = UAM_FEMALE.copy()
+                    copy_UAM = UAM_FEMALE
 
                 #copy_UAM = UAM.copy()  # we need to create a copy of the UAM, otherwise modifications within recommend function will effect the variable
 
                 dict_rec_aidx = recommend_gender_DF(copy_UAM, u, u_aidx[train_aidx], _K)
 
                 if not dict_rec_aidx:
-                    print "jetzt"
                     continue
 
                 recommended_artists[str(u)][str(fold)] = dict_rec_aidx
@@ -381,14 +480,6 @@ def run(_K, _recommended_artists):
                 # Increase fold counter
                 fold += 1
 
-    print ""
-    print "###########################"
-    print " Users with attribute: " + str(user_with_attr_counter)
-    print "###########################"
-
-    print avg_prec
-    print avg_rec
-
     f1_score = 2 * ((avg_prec * avg_rec) / (avg_prec + avg_rec))
 
     # Output mean average precision and recall
@@ -410,18 +501,12 @@ def run(_K, _recommended_artists):
 
 # Main program, for experimentation.
 if __name__ == '__main__':
+    global genderLists, UAM_FILE, UAM_FEMALE
 
     # Load metadata from provided files into lists
-    artists = read_artists_file(ARTISTS_FILE)
-
+    artists      = read_artists_file(ARTISTS_FILE)
     users_gender = read_users_file(USERS_FILE, 5)
-    global genderLists, UAM_FILE, UAM_FEMALE
-    genderLists = generate_gender_lists(users_gender)
-
-    if VERBOSE:
-        print genderLists[0]
-        print genderLists[1]
-        print genderLists[2]
+    genderLists  = generate_gender_lists(users_gender)
 
     if VERBOSE:
         helper.log_highlight('Loading UAM')
@@ -431,21 +516,19 @@ if __name__ == '__main__':
     UAM_MALE = UAM.copy()
     UAM_FEMALE = UAM.copy()
 
-    UAM_MALE[genderLists[1].keys(), :] = 0.0
-    UAM_MALE[genderLists[2].keys(), :] = 0.0
-    UAM_FEMALE[genderLists[0].keys(), :] = 0.0
-    UAM_FEMALE[genderLists[2].keys(), :] = 0.0
+    # for key, value in genderLists[1].iteritems():
 
-    # print UAM[[5, 17], :6]
-    # print UAM_MALE[[5,17], :6]
-    # print UAM_FEMALE[[5,17], :6]
+    UAM_MALE[genderLists[1].keys()] = 0.0
+    # UAM_MALE[genderLists[2].keys(), :] = 0.0
+    UAM_FEMALE[genderLists[0].keys()] = 0.0
+    # UAM_FEMALE[genderLists[2].keys(), :] = 0.0
 
     if VERBOSE:
         print 'Successfully loaded UAM'
 
     time_start = time.time()
 
-    run_recommender(run, METHOD)  # serial
+    run_recommender(run, METHOD, [2], [20])  # serial
 
     time_end = time.time()
     elapsed_time = (time_end - time_start)
