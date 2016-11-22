@@ -39,6 +39,7 @@ class FileCache:
         """
         normalized_data = {}
 
+
         for user, user_data in self.data.items():
             normalized_data[user] = {}
 
@@ -46,15 +47,21 @@ class FileCache:
                 normalized_data[user][fold] = {}
                 normalized_data[user][fold]['order'] = fold_data['order']
 
-                sorted_fold_data = sorted(fold_data['recommended'].items(), key=operator.itemgetter(1), reverse=True)
+                str_to_float_fold_data = {}
+
+                for i in fold_data['recommended'].items():
+                    str_to_float_fold_data[i[0]] = float(i[1])
+
+                sorted_fold_data = sorted(str_to_float_fold_data.items(), key=operator.itemgetter(1), reverse=True)
+
                 max_value = sorted_fold_data[0][1]
 
-                new_dict_recommended_artists_idx = {}
+                new_normalized_fold_data = {}
 
                 for i in sorted_fold_data:
-                    new_dict_recommended_artists_idx[str(i[0])] = str(float(i[1]) / float(max_value))
+                    new_normalized_fold_data[str(i[0])] = str(float(i[1]) / float(max_value))
 
-                normalized_data[user][fold]['recommended'] = new_dict_recommended_artists_idx
+                normalized_data[user][fold]['recommended'] = new_normalized_fold_data
 
         # write json file for hybrids
         content = json.dumps(normalized_data, indent=4, sort_keys=True)
