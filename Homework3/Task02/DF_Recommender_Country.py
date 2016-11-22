@@ -361,6 +361,8 @@ def get_neighbor_contries(seed_uidx, nearby, distance):
                     country_neighbor_idx.append(i)
 
     country_neighbor_idx = list(set(country_neighbor_idx))
+    print "TEST: "
+    print country_neighbor_idx
 
     #print len(country_neighbor_idx)
 

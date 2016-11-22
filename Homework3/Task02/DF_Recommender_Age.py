@@ -27,12 +27,8 @@ NF = 10
 MAX_ARTISTS = 1000
 MAX_USERS = 10
 MIN_RECOMMENDED_ARTISTS = 0
-METHOD = "DF_test"
-
-
+METHOD = "DF_age"
 # -----------------------------
-
-
 
 
 def read_artists_file(filename):
@@ -56,7 +52,6 @@ def read_artists_file(filename):
             data.append(item)
     f.close()
     return data
-
 
 
 def read_users_file(filename, colnr):
@@ -84,7 +79,6 @@ def read_users_file(filename, colnr):
             idx_count += 1
     f.close()
     return data
-
 
 
 def clean_list_from_empty_value(old_list, column_no, value):
@@ -118,7 +112,6 @@ def clean_list_from_empty_value(old_list, column_no, value):
     return cleaned_list
 
 
-
 def check_if_list_contains_user(user_idx, list_to_check):
     """
     Function checks if given user_idx is in a given list
@@ -148,7 +141,6 @@ def check_if_list_contains_user(user_idx, list_to_check):
 
     # When whole list was checked, return whether user_idx was found or not (True|False)
     return user_has_df_attr
-
 
 
 def check_if_member_of_age_group(user_idx, json_file_age_group, age_group):
@@ -189,15 +181,17 @@ def check_if_member_of_age_group(user_idx, json_file_age_group, age_group):
     return user_in_age_group
 
 
-
-def get_all_users_within_age_group(user_idx, json_file_age_group):
+def get_all_users_within_age_group(user_idx, json_file_age_group, nearby, lower, index):
     """
     Function collects all available users that are a member of the seed users age group.
     If the amount of available users within the age group is smaller then the amount of neighbours (K):
     --> alternately fills the list with additional users from age groups above and below.
 
     :param user_idx: the user index of the seed user
-    :param json_file_age_group:
+    :param json_file_age_group: the json-file containing the age-group definition
+    :param nearby: TRUE if additional users from age-groups nearby are needed
+    :param lower: TRUE if the age group below the users age group should be taken
+    :param: index: value for which the index of the users age_group_dict should be changed
     :return: list of all users within seed users age group
     """
 
@@ -207,7 +201,14 @@ def get_all_users_within_age_group(user_idx, json_file_age_group):
     global all_users_in_age_group
     all_users_in_age_group = []
 
-    helper.log_highlight("GET NEIGHBOURS FROM USERS AGE GROUP")
+    global all_users_in_age_group_lower
+    all_users_in_age_group_lower = []
+
+    global all_users_in_age_group_higher
+    all_users_in_age_group_higher = []
+
+    if VERBOSE:
+        helper.log_highlight("GET NEIGHBOURS FROM USERS AGE GROUP")
 
     # Load Json-File with age group information in dict
     with open(TESTFILES + json_file_age_group) as json_file:
@@ -231,7 +232,6 @@ def get_all_users_within_age_group(user_idx, json_file_age_group):
 
     if VERBOSE:
         print("User " + str(user_idx) + " is member of age group: " + str(user_age_group))
-        print "Index of age group: " + str(index_user_age_group)
 
     # Get list from all users that are member of the users age group
     for row in users_age_clean:
@@ -239,19 +239,54 @@ def get_all_users_within_age_group(user_idx, json_file_age_group):
 
         for i in user_age_group:
             if row_content == user_age_group[i]:
-                user = [row[0]] + [row_content]
+                user = row[0]
                 all_users_in_age_group.append(user)
 
     if VERBOSE:
         print("Amount of users within the same age group: " + str(len(all_users_in_age_group)))
 
+    lenght_age_group_dict = len(age_group_dict)
 
-    """
-    TODO: behaviour when amount < K
-    """
+    if nearby:
+        if lower:
+            if index_user_age_group - index > 1:
+                # ...get the next higher and next lower age-group from the users age-group
+                age_group_lower = age_group_dict[index_user_age_group - index]
 
-    return all_users_in_age_group
+                if VERBOSE:
+                    print "Age group lower: " + str(age_group_lower)
 
+                # Get list from all users that are member of the next lower age group of
+                # the seed user
+                for row in users_age_clean:
+                    row_content = int(row[1])
+
+                    for i in age_group_lower:
+                        if row_content == age_group_lower[i]:
+                            user = row[0]
+                            all_users_in_age_group.append(user)
+
+        if not lower:
+            if index + index_user_age_group < lenght_age_group_dict:
+                # ...get the next higher age-group from the users age-group
+                age_group_higher = age_group_dict[index_user_age_group + index]
+
+                if VERBOSE:
+                    print "Age group higher: " + str(age_group_higher)
+
+                # Get list from all users that are member of the next higher age group of
+                # the seed user
+                for row in users_age_clean:
+                    row_content = int(row[1])
+
+                    for i in age_group_higher:
+                        if row_content == age_group_higher[i]:
+                            user = row[0]
+                            all_users_in_age_group.append(user)
+
+    all_users_in_age_group_idx = list(set(all_users_in_age_group))
+
+    return all_users_in_age_group_idx
 
 
 def recommend_age_DF(UAM, seed_uidx, seed_aidx_train, K):
@@ -281,6 +316,10 @@ def recommend_age_DF(UAM, seed_uidx, seed_aidx_train, K):
     # Perform sum-to-1 normalization
     UAM[seed_uidx, :] = UAM[seed_uidx, :] / np.sum(UAM[seed_uidx, :])
 
+
+    # Get all users that are in same age-group as seed user
+    age_group_users_idx = get_all_users_within_age_group(seed_uidx, "age_range.json", False, False, 0)
+
     # Compute similarities as inverse cosine distance between pc_vec of user and all users via UAM (assuming that UAM is normalized)
     sim_users = np.zeros(shape=(UAM.shape[0]), dtype=np.float32)
     for u in range(0, UAM.shape[0]):
@@ -289,8 +328,31 @@ def recommend_age_DF(UAM, seed_uidx, seed_aidx_train, K):
     # Sort similarities to all others
     sort_idx = np.argsort(sim_users)  # sort in ascending order
 
+    # Check if sort_idx contains users of age_group_users_idx
+    sort_idx = list(set(sort_idx).intersection(age_group_users_idx))
+
+    loopcounter = 0
+
+    while len(sort_idx) == 1 and K < MIN_RECOMMENDED_ARTISTS:
+        loopcounter += 1
+
+        if loopcounter % 2 == 0:
+            add_users = get_all_users_within_age_group(seed_uidx, "age_range.json", True, True, loopcounter)
+        else:
+            add_users = get_all_users_within_age_group(seed_uidx, "age_range.json", True, False, loopcounter)
+
+        new_users_idx = age_group_users_idx + add_users
+        sort_idx = list(set(sort_idx).intersection(new_users_idx))
+
+        if loopcounter > 11:
+            sort_idx = np.argsort(sim_users)
+
+    if len(sort_idx) <= 1:
+        return False
+
     # Select the closest neighbor to seed user (which is the last but one; last one is user u herself!)
     neighbor_idx = sort_idx[-1 - K:-1]
+
 
     # Get all artist indices the seed user and her closest neighbor listened to, i.e., element with non-zero entries in UAM
     artist_idx_u = seed_aidx_train  # indices of artists in training set user
@@ -336,6 +398,14 @@ def recommend_age_DF(UAM, seed_uidx, seed_aidx_train, K):
 
     sorted_dict_reco_aidx = list(set(sorted_dict_reco_aidx))
 
+    if len(new_dict_recommended_artists_idx) < MIN_RECOMMENDED_ARTISTS:
+        K_users = K + 1
+
+        if K_users > UAM.shape[0]:
+            K_users = 1
+
+        return recommend_age_DF(UAM, seed_aidx_train, seed_aidx_train, K_users)
+
     if len(sorted_dict_reco_aidx) < MIN_RECOMMENDED_ARTISTS:
         reco_art_CF = recommend_age_DF(UAM, seed_uidx, seed_aidx_train, K + 1)
         reco_art_CF = reco_art_CF.items()
@@ -349,7 +419,6 @@ def recommend_age_DF(UAM, seed_uidx, seed_aidx_train, K):
 
     # Return dictionary of recommended artist indices (and scores)
     return new_dict_finish
-
 
 
 def run(_K, _recommended_artists):
@@ -405,6 +474,9 @@ def run(_K, _recommended_artists):
 
                 dict_rec_aidx = recommend_age_DF(copy_UAM, u, u_aidx[train_aidx], _K)
 
+                if not dict_rec_aidx:
+                    continue
+
                 recommended_artists[str(u)][str(fold)] = dict_rec_aidx
 
                 rec_aidx = dict_rec_aidx.keys()
@@ -447,20 +519,15 @@ def run(_K, _recommended_artists):
                 # Increase fold counter
                 fold += 1
 
-    print ""
-    print "###########################"
-    print " Users with attribute: " + str(user_with_attr_counter)
-    print "###########################"
-
     f1_score = 2 * ((avg_prec * avg_rec) / (avg_prec + avg_rec))
 
     # Output mean average precision and recall
-    if VERBOSE:
-        print ("\nMAP: %.2f, MAR  %.2f, F1 Scrore: %.2f" % (avg_prec, avg_rec, f1_score))
-        print ("%.3f, %.3f" % (avg_prec, avg_rec))
-        print ("K neighbors " + str(_K))
-        print ("Recommendation: " + str(_recommended_artists))
-        print "____________________________________________________________________________"
+    # if VERBOSE:
+    print ("\nMAP: %.2f, MAR  %.2f, F1 Scrore: %.2f" % (avg_prec, avg_rec, f1_score))
+    print ("%.3f, %.3f" % (avg_prec, avg_rec))
+    print ("K neighbors " + str(_K))
+    print ("Recommendation: " + str(_recommended_artists))
+    print "____________________________________________________________________________"
 
     data = {}
     data['avg_prec'] = avg_prec
@@ -469,7 +536,6 @@ def run(_K, _recommended_artists):
     data['recommended'] = recommended_artists
 
     return data
-
 
 
 # Main program, for experimentation.
@@ -484,27 +550,52 @@ if __name__ == '__main__':
     global users_age_clean
     users_age_clean = clean_list_from_empty_value(users_age, 1, '-1')
 
-    get_all_users_within_age_group(18, "age_range.json")
-
-
-    # if VERBOSE:
-    #     helper.log_highlight('Loading UAM')
-    #
-    # UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:MAX_USERS, :]
-    #
-    # if VERBOSE:
-    #     print 'Successfully loaded UAM'
-    #
-    #
-    # time_start = time.time()
-    #
-    # run_recommender(run, METHOD)  # serial
-    #
-    # time_end = time.time()
-    # elapsed_time = (time_end - time_start)
-    #
+    # loopcounter = 0
+    # sort_idx = get_all_users_within_age_group(0, "age_range.json", False, False, 0)
+    # print "sort_idx: "
+    # print sort_idx
     # print ""
-    # print "Elapsed time: " + str(elapsed_time)
+    #
+    #
+    # for i in range(1, 15):
+    #     loopcounter += 1
+    #     print "i: " + str(i)
+    #
+    #     if loopcounter % 2 == 0:
+    #         add_users = get_all_users_within_age_group(18, "age_range.json", True, True, i)
+    #         print "add_users Lower: " + str(add_users)
+    #     else:
+    #         add_users = get_all_users_within_age_group(18, "age_range.json", True, False, i)
+    #         print "add_users Higher: " + str(add_users)
+    #
+    #     sort_idx + add_users
+    #     print "sort_idx: "
+    #     print len(sort_idx)
+    #
+    #     print "new_idx: "
+    #     print len(list(set(sort_idx)))
+
+
+
+
+    if VERBOSE:
+        helper.log_highlight('Loading UAM')
+
+    # UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:MAX_USERS, :]
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:1000, :10100]
+
+    if VERBOSE:
+        print 'Successfully loaded UAM'
+
+    time_start = time.time()
+
+    run_recommender(run, METHOD)  # serial
+
+    time_end = time.time()
+    elapsed_time = (time_end - time_start)
+
+    print ""
+    print "Elapsed time: " + str(elapsed_time)
 
 
     # no_users = UAM.shape[0]
