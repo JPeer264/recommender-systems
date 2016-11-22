@@ -22,7 +22,7 @@ UAM_FILE = TESTFILES + "C1ku/C1ku_UAM.txt"  # user-artist-matrix (UAM)
 
 # Define test-parameters here:
 # -----------------------------
-VERBOSE = True
+VERBOSE = False
 NF = 10
 MAX_ARTISTS = 1000
 MAX_USERS = 10
@@ -245,10 +245,14 @@ def get_all_users_within_age_group(user_idx, json_file_age_group, nearby, lower,
     if VERBOSE:
         print("Amount of users within the same age group: " + str(len(all_users_in_age_group)))
 
+
     lenght_age_group_dict = len(age_group_dict)
 
     if nearby:
+
         if lower:
+
+            # If index is valid...
             if index_user_age_group - index > 1:
                 # ...get the next higher and next lower age-group from the users age-group
                 age_group_lower = age_group_dict[index_user_age_group - index]
@@ -267,6 +271,7 @@ def get_all_users_within_age_group(user_idx, json_file_age_group, nearby, lower,
                             all_users_in_age_group.append(user)
 
         if not lower:
+            # If index is valid
             if index + index_user_age_group < lenght_age_group_dict:
                 # ...get the next higher age-group from the users age-group
                 age_group_higher = age_group_dict[index_user_age_group + index]
@@ -316,7 +321,6 @@ def recommend_age_DF(UAM, seed_uidx, seed_aidx_train, K):
     # Perform sum-to-1 normalization
     UAM[seed_uidx, :] = UAM[seed_uidx, :] / np.sum(UAM[seed_uidx, :])
 
-
     # Get all users that are in same age-group as seed user
     age_group_users_idx = get_all_users_within_age_group(seed_uidx, "age_range.json", False, False, 0)
 
@@ -333,7 +337,7 @@ def recommend_age_DF(UAM, seed_uidx, seed_aidx_train, K):
 
     loopcounter = 0
 
-    while len(sort_idx) == 1 and K < MIN_RECOMMENDED_ARTISTS:
+    while len(sort_idx) == 1 and K < UAM.shape[0]:
         loopcounter += 1
 
         if loopcounter % 2 == 0:
@@ -344,6 +348,7 @@ def recommend_age_DF(UAM, seed_uidx, seed_aidx_train, K):
         new_users_idx = age_group_users_idx + add_users
         sort_idx = list(set(sort_idx).intersection(new_users_idx))
 
+        # When looped over more times then lenght of age-group-dict
         if loopcounter > 11:
             sort_idx = np.argsort(sim_users)
 
@@ -404,7 +409,7 @@ def recommend_age_DF(UAM, seed_uidx, seed_aidx_train, K):
         if K_users > UAM.shape[0]:
             K_users = 1
 
-        return recommend_age_DF(UAM, seed_aidx_train, seed_aidx_train, K_users)
+        return recommend_age_DF(UAM, seed_uidx, seed_aidx_train, K_users)
 
     if len(sorted_dict_reco_aidx) < MIN_RECOMMENDED_ARTISTS:
         reco_art_CF = recommend_age_DF(UAM, seed_uidx, seed_aidx_train, K + 1)
@@ -550,39 +555,10 @@ if __name__ == '__main__':
     global users_age_clean
     users_age_clean = clean_list_from_empty_value(users_age, 1, '-1')
 
-    # loopcounter = 0
-    # sort_idx = get_all_users_within_age_group(0, "age_range.json", False, False, 0)
-    # print "sort_idx: "
-    # print sort_idx
-    # print ""
-    #
-    #
-    # for i in range(1, 15):
-    #     loopcounter += 1
-    #     print "i: " + str(i)
-    #
-    #     if loopcounter % 2 == 0:
-    #         add_users = get_all_users_within_age_group(18, "age_range.json", True, True, i)
-    #         print "add_users Lower: " + str(add_users)
-    #     else:
-    #         add_users = get_all_users_within_age_group(18, "age_range.json", True, False, i)
-    #         print "add_users Higher: " + str(add_users)
-    #
-    #     sort_idx + add_users
-    #     print "sort_idx: "
-    #     print len(sort_idx)
-    #
-    #     print "new_idx: "
-    #     print len(list(set(sort_idx)))
-
-
-
-
     if VERBOSE:
         helper.log_highlight('Loading UAM')
 
-    # UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:MAX_USERS, :]
-    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:1000, :10100]
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)
 
     if VERBOSE:
         print 'Successfully loaded UAM'
@@ -596,24 +572,3 @@ if __name__ == '__main__':
 
     print ""
     print "Elapsed time: " + str(elapsed_time)
-
-
-    # no_users = UAM.shape[0]
-    #
-    # counter = 0
-    #
-    # for u in range(0, no_users):
-    #     print "_______________________________________________"
-    #     print ""
-    #     print "User: " + str(u) + ":"
-    #     test = check_if_list_contains_item(u, users_age_clean)
-    #     print test
-    #
-    #     if test:
-    #         counter += 1
-    # print ""
-    # print "###########################"
-    # print " Users with attribute: " + str(counter)
-    # print "###########################"
-    #
-    # (check_if_member_of_age_group(0, "age_range.json", "group_late_twenties"))
