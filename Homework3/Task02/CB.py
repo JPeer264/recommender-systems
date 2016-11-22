@@ -24,14 +24,14 @@ from run_recommender import * # run_recommender.py
 # GLOBAL VARIABLES #
 ####################
 TESTFILES    = "../test_data/"
-TASK2_OUTPUT = "../Task02/output/"
+TASK2_OUTPUT = "./output/"
 ARTISTS_FILE = TESTFILES + "C1ku_artists_extended.csv" # artist names for UAM
 USERS_FILE   = TESTFILES + "C1ku_users_extended.csv" # user names for UAM
 UAM_FILE     = TESTFILES + "C1ku/C1ku_UAM.txt" # user-artist-matrix (UAM)
-AAM_FILE     = TESTFILES + "AAM.txt"
+AAM_FILE     = TASK2_OUTPUT + "AAM.txt"
 
 NF      = 10
-METHOD  = "CB"
+METHOD  = "CB_Wiki"
 VERBOSE = True
 MIN_RECOMMENDED_ARTISTS = 0
 
@@ -88,12 +88,12 @@ def recommend_CB(AAM, seed_aidx_train, items=[], K=1):
 
     sorted_dict_reco_aidx = sorted(dict_recommended_artists_idx.items(), key=operator.itemgetter(1), reverse=True)
     sorted_dict_reco_aidx = sorted_dict_reco_aidx+items
-    max = sorted_dict_reco_aidx[0][1]
+    max_value = sorted_dict_reco_aidx[0][1]
 
     new_dict_recommended_artists_idx = {}
 
     for i in sorted_dict_reco_aidx:
-        new_dict_recommended_artists_idx[i[0]] = i[1] / max
+        new_dict_recommended_artists_idx[i[0]] = i[1] / max_value
 
     sorted_dict_reco_aidx = list(set(sorted_dict_reco_aidx))
 

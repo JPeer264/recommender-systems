@@ -38,7 +38,6 @@ USERS_FILE   = TESTFILES + "C1ku_users_extended.csv"
 NF          = 10
 METHOD      = "HR_RB_w_CF"
 VERBOSE     = True
-MAX_ARTISTS = 3000
 
 # Function to run an evaluation experiment.
 def run(_K, _recommended_artists):
@@ -48,7 +47,7 @@ def run(_K, _recommended_artists):
     no_artists = UAM.shape[1]
 
     cf_file = FileCache("CF", _K, _recommended_artists)
-    cb_file = FileCache("CB_Wiki", 1, _recommended_artists)
+    cb_file = FileCache("CB_Wiki", _K, _recommended_artists)
     pb_file = FileCache("PB", 1, _recommended_artists)
 
     recommended_artists = {}
@@ -73,7 +72,7 @@ def run(_K, _recommended_artists):
 
             dict_rec_aidx_CB = cb_file.read_for_hybrid(u, fold) #recommend_CB(AAM, u_aidx[train_aidx], _K)
             dict_rec_aidx_PB = pb_file.read_for_hybrid(u, fold) #recommend_PB(copy_UAM, u_aidx[train_aidx], _recommended_artists)
-            dict_rec_aidx_CF = cf_file.read_for_hybrid(u, fold) #recommend_PB(copy_UAM, u_aidx[train_aidx], _recommended_artists)
+            dict_rec_aidx_CF = cf_file.read_for_hybrid(u, fold) #recommend_CF(copy_UAM, u_aidx[train_aidx], _recommended_artists)
 
             # @JPEER check in group if that solution is fair enough
             if len(dict_rec_aidx_CB) == 0 or len(dict_rec_aidx_PB) == 0 or len(dict_rec_aidx_CF) == 0:
@@ -187,7 +186,7 @@ if __name__ == '__main__':
     if VERBOSE:
         helper.log_highlight('Loading AAM')
 
-    #AAM = np.loadtxt(AAM_FILE, delimiter='\t', dtype=np.float32)
+    AAM = np.loadtxt(AAM_FILE, delimiter='\t', dtype=np.float32)
 
     if VERBOSE:
         print 'Successfully loaded AAM'

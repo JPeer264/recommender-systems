@@ -46,7 +46,7 @@ def run(_K, _recommended_artists):
     avg_prec = 0  # mean precision
     avg_rec = 0 # mean recall
 
-    cb_file = FileCache("CB_Wiki", 1, _recommended_artists)
+    cb_file = FileCache("CB_Wiki", _K, _recommended_artists)
     cf_file = FileCache("CF", _K, _recommended_artists)
     pb_file = FileCache("PB", 1, _recommended_artists)
 
@@ -186,14 +186,14 @@ if __name__ == '__main__':
     if VERBOSE:
         helper.log_highlight('Loading AAM')
 
-    # AAM = np.loadtxt(AAM_FILE, delimiter='\t', dtype=np.float32)
+    AAM = np.loadtxt(AAM_FILE, delimiter='\t', dtype=np.float32)
 
     if VERBOSE:
         print 'Successfully loaded AAM'
 
     time_start = time.time()
 
-    run_recommender(run, METHOD, [1], [20]) # serial
+    run_recommender(run, METHOD) # serial
 
     time_end     = time.time()
     elapsed_time = (time_end - time_start)
