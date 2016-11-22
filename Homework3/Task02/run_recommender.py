@@ -87,11 +87,11 @@ def run_recommender(run_function, run_method, neighbors=[1, 2, 5, 10, 20, 50], r
                             formated_recommended[key][kf]['recommended'][str(artist)] = str(ranking)
                             formated_recommended[key][kf]['order'].append(artist)
 
-            # write json file for hybrids
-            content = json.dumps(formated_recommended, indent=4, sort_keys=True)
-            f = open(file_path_reco, 'w')
-            f.write(content)
-            f.close()
+                # write json file for hybrids
+                content = json.dumps(formated_recommended, indent=4, sort_keys=True)
+                f = open(file_path_reco, 'w')
+                f.write(content)
+                f.close()
 
             # write json file for csv
             content = json.dumps(data_to_append, indent=4, sort_keys=True)
