@@ -28,11 +28,11 @@ TASK2_OUTPUT = "../Task02/output/"
 ARTISTS_FILE = TESTFILES + "C1ku_artists_extended.csv" # artist names for UAM
 USERS_FILE   = TESTFILES + "C1ku_users_extended.csv" # user names for UAM
 UAM_FILE     = TESTFILES + "C1ku/C1ku_UAM.txt" # user-artist-matrix (UAM)
-AAM_FILE     = TESTFILES + "AAM.txt"
+AAM_FILE     = TESTFILES + "AAM_lyrics_grande.txt"
 
 NF      = 10
-METHOD  = "CB"
-VERBOSE = True
+METHOD  = "CB_Lyrics"
+VERBOSE = False
 MIN_RECOMMENDED_ARTISTS = 0
 
 # Function that implements a content-based recommender. It takes as input an artist-artist-matrix (AAM) containing pair-wise similarities
@@ -217,7 +217,7 @@ if __name__ == '__main__':
     if VERBOSE:
         helper.log_highlight('Loading UAM')
 
-    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:500,:10100]
 
     if VERBOSE:
         print 'Successfully loaded UAM'
@@ -225,14 +225,14 @@ if __name__ == '__main__':
     if VERBOSE:
         helper.log_highlight('Loading AAM')
 
-    AAM = np.loadtxt(AAM_FILE, delimiter='\t', dtype=np.float32)
+    AAM = np.loadtxt(AAM_FILE, delimiter='\t', dtype=np.float32)[:10100,:10100]
 
     if VERBOSE:
         print 'Successfully loaded AAM'
 
     time_start = time.time()
 
-    run_recommender(run, METHOD) # serial
+    run_recommender(run, METHOD, [50]) # serial
 
     time_end     = time.time()
     elapsed_time = (time_end - time_start)

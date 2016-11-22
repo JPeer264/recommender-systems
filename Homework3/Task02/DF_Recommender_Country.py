@@ -19,12 +19,12 @@ UAM_FILE = TESTFILES + "C1ku/C1ku_UAM.txt"  # user-artist-matrix (UAM)
 
 # Define test-parameters here:
 # -----------------------------
-VERBOSE = True
+VERBOSE = False
 NF = 10
 MAX_ARTISTS = 1000
 MAX_USERS = 50
 MIN_RECOMMENDED_ARTISTS = 0
-METHOD = "DF_Country_test"
+METHOD = "DF_Country"
 # -----------------------------
 
 LANGUAGES_COUNTRIES = [['af', 'ZA'],
@@ -326,7 +326,7 @@ def check_if_list_contains_user(user_idx, list_to_check):
     return user_has_df_attr
 
 def get_neighbor_contries(seed_uidx, nearby, distance):
-    seed_lat_long = (users_long_clean[seed_uidx][1], users_lat_clean[seed_uidx][1])
+    seed_lat_long = (seed_user_long[seed_uidx][1], seed_user_lat[seed_uidx][1])
     seed_country = [item for item in users_country_clean if item[0] == seed_uidx]
     seed_country = seed_country[0][1]
     countries = list(set([item[1] for item in users_country_clean]))
@@ -357,7 +357,6 @@ def get_neighbor_contries(seed_uidx, nearby, distance):
             if seed_uidx != i:
                 user_lat_long = (users_long_clean[i][1],users_lat_clean[i][1])
                 if great_circle(seed_lat_long, user_lat_long).miles < distance:
-                    print distance
                     country_neighbor_idx.append(i)
 
     country_neighbor_idx = list(set(country_neighbor_idx))
@@ -379,8 +378,10 @@ def recommend_country_DF(UAM, seed_uidx, seed_aidx_train, K):
     :param df_list: list containing all users that have defined attribute
     :return: a dictionary of recommended artists
     """
-
+    if seed_uidx == 1208:
+        print 'test'
     # Get playcount vector for seed user
+    print seed_uidx
     pc_vec = UAM[seed_uidx, :]
 
     # Remove information on test artists from seed's playcount vector
@@ -406,7 +407,7 @@ def recommend_country_DF(UAM, seed_uidx, seed_aidx_train, K):
     # Sort similarities to all others
     sort_idx = np.argsort(sim_users)  # sort in ascending order
 
-    print sort_idx
+    #print sort_idx
 
     sort_idx = list(set(sort_idx).intersection(country_neighbor_idx))
 
@@ -464,8 +465,12 @@ def recommend_country_DF(UAM, seed_uidx, seed_aidx_train, K):
         new_dict_recommended_artists_idx[i[0]] = i[1] / max_value
 
     if len(new_dict_recommended_artists_idx) < MIN_RECOMMENDED_ARTISTS:
-        reco_art_CF = recommend_country_DF(UAM, seed_uidx, seed_aidx_train, K + 1)
-        new_dict_recommended_artists_idx.update(reco_art_CF)
+        K_users = K + 1
+
+        if K_users > UAM.shape[0]:
+            K_users = 1
+
+        return recommend_country_DF(UAM, seed_aidx_train, seed_aidx_train, K_users)
 
     sorted_dict_reco_aidx = sorted(new_dict_recommended_artists_idx.items(), key=operator.itemgetter(1), reverse=True)
 
@@ -497,8 +502,8 @@ def run(_K, _recommended_artists):
     no_users = UAM.shape[0]
     MIN_RECOMMENDED_ARTISTS = _recommended_artists
     _K = MIN_RECOMMENDED_ARTISTS
-    print _K
-    print MIN_RECOMMENDED_ARTISTS
+    #print _K
+    #print MIN_RECOMMENDED_ARTISTS
 
     recommended_artists = {}
 
@@ -536,6 +541,7 @@ def run(_K, _recommended_artists):
                 # Call recommend function
                 copy_UAM = UAM.copy()  # we need to create a copy of the UAM, otherwise modifications within recommend function will effect the variable
 
+                print u
                 dict_rec_aidx = recommend_country_DF(copy_UAM, u, u_aidx[train_aidx], _K)
 
                 if not dict_rec_aidx:
@@ -613,6 +619,12 @@ if __name__ == '__main__':
     # Load metadata from provided files into lists
     artists = read_artists_file(ARTISTS_FILE)
 
+    global seed_user_lat
+    global seed_user_long
+
+    seed_user_long = read_users_file(USERS_FILE, 3)
+    seed_user_lat = read_users_file(USERS_FILE, 4)
+
     users_country = read_users_file(USERS_FILE, 2)
     users_long = read_users_file(USERS_FILE, 3)
     users_lat = read_users_file(USERS_FILE, 4)
@@ -628,14 +640,15 @@ if __name__ == '__main__':
     if VERBOSE:
         helper.log_highlight('Loading UAM')
 
-    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:250, :10100]
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:1000, :10100]
+    UAM.shape[0]
 
     if VERBOSE:
         print 'Successfully loaded UAM'
 
     time_start = time.time()
 
-    run_recommender(run, METHOD, [6], [10])  # serial
+    run_recommender(run, METHOD, [5, 10, 20, 50], [1, 3, 5, 7, 10, 20, 30, 50, 100, 200])  # serial
 
     time_end = time.time()
     elapsed_time = (time_end - time_start)
