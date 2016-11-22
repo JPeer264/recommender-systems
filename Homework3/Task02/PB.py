@@ -204,7 +204,7 @@ if __name__ == '__main__':
     if VERBOSE:
         helper.log_highlight('Loading UAM')
 
-    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:50, :500]
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)
 
     if VERBOSE:
         print 'Successfully loaded UAM'

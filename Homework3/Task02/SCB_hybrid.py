@@ -35,10 +35,9 @@ AAM_FILE     = TESTFILES + "AAM.txt"
 USERS_FILE   = TESTFILES + "C1ku_users_extended.csv"
 ARTISTS_FILE = TESTFILES + "C1ku_artists_extended.csv"
 
-K       = 1
 NF      = 10
-VERBOSE = True
 METHOD  = "HR_SCB"
+VERBOSE = True
 
 # Function to run an evaluation experiment.
 def run(_K, _recommended_artists):
@@ -46,7 +45,7 @@ def run(_K, _recommended_artists):
     avg_prec = 0  # mean precision
     avg_rec = 0 # mean recall
 
-    cb_file = FileCache("CB", _K, _recommended_artists)
+    cb_file = FileCache("CB_Wiki", _K, _recommended_artists)
     cf_file = FileCache("CF", _K, _recommended_artists)
 
     # For all users in our data (UAM)
@@ -76,7 +75,7 @@ def run(_K, _recommended_artists):
             ###############################################
 
             dict_rec_aidx_CB = cb_file.read_for_hybrid(u, fold) # recommend_CB(AAM, u_aidx[train_aidx], _K)
-            dict_rec_aidx_CF = cf_file.read_for_hybrid(u, fold) # recommend_CF(copy_UAM, u, u_aidx[train_aidx], _recommended_artists) # @JPEER check if recommended_artists is rig
+            dict_rec_aidx_CF = cf_file.read_for_hybrid(u, fold) # recommend_CF(copy_UAM, u, u_aidx[train_aidx], _K)
 
             # @JPEER check in group if that solution is fair enough
             if len(dict_rec_aidx_CB) == 0 or len(dict_rec_aidx_CF) == 0:

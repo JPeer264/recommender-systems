@@ -36,9 +36,8 @@ ARTISTS_FILE = TESTFILES + "C1ku_artists_extended.csv"
 USERS_FILE   = TESTFILES + "C1ku_users_extended.csv"
 
 NF          = 10
-METHOD      = "HR_RB"
+METHOD      = "HR_RB_Lyrics"
 VERBOSE     = True
-MAX_ARTISTS = 3000
 
 # Function to run an evaluation experiment.
 def run(_K, _recommended_artists):
@@ -47,8 +46,8 @@ def run(_K, _recommended_artists):
     no_users   = UAM.shape[0]
     no_artists = UAM.shape[1]
 
-    cb_file = FileCache("CB", _K, _recommended_artists)
-    pb_file = FileCache("PB", _K, _recommended_artists)
+    cb_file = FileCache("CB_Lyrics", _K, _recommended_artists)
+    pb_file = FileCache("PB", 1, _recommended_artists)
 
     recommended_artists = {}
 
@@ -174,7 +173,7 @@ if __name__ == '__main__':
     if VERBOSE:
         helper.log_highlight('Loading UAM')
 
-    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:50, :500]
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)
 
     if VERBOSE:
         print 'Successfully loaded UAM'

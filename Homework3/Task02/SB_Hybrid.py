@@ -31,7 +31,6 @@ ARTISTS_FILE = TESTFILES + "C1ku_artists_extended.csv"
 NF      = 10
 METHOD  = "HR_SEB"
 VERBOSE = True
-MIN_RECOMMENDED_ARTISTS = 0
 
 def run(_K, _recommended_artists):
     """
@@ -41,7 +40,7 @@ def run(_K, _recommended_artists):
     avg_prec = 0  # mean precision
     avg_rec = 0  # mean recall
 
-    cb_file = FileCache("CB", _K, _recommended_artists)
+    cb_file = FileCache("CB_Wiki", _K, _recommended_artists)
     cf_file = FileCache("CF", _K, _recommended_artists)
 
     # For all users in our data (UAM)
@@ -152,7 +151,7 @@ if __name__ == '__main__':
     if VERBOSE:
         helper.log_highlight('Loading UAM')
 
-    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:50, :200]
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)
 
     if VERBOSE:
         print 'Successfully loaded UAM'
