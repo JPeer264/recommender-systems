@@ -47,7 +47,7 @@ def run(_K, _recommended_artists):
     no_artists = UAM.shape[1]
 
     cb_file = FileCache("CB_Lyrics", _K, _recommended_artists)
-    pb_file = FileCache("PB", _K, _recommended_artists)
+    pb_file = FileCache("PB", 1, _recommended_artists)
 
     recommended_artists = {}
 
