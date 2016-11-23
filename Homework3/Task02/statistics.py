@@ -137,12 +137,13 @@ def count_mm_terms():
                             lyrics_translated = {}
                             lyrics_translated[artist_mm_id] = []
                             lang_global = False
-                            found_artists += 1
+                            found_artist = False
 
                             for string in data_by_artist:
                                 # remove all non english
 
                                 if len(string) != 0:
+                                    found_artist = True
                                     total_songs += 1
 
                                 try:
@@ -167,6 +168,9 @@ def count_mm_terms():
                                     lyrics_content += translated_string
                                 except Exception, e:
                                     continue
+
+                            if found_artist:
+                                found_artists += 1
 
                             #####################################
                             ## sorting | stamming | stopwords ##
