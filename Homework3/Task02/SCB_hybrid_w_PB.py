@@ -3,10 +3,10 @@
 # content-based recommender, random recommendation, and a simple hybrid method using set-based fusion.
 __author__ = 'mms'
 __authors_updated_version__ = [
-    'Aichbauer Lukas',
-    'Leitner Bianca',
-    'Stoecklmair Jan Peer',
-    'Taferner Mario'
+    'Rudolfson',
+    'beelee',
+    'jpeer',
+    'Mata Mata'
 ]
 
 ###########
@@ -35,10 +35,9 @@ AAM_FILE     = TESTFILES + "AAM.txt"
 USERS_FILE   = TESTFILES + "C1ku_users_extended.csv"
 ARTISTS_FILE = TESTFILES + "C1ku_artists_extended.csv"
 
-K       = 1
 NF      = 10
-VERBOSE = True
 METHOD  = "HR_SCB_w_PB"
+VERBOSE = True
 
 # Function to run an evaluation experiment.
 def run(_K, _recommended_artists):
@@ -76,9 +75,9 @@ def run(_K, _recommended_artists):
             ## Combine CB and CF together so we get a HF ##
             ###############################################
 
-            dict_rec_aidx_CB = cb_file.read_for_hybrid(u, fold) # recommend_CB(AAM, u_aidx[train_aidx], _K)
-            dict_rec_aidx_CF = cf_file.read_for_hybrid(u, fold) # recommend_CF(copy_UAM, u, u_aidx[train_aidx], _recommended_artists) # @JPEER check if recommended_artists is rig
-            dict_rec_aidx_PB = pb_file.read_for_hybrid(u, fold) # recommend_CF(copy_UAM, u, u_aidx[train_aidx], _recommended_artists) # @JPEER check if recommended_artists is rig
+            dict_rec_aidx_CB = cb_file.read_for_hybrid(u, fold)
+            dict_rec_aidx_CF = cf_file.read_for_hybrid(u, fold)
+            dict_rec_aidx_PB = pb_file.read_for_hybrid(u, fold)
 
             # @JPEER check in group if that solution is fair enough
             if len(dict_rec_aidx_CB) == 0 or len(dict_rec_aidx_CF) == 0 or len(dict_rec_aidx_PB) == 0:

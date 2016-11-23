@@ -1,8 +1,8 @@
 __authors_updated_version__ = [
-    'Aichbauer Lukas',
-    'Leitner Bianca',
-    'Stoecklmair Jan Peer',
-    'Taferner Mario'
+    'Rudolfson',
+    'beelee',
+    'jpeer',
+    'Mata Mata'
 ]
 
 ###########

@@ -3,10 +3,10 @@
 # content-based recommender, random recommendation, and a simple hybrid method using set-based fusion.
 __author__ = 'mms'
 __authors_updated_version__ = [
-    'Aichbauer Lukas',
-    'Leitner Bianca',
-    'Stoecklmair Jan Peer',
-    'Taferner Mario'
+    'Rudolfson',
+    'beelee',
+    'jpeer',
+    'Mata Mata'
 ]
 
 ###########

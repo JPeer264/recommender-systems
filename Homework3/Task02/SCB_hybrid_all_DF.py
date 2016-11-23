@@ -3,10 +3,10 @@
 # content-based recommender, random recommendation, and a simple hybrid method using set-based fusion.
 __author__ = 'mms'
 __authors_updated_version__ = [
-    'Aichbauer Lukas',
-    'Leitner Bianca',
-    'Stoecklmair Jan Peer',
-    'Taferner Mario'
+    'Rudolfson',
+    'beelee',
+    'jpeer',
+    'Mata Mata'
 ]
 
 ###########
@@ -45,9 +45,9 @@ def run(_K, _recommended_artists):
     avg_prec = 0  # mean precision
     avg_rec = 0 # mean recall
 
-    df_g_file = FileCache("DF_gender", _K, _recommended_artists)
     df_a_file = FileCache("DF_age", _K, _recommended_artists)
     df_c_file = FileCache("DF_country", _K, _recommended_artists)
+    df_g_file = FileCache("DF_gender", _K, _recommended_artists)
 
     # For all users in our data (UAM)
     no_users = UAM.shape[0]
@@ -75,12 +75,12 @@ def run(_K, _recommended_artists):
             ## Combine CB and CF together so we get a HF ##
             ###############################################
 
-            dict_rec_aidx_DF_G = df_g_file.read_for_hybrid(u, fold)
             dict_rec_aidx_DF_A = df_a_file.read_for_hybrid(u, fold)
             dict_rec_aidx_DF_C = df_c_file.read_for_hybrid(u, fold)
+            dict_rec_aidx_DF_G = df_g_file.read_for_hybrid(u, fold)
 
             # @JPEER check in group if that solution is fair enough
-            if len(dict_rec_aidx_DF_G) == 0 or len(dict_rec_aidx_DF_A) == 0 or len(dict_rec_aidx_DF_C) == 0:
+            if len(dict_rec_aidx_DF_A) == 0 or len(dict_rec_aidx_DF_C) == 0 or len(dict_rec_aidx_DF_G) == 0:
                 continue
 
             # Fuse scores given by CF and by CB recommenders
@@ -88,14 +88,14 @@ def run(_K, _recommended_artists):
             scores = np.zeros(shape=(3, no_artists), dtype=np.float32)
 
             # Add scores from CB and CF recommenders to this matrix
-            for aidx in dict_rec_aidx_DF_G.keys():
-                scores[0, aidx] = dict_rec_aidx_DF_G[aidx]
-
             for aidx in dict_rec_aidx_DF_A.keys():
-                scores[1, aidx] = dict_rec_aidx_DF_A[aidx]
+                scores[0, aidx] = dict_rec_aidx_DF_A[aidx]
 
             for aidx in dict_rec_aidx_DF_C.keys():
-                scores[2, aidx] = dict_rec_aidx_DF_C[aidx]
+                scores[1, aidx] = dict_rec_aidx_DF_C[aidx]
+
+            for aidx in dict_rec_aidx_DF_G.keys():
+                scores[2, aidx] = dict_rec_aidx_DF_G[aidx]
 
             # Apply aggregation function (here, just take arithmetic mean of scores)
             scores_fused = np.mean(scores, axis=0)
@@ -185,7 +185,7 @@ if __name__ == '__main__':
     if VERBOSE:
         helper.log_highlight('Loading AAM')
 
-    AAM = np.loadtxt(AAM_FILE, delimiter='\t', dtype=np.float32)
+    # AAM = np.loadtxt(AAM_FILE, delimiter='\t', dtype=np.float32)
 
     if VERBOSE:
         print 'Successfully loaded AAM'

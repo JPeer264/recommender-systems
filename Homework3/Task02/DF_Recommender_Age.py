@@ -1,58 +1,32 @@
-import collections
-
 __author__ = 'beelee'
 
-# Load required modules
+###########
+# IMPORTS #
+###########
 import csv
 import time
-import operator
+import json
+import helper # helper.py
 import numpy as np
+import operator
+import collections
 import scipy.spatial.distance as scidist
 from sklearn import cross_validation
 from run_recommender import *  # run_recommender.py
-import json
-import helper  # helper.py
 
-# Parameters
-TESTFILES = "../test_data/"
+####################
+# GLOBAL VARIABLES #
+####################
+TESTFILES    = "../test_data/"
 TASK2_OUTPUT = "../Task02/output/"
 ARTISTS_FILE = TESTFILES + "C1ku_artists_extended.csv"  # artist names for UAM
-USERS_FILE = TESTFILES + "C1ku_users_extended.csv"  # user names for UAM
-UAM_FILE = TESTFILES + "C1ku/C1ku_UAM.txt"  # user-artist-matrix (UAM)
+USERS_FILE   = TESTFILES + "C1ku_users_extended.csv"  # user names for UAM
+UAM_FILE     = TESTFILES + "C1ku/C1ku_UAM.txt"  # user-artist-matrix (UAM)
 
-# Define test-parameters here:
-# -----------------------------
-VERBOSE = False
-NF = 10
-MAX_ARTISTS = 1000
-MAX_USERS = 10
+NF      = 10
+METHOD  = "DF_age"
+VERBOSE = True
 MIN_RECOMMENDED_ARTISTS = 0
-METHOD = "DF_age"
-# -----------------------------
-
-
-def read_artists_file(filename):
-    """
-    Function to read the artists file
-
-    :param filename: the path of the file to load
-    :return: a list of data
-    """
-
-    data = []
-    # open file for reading
-
-    with open(filename, 'r') as f:
-        # create reader
-        reader = csv.reader(f, delimiter='\t')
-        # skip header
-        headers = reader.next()
-        for row in reader:
-            item = row[0]
-            data.append(item)
-    f.close()
-    return data
-
 
 def read_users_file(filename, colnr):
     """
@@ -62,7 +36,6 @@ def read_users_file(filename, colnr):
     :param colnr: the column no to load content from
     :return: a list of data
     """
-
     data = []
     idx_count = 0
 
@@ -78,8 +51,9 @@ def read_users_file(filename, colnr):
             data.append(item)
             idx_count += 1
     f.close()
-    return data
 
+    return data
+# /read_users_file
 
 def clean_list_from_empty_value(old_list, column_no, value):
     """
@@ -90,7 +64,6 @@ def clean_list_from_empty_value(old_list, column_no, value):
     :param value: the value to clean from
     :return: a cleaned list
     """
-
     cleaned_list = []
 
     if VERBOSE:
@@ -110,7 +83,7 @@ def clean_list_from_empty_value(old_list, column_no, value):
         print "Length of cleaned-list: " + str(len(cleaned_list))
 
     return cleaned_list
-
+# /clean_list_from_empty_value
 
 def check_if_list_contains_user(user_idx, list_to_check):
     """
@@ -141,7 +114,7 @@ def check_if_list_contains_user(user_idx, list_to_check):
 
     # When whole list was checked, return whether user_idx was found or not (True|False)
     return user_has_df_attr
-
+# /check_if_list_contains_user
 
 def check_if_member_of_age_group(user_idx, json_file_age_group, age_group):
     """
@@ -179,7 +152,7 @@ def check_if_member_of_age_group(user_idx, json_file_age_group, age_group):
 
     # When whole age-group was checked, return whether user_idx was found or not (True|False)
     return user_in_age_group
-
+# /check_if_member_of_age_group
 
 def get_all_users_within_age_group(user_idx, json_file_age_group, nearby, lower, index):
     """
@@ -292,7 +265,7 @@ def get_all_users_within_age_group(user_idx, json_file_age_group, nearby, lower,
     all_users_in_age_group_idx = list(set(all_users_in_age_group))
 
     return all_users_in_age_group_idx
-
+# /get_all_users_within_age_group
 
 def recommend_age_DF(UAM, seed_uidx, seed_aidx_train, K):
     """
@@ -424,7 +397,7 @@ def recommend_age_DF(UAM, seed_uidx, seed_aidx_train, K):
 
     # Return dictionary of recommended artist indices (and scores)
     return new_dict_finish
-
+# /recommend_age_DF
 
 def run(_K, _recommended_artists):
     """
@@ -541,12 +514,12 @@ def run(_K, _recommended_artists):
     data['recommended'] = recommended_artists
 
     return data
-
+# /run
 
 # Main program, for experimentation.
 if __name__ == '__main__':
     # Load metadata from provided files into lists
-    artists = read_artists_file(ARTISTS_FILE)
+    artists = helper.read_csv(ARTISTS_FILE)
 
     users_age = read_users_file(USERS_FILE, 1)
     users_country = read_users_file(USERS_FILE, 2)

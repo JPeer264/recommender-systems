@@ -1,33 +1,32 @@
 __author__ = 'Mata Mata'
 
-# Load required modules
+###########
+# IMPORTS #
+###########
 import csv
 import time
 import math
-import operator
+import json
 import numpy as np
+import operator
 import scipy.spatial.distance as scidist
 from sklearn import cross_validation
 from run_recommender import *  # run_recommender.py
-import json
 
 
-# Parameters
-TESTFILES = "../test_data/"
+####################
+# GLOBAL VARIABLES #
+####################
+TESTFILES    = "../test_data/"
 TASK2_OUTPUT = "../Task02/output/"
 ARTISTS_FILE = TESTFILES + "C1ku_artists_extended.csv"  # artist names for UAM
-USERS_FILE = TESTFILES + "C1ku_users_extended.csv"  # user names for UAM
-UAM_FILE = TESTFILES + "C1ku/C1ku_UAM.txt"  # user-artist-matrix (UAM)
+USERS_FILE   = TESTFILES + "C1ku_users_extended.csv"  # user names for UAM
+UAM_FILE     = TESTFILES + "C1ku/C1ku_UAM.txt"  # user-artist-matrix (UAM)
 
-
-# Define test-parameters here:
-#-----------------------------
 NF      = 10
 VERBOSE = True
 METHOD  = "DF_gender"
 MIN_RECOMMENDED_ARTISTS = 0
-#-----------------------------
-
 
 def read_users_file(filename, colnr):
     """
@@ -54,8 +53,6 @@ def read_users_file(filename, colnr):
             idx_count += 1
     f.close()
     return data
-
-
 
 def clean_list_from_empty_value(old_list, column_no, value):
     """
@@ -260,7 +257,7 @@ def run(_K, _recommended_artists):
     :return: a dictionary of data
     """
 
-    global MIN_RECOMMENDED_ARTISTS, UAM_MALE, UAM_FEMALE
+    global MIN_RECOMMENDED_ARTISTS, UAM_MALE, UAM_FEMALE, UAM_NEUTRAL
 
     # Initialize variables to hold performance measures
     avg_prec = 0
@@ -282,6 +279,9 @@ def run(_K, _recommended_artists):
         elif u in genderLists[1]:
             user_gender_list = genderLists[1]
             gender = 'f'
+        elif u in genderLists[2]:
+            user_gender_list = genderLists[2]
+            gender = 'n'
 
         # Only perform test for seed_user who has attribute
         if user_gender_list:
@@ -291,8 +291,10 @@ def run(_K, _recommended_artists):
 
             if gender == 'm':
                u_aidx = np.nonzero(UAM_MALE[u, :])[0]
-            else:
+            elif gender == 'f':
                u_aidx = np.nonzero(UAM_FEMALE[u, :])[0]
+            else:
+               u_aidx = np.nonzero(UAM_NEUTRAL[u, :])[0]
 
             if NF >= len(u_aidx) or u == no_users - 1:
                 continue
@@ -312,12 +314,14 @@ def run(_K, _recommended_artists):
                         len(train_aidx)) + ", Test items: " + str(
                         len(test_aidx)),  # the comma at the end avoids line break
 
-                if gender == 'm':
-                    copy_UAM = UAM_MALE
-                else:
-                    copy_UAM = UAM_FEMALE
+                copy_UAM = UAM.copy()
 
-                #copy_UAM = UAM.copy()  # we need to create a copy of the UAM, otherwise modifications within recommend function will effect the variable
+                if gender == 'm':
+                    copy_UAM = UAM_MALE.copy()
+                elif gender == 'f':
+                    copy_UAM = UAM_FEMALE.copy()
+                else:
+                    copy_UAM = UAM_NEUTRAL.copy()
 
                 dict_rec_aidx = recommend_gender_DF(copy_UAM, u, u_aidx[train_aidx], _K)
 
@@ -387,7 +391,7 @@ def run(_K, _recommended_artists):
 
 # Main program, for experimentation.
 if __name__ == '__main__':
-    global genderLists, UAM_FILE, UAM_FEMALE
+    global genderLists, UAM_FILE, UAM_FEMALE, UAM_NEUTRAL
 
     # Load metadata from provided files into lists
     artists      = helper.read_csv(ARTISTS_FILE)
@@ -404,19 +408,25 @@ if __name__ == '__main__':
 
     UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)
 
-    UAM_MALE   = UAM.copy()
-    UAM_FEMALE = UAM.copy()
+    # copy UAM for every gender/neutrals
+    UAM_MALE    = UAM.copy()
+    UAM_FEMALE  = UAM.copy()
+    UAM_NEUTRAL = UAM.copy()
 
-    # for key, value in genderLists[1].iteritems():
-
+    # generate UAM file for males
+    # neutralize neutrals and females
     UAM_MALE[genderLists[1].keys()] = 0.0
-    # UAM_MALE[genderLists[2].keys(), :] = 0.0
-    UAM_FEMALE[genderLists[0].keys()] = 0.0
-    # UAM_FEMALE[genderLists[2].keys(), :] = 0.0
+    UAM_MALE[genderLists[2].keys()] = 0.0
 
-    # print UAM[[5, 17], :6]
-    # print UAM_MALE[[5,17], :6]
-    # print UAM_FEMALE[[5,17], :6]
+    # generate UAM file for females
+    # neutralize neutrals and males
+    UAM_FEMALE[genderLists[0].keys()] = 0.0
+    UAM_FEMALE[genderLists[2].keys()] = 0.0
+
+    # generate UAM file for neutrals
+    # neutralize female and male
+    UAM_NEUTRAL[genderLists[0].keys()] = 0.0
+    UAM_NEUTRAL[genderLists[1].keys()] = 0.0
 
     if VERBOSE:
         print 'Successfully loaded UAM'
@@ -430,28 +440,3 @@ if __name__ == '__main__':
 
     print ""
     print "Elapsed time: " + str(elapsed_time)
-
-
-
-
-
-
-    # no_users = UAM.shape[0]
-    #
-    # counter = 0
-    #
-    # for u in range(0, no_users):
-    #     print "_______________________________________________"
-    #     print ""
-    #     print "User: " + str(u) + ":"
-    #     test = check_if_list_contains_item(u, users_age_clean)
-    #     print test
-    #
-    #     if test:
-    #         counter += 1
-    # print ""
-    # print "###########################"
-    # print " Users with attribute: " + str(counter)
-    # print "###########################"
-    #
-    # (check_if_member_of_age_group(0, "age_range.json", "group_late_twenties"))

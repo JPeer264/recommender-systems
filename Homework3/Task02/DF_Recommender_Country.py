@@ -1,8 +1,15 @@
-__author__ = 'beelee, mariooooo, luuuuuuuukas'
+__author__ = [
+    'beelee',
+    'Mata Mata',
+    'Rudolfson'
+]
 
-# Load required modules
+###########
+# IMPORTS #
+###########
 import csv
 import time
+import helper # helper.py
 import operator
 import numpy as np
 import scipy.spatial.distance as scidist
@@ -10,237 +17,20 @@ from sklearn import cross_validation
 from run_recommender import *  # run_recommender.py
 from geopy.distance import great_circle
 
-# Parameters
-TESTFILES = "../test_data/"
+####################
+# GLOBAL VARIABLES #
+####################
+TESTFILES    = "../test_data/"
 TASK2_OUTPUT = "../Task02/output/"
 ARTISTS_FILE = TESTFILES + "C1ku_artists_extended.csv"  # artist names for UAM
-USERS_FILE = TESTFILES + "C1ku_users_extended.csv"  # user names for UAM
-UAM_FILE = TESTFILES + "C1ku/C1ku_UAM.txt"  # user-artist-matrix (UAM)
+USERS_FILE   = TESTFILES + "C1ku_users_extended.csv"  # user names for UAM
+UAM_FILE     = TESTFILES + "C1ku/C1ku_UAM.txt"  # user-artist-matrix (UAM)
 
-# Define test-parameters here:
-# -----------------------------
-VERBOSE = False
-NF = 10
-MAX_ARTISTS = 1000
-MAX_USERS = 50
+NF      = 10
+METHOD  = "DF_Country"
+VERBOSE = True
+LANGUAGES_COUNTRIES     = [['af', 'ZA'], ['am', 'ET'], ['ar', 'AE'], ['ar', 'BH'], ['ar', 'DZ'], ['ar', 'EG'], ['ar', 'IQ'], ['ar', 'JO'], ['ar', 'KW'], ['ar', 'LB'], ['ar', 'LY'], ['ar', 'MA'], ['arn', 'CL'], ['ar', 'OM'], ['ar', 'QA'], ['ar', 'SA'], ['ar', 'SY'], ['ar', 'TN'], ['ar', 'YE'], ['as', 'IN'], ['ba', 'RU'], ['be', 'BY'], ['bg', 'BG'], ['bn', 'BD'], ['bn', 'IN'], ['bo', 'CN'], ['br', 'FR'], ['ca', 'ES'], ['co', 'FR'], ['cs', 'CZ'], ['cy', 'GB'], ['da', 'DK'], ['de', 'AT'], ['de', 'CH'], ['de', 'DE'], ['de', 'LI'], ['de', 'LU'], ['dsb', 'DE'], ['dv', 'MV'], ['el', 'GR'], ['en', '029'], ['en', 'AU'], ['en', 'BZ'], ['en', 'CA'], ['en', 'GB'], ['en', 'IE'], ['en', 'IN'], ['en', 'JM'], ['en', 'MY'], ['en', 'NZ'], ['en', 'PH'], ['en', 'SG'], ['en', 'TT'], ['en', 'US'], ['en', 'ZA'], ['en', 'ZW'], ['es', 'AR'], ['es', 'BO'], ['es', 'CL'], ['es', 'CO'], ['es', 'CR'], ['es', 'DO'], ['es', 'EC'], ['es', 'ES'], ['es', 'GT'], ['es', 'HN'], ['es', 'MX'], ['es', 'NI'], ['es', 'PA'], ['es', 'PE'], ['es', 'PR'], ['es', 'PY'], ['es', 'SV'], ['es', 'US'], ['es', 'UY'], ['es', 'VE'], ['et', 'EE'], ['eu', 'ES'], ['fa', 'IR'], ['fi', 'FI'], ['fil', 'PH'], ['fo', 'FO'], ['fr', 'BE'], ['fr', 'CA'], ['fr', 'CH'], ['fr', 'FR'], ['fr', 'LU'], ['fr', 'MC'], ['fy', 'NL'], ['ga', 'IE'], ['gd', 'GB'], ['gl', 'ES'], ['gsw', 'FR'], ['gu', 'IN'], ['he', 'IL'], ['hi', 'IN'], ['hr', 'BA'], ['hr', 'HR'], ['hsb', 'DE'], ['hu', 'HU'], ['hy', 'AM'], ['id', 'ID'], ['ig', 'NG'], ['ii', 'CN'], ['is', 'IS'], ['it', 'CH'], ['it', 'IT'], ['ja', 'JP'], ['ka', 'GE'], ['kk', 'KZ'], ['kl', 'GL'], ['km', 'KH'], ['kn', 'IN'], ['kok', 'IN'], ['ko', 'KR'], ['ky', 'KG'], ['lb', 'LU'], ['lo', 'LA'], ['lt', 'LT'], ['lv', 'LV'], ['mi', 'NZ'], ['mk', 'MK'], ['ml', 'IN'], ['mn', 'MN'], ['moh', 'CA'], ['mr', 'IN'], ['ms', 'BN'], ['ms', 'MY'], ['mt', 'MT'], ['nb', 'NO'], ['ne', 'NP'], ['nl', 'BE'], ['nl', 'NL'], ['nn', 'NO'], ['nso', 'ZA'], ['oc', 'FR'], ['or', 'IN'], ['pa', 'IN'], ['pl', 'PL'], ['prs', 'AF'], ['ps', 'AF'], ['pt', 'BR'], ['pt', 'PT'], ['qut', 'GT'], ['quz', 'BO'], ['quz', 'EC'], ['quz', 'PE'], ['rm', 'CH'], ['ro', 'RO'], ['ru', 'RU'], ['rw', 'RW'], ['sah', 'RU'], ['sa', 'IN'], ['se', 'FI'], ['se', 'NO'], ['se', 'SE'], ['si', 'LK'], ['sk', 'SK'], ['sl', 'SI'], ['sma', 'NO'], ['sma', 'SE'], ['smj', 'NO'], ['smj', 'SE'], ['smn', 'FI'], ['sms', 'FI'], ['sq', 'AL'], ['sv', 'FI'], ['sv', 'SE'], ['sw', 'KE'], ['syr', 'SY'], ['ta', 'IN'], ['te', 'IN'], ['th', 'TH'], ['tk', 'TM'], ['tn', 'ZA'], ['tr', 'TR'], ['tt', 'RU'], ['ug', 'CN'], ['uk', 'UA'], ['ur', 'PK'], ['vi', 'VN'], ['wo', 'SN'], ['xh', 'ZA'], ['yo', 'NG'], ['zh', 'CN'], ['zh', 'HK'], ['zh', 'MO'], ['zh', 'SG'], ['zh', 'TW'], ['zu', 'ZA']]
 MIN_RECOMMENDED_ARTISTS = 0
-METHOD = "DF_Country"
-# -----------------------------
-
-LANGUAGES_COUNTRIES = [['af', 'ZA'],
-                       ['am', 'ET'],
-                       ['ar', 'AE'],
-                       ['ar', 'BH'],
-                       ['ar', 'DZ'],
-                       ['ar', 'EG'],
-                       ['ar', 'IQ'],
-                       ['ar', 'JO'],
-                       ['ar', 'KW'],
-                       ['ar', 'LB'],
-                       ['ar', 'LY'],
-                       ['ar', 'MA'],
-                       ['arn', 'CL'],
-                       ['ar', 'OM'],
-                       ['ar', 'QA'],
-                       ['ar', 'SA'],
-                       ['ar', 'SY'],
-                       ['ar', 'TN'],
-                       ['ar', 'YE'],
-                       ['as', 'IN'],
-                       ['ba', 'RU'],
-                       ['be', 'BY'],
-                       ['bg', 'BG'],
-                       ['bn', 'BD'],
-                       ['bn', 'IN'],
-                       ['bo', 'CN'],
-                       ['br', 'FR'],
-                       ['ca', 'ES'],
-                       ['co', 'FR'],
-                       ['cs', 'CZ'],
-                       ['cy', 'GB'],
-                       ['da', 'DK'],
-                       ['de', 'AT'],
-                       ['de', 'CH'],
-                       ['de', 'DE'],
-                       ['de', 'LI'],
-                       ['de', 'LU'],
-                       ['dsb', 'DE'],
-                       ['dv', 'MV'],
-                       ['el', 'GR'],
-                       ['en', '029'],
-                       ['en', 'AU'],
-                       ['en', 'BZ'],
-                       ['en', 'CA'],
-                       ['en', 'GB'],
-                       ['en', 'IE'],
-                       ['en', 'IN'],
-                       ['en', 'JM'],
-                       ['en', 'MY'],
-                       ['en', 'NZ'],
-                       ['en', 'PH'],
-                       ['en', 'SG'],
-                       ['en', 'TT'],
-                       ['en', 'US'],
-                       ['en', 'ZA'],
-                       ['en', 'ZW'],
-                       ['es', 'AR'],
-                       ['es', 'BO'],
-                       ['es', 'CL'],
-                       ['es', 'CO'],
-                       ['es', 'CR'],
-                       ['es', 'DO'],
-                       ['es', 'EC'],
-                       ['es', 'ES'],
-                       ['es', 'GT'],
-                       ['es', 'HN'],
-                       ['es', 'MX'],
-                       ['es', 'NI'],
-                       ['es', 'PA'],
-                       ['es', 'PE'],
-                       ['es', 'PR'],
-                       ['es', 'PY'],
-                       ['es', 'SV'],
-                       ['es', 'US'],
-                       ['es', 'UY'],
-                       ['es', 'VE'],
-                       ['et', 'EE'],
-                       ['eu', 'ES'],
-                       ['fa', 'IR'],
-                       ['fi', 'FI'],
-                       ['fil', 'PH'],
-                       ['fo', 'FO'],
-                       ['fr', 'BE'],
-                       ['fr', 'CA'],
-                       ['fr', 'CH'],
-                       ['fr', 'FR'],
-                       ['fr', 'LU'],
-                       ['fr', 'MC'],
-                       ['fy', 'NL'],
-                       ['ga', 'IE'],
-                       ['gd', 'GB'],
-                       ['gl', 'ES'],
-                       ['gsw', 'FR'],
-                       ['gu', 'IN'],
-                       ['he', 'IL'],
-                       ['hi', 'IN'],
-                       ['hr', 'BA'],
-                       ['hr', 'HR'],
-                       ['hsb', 'DE'],
-                       ['hu', 'HU'],
-                       ['hy', 'AM'],
-                       ['id', 'ID'],
-                       ['ig', 'NG'],
-                       ['ii', 'CN'],
-                       ['is', 'IS'],
-                       ['it', 'CH'],
-                       ['it', 'IT'],
-                       ['ja', 'JP'],
-                       ['ka', 'GE'],
-                       ['kk', 'KZ'],
-                       ['kl', 'GL'],
-                       ['km', 'KH'],
-                       ['kn', 'IN'],
-                       ['kok', 'IN'],
-                       ['ko', 'KR'],
-                       ['ky', 'KG'],
-                       ['lb', 'LU'],
-                       ['lo', 'LA'],
-                       ['lt', 'LT'],
-                       ['lv', 'LV'],
-                       ['mi', 'NZ'],
-                       ['mk', 'MK'],
-                       ['ml', 'IN'],
-                       ['mn', 'MN'],
-                       ['moh', 'CA'],
-                       ['mr', 'IN'],
-                       ['ms', 'BN'],
-                       ['ms', 'MY'],
-                       ['mt', 'MT'],
-                       ['nb', 'NO'],
-                       ['ne', 'NP'],
-                       ['nl', 'BE'],
-                       ['nl', 'NL'],
-                       ['nn', 'NO'],
-                       ['nso', 'ZA'],
-                       ['oc', 'FR'],
-                       ['or', 'IN'],
-                       ['pa', 'IN'],
-                       ['pl', 'PL'],
-                       ['prs', 'AF'],
-                       ['ps', 'AF'],
-                       ['pt', 'BR'],
-                       ['pt', 'PT'],
-                       ['qut', 'GT'],
-                       ['quz', 'BO'],
-                       ['quz', 'EC'],
-                       ['quz', 'PE'],
-                       ['rm', 'CH'],
-                       ['ro', 'RO'],
-                       ['ru', 'RU'],
-                       ['rw', 'RW'],
-                       ['sah', 'RU'],
-                       ['sa', 'IN'],
-                       ['se', 'FI'],
-                       ['se', 'NO'],
-                       ['se', 'SE'],
-                       ['si', 'LK'],
-                       ['sk', 'SK'],
-                       ['sl', 'SI'],
-                       ['sma', 'NO'],
-                       ['sma', 'SE'],
-                       ['smj', 'NO'],
-                       ['smj', 'SE'],
-                       ['smn', 'FI'],
-                       ['sms', 'FI'],
-                       ['sq', 'AL'],
-                       ['sv', 'FI'],
-                       ['sv', 'SE'],
-                       ['sw', 'KE'],
-                       ['syr', 'SY'],
-                       ['ta', 'IN'],
-                       ['te', 'IN'],
-                       ['th', 'TH'],
-                       ['tk', 'TM'],
-                       ['tn', 'ZA'],
-                       ['tr', 'TR'],
-                       ['tt', 'RU'],
-                       ['ug', 'CN'],
-                       ['uk', 'UA'],
-                       ['ur', 'PK'],
-                       ['vi', 'VN'],
-                       ['wo', 'SN'],
-                       ['xh', 'ZA'],
-                       ['yo', 'NG'],
-                       ['zh', 'CN'],
-                       ['zh', 'HK'],
-                       ['zh', 'MO'],
-                       ['zh', 'SG'],
-                       ['zh', 'TW'],
-                       ['zu', 'ZA']]
-
-
-def read_artists_file(filename):
-    """
-    Function to read the artists file
-
-    :param filename: the path of the file to load
-    :return: a list of data
-    """
-
-    data = []
-    # open file for reading
-
-    with open(filename, 'r') as f:
-        # create reader
-        reader = csv.reader(f, delimiter='\t')
-        # skip header
-        headers = reader.next()
-        for row in reader:
-            item = row[0]
-            data.append(item)
-    f.close()
-    return data
-
 
 def read_users_file(filename, colnr):
     """
@@ -250,7 +40,6 @@ def read_users_file(filename, colnr):
     :param colnr: the column no to load content from
     :return: a list of data
     """
-
     data = []
     idx_count = 0
 
@@ -266,8 +55,9 @@ def read_users_file(filename, colnr):
             data.append(item)
             idx_count += 1
     f.close()
-    return data
 
+    return data
+# /read_users_file
 
 def clean_list_from_empty_value(old_list, column_no, value):
     """
@@ -278,7 +68,6 @@ def clean_list_from_empty_value(old_list, column_no, value):
     :param value: the value to clean from
     :return: a cleaned list
     """
-
     cleaned_list = []
 
     if VERBOSE:
@@ -302,7 +91,7 @@ def clean_list_from_empty_value(old_list, column_no, value):
         print "Length of cleaned-list: "
         print str(len(cleaned_list))
     return cleaned_list
-
+# /clean_list_from_empty_value
 
 def check_if_list_contains_user(user_idx, list_to_check):
     """
@@ -312,7 +101,6 @@ def check_if_list_contains_user(user_idx, list_to_check):
     :param list_to_check: the list to check
     :return: True if value is in the list, False if value is not in the list
     """
-
     user_has_df_attr = False
 
     for i in range(0, len(list_to_check)):
@@ -324,17 +112,16 @@ def check_if_list_contains_user(user_idx, list_to_check):
 
     # When whole list was checked, return whether user_idx was found or not (True|False)
     return user_has_df_attr
+# /check_if_list_contains_user
 
 def get_neighbor_contries(seed_uidx, nearby, distance):
+    same_lang     = []
     seed_lat_long = (seed_user_long[seed_uidx][1], seed_user_lat[seed_uidx][1])
-    seed_country = [item for item in users_country_clean if item[0] == seed_uidx]
-    seed_country = seed_country[0][1]
-    countries = list(set([item[1] for item in users_country_clean]))
+    seed_country  = [item for item in users_country_clean if item[0] == seed_uidx]
+    seed_country  = seed_country[0][1]
+    countries     = list(set([item[1] for item in users_country_clean]))
+    seed_country_lang    = [item for item in LANGUAGES_COUNTRIES if item[1] == seed_country]
     country_neighbor_idx = [item for item in users_country_clean if item[1] == seed_country]
-
-    seed_country_lang = [item for item in LANGUAGES_COUNTRIES if item[1] == seed_country]
-
-    same_lang = []
 
     for country in countries:
         country_lang = [item for item in LANGUAGES_COUNTRIES if item[1] == country]
@@ -350,8 +137,6 @@ def get_neighbor_contries(seed_uidx, nearby, distance):
 
     country_neighbor_idx = [int(i[0]) for i in country_neighbor_idx]
 
-    #print country_neighbor_idx
-
     if nearby:
         for i in range(0, len(users_country_clean)):
             if seed_uidx != i:
@@ -360,14 +145,9 @@ def get_neighbor_contries(seed_uidx, nearby, distance):
                     country_neighbor_idx.append(i)
 
     country_neighbor_idx = list(set(country_neighbor_idx))
-    print "TEST: "
-    print country_neighbor_idx
-
-    #print len(country_neighbor_idx)
-
 
     return country_neighbor_idx
-
+# /get_neighbor_contries
 
 def recommend_country_DF(UAM, seed_uidx, seed_aidx_train, K):
     """
@@ -380,10 +160,7 @@ def recommend_country_DF(UAM, seed_uidx, seed_aidx_train, K):
     :param df_list: list containing all users that have defined attribute
     :return: a dictionary of recommended artists
     """
-    if seed_uidx == 1208:
-        print 'test'
     # Get playcount vector for seed user
-    print seed_uidx
     pc_vec = UAM[seed_uidx, :]
 
     # Remove information on test artists from seed's playcount vector
@@ -414,7 +191,7 @@ def recommend_country_DF(UAM, seed_uidx, seed_aidx_train, K):
     sort_idx = list(set(sort_idx).intersection(country_neighbor_idx))
 
     distance = 800
-    while len(sort_idx) == 1 and K < MIN_RECOMMENDED_ARTISTS:
+    while len(sort_idx) == 1 and K < UAM.shape[0]:
         sort_idx = list(set(sort_idx).intersection(get_neighbor_contries(seed_uidx, True, distance)))
         distance += 200
         if distance > 5000:
@@ -466,14 +243,6 @@ def recommend_country_DF(UAM, seed_uidx, seed_aidx_train, K):
     for i in sorted_dict_reco_aidx:
         new_dict_recommended_artists_idx[i[0]] = i[1] / max_value
 
-    if len(new_dict_recommended_artists_idx) < MIN_RECOMMENDED_ARTISTS:
-        K_users = K + 1
-
-        if K_users > UAM.shape[0]:
-            K_users = 1
-
-        return recommend_country_DF(UAM, seed_aidx_train, seed_aidx_train, K_users)
-
     sorted_dict_reco_aidx = sorted(new_dict_recommended_artists_idx.items(), key=operator.itemgetter(1), reverse=True)
 
     new_dict_finish = {}
@@ -483,7 +252,7 @@ def recommend_country_DF(UAM, seed_uidx, seed_aidx_train, K):
 
     # Return dictionary of recommended artist indices (and scores)
     return new_dict_finish
-
+# /recommend_country_DF
 
 def run(_K, _recommended_artists):
     """
@@ -503,7 +272,7 @@ def run(_K, _recommended_artists):
     avg_rec = 0
     no_users = UAM.shape[0]
     MIN_RECOMMENDED_ARTISTS = _recommended_artists
-    _K = MIN_RECOMMENDED_ARTISTS
+
     #print _K
     #print MIN_RECOMMENDED_ARTISTS
 
@@ -513,10 +282,7 @@ def run(_K, _recommended_artists):
 
     for u in range(0, no_users):
 
-        print ""
-        print "User: " + str(u) + ":"
         user_has_attr = check_if_list_contains_user(u, users_country_clean)
-        print "User has attribute: " + str(user_has_attr)
 
         # Only perform test for seed_user who has attribute
         if user_has_attr:
@@ -543,7 +309,6 @@ def run(_K, _recommended_artists):
                 # Call recommend function
                 copy_UAM = UAM.copy()  # we need to create a copy of the UAM, otherwise modifications within recommend function will effect the variable
 
-                print u
                 dict_rec_aidx = recommend_country_DF(copy_UAM, u, u_aidx[train_aidx], _K)
 
                 if not dict_rec_aidx:
@@ -613,13 +378,13 @@ def run(_K, _recommended_artists):
     data['recommended'] = recommended_artists
 
     return data
-
+# /run
 
 # Main program, for experimentation.
 if __name__ == '__main__':
 
     # Load metadata from provided files into lists
-    artists = read_artists_file(ARTISTS_FILE)
+    artists = helper.read_csv(ARTISTS_FILE)
 
     global seed_user_lat
     global seed_user_long
@@ -642,37 +407,17 @@ if __name__ == '__main__':
     if VERBOSE:
         helper.log_highlight('Loading UAM')
 
-    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)[:1000, :10100]
-    UAM.shape[0]
+    UAM = np.loadtxt(UAM_FILE, delimiter='\t', dtype=np.float32)
 
     if VERBOSE:
         print 'Successfully loaded UAM'
 
     time_start = time.time()
 
-    run_recommender(run, METHOD, [5, 10, 20, 50], [1, 3, 5, 7, 10, 20, 30, 50, 100, 200])  # serial
+    run_recommender(run, METHOD)  # serial
 
     time_end = time.time()
     elapsed_time = (time_end - time_start)
 
     print ""
     print "Elapsed time: " + str(elapsed_time)
-
-
-    # no_users = UAM.shape[0]
-    #
-    # counter = 0
-    #
-    # for u in range(0, no_users):
-    #     print "_______________________________________________"
-    #     print ""
-    #     print "User: " + str(u) + ":"
-    #     test = check_if_list_contains_item(u, users_age_clean)
-    #     print test
-    #
-    #     if test:
-    #         counter += 1
-    # print ""
-    # print "###########################"
-    # print " Users with attribute: " + str(counter)
-    # print "###########################"
