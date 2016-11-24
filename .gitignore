@@ -2,19 +2,15 @@
 **/.idea/**
 **/*.pyc
 
-PartA
-PartB
-**/LFM1b_artists.txt
-**/LFM1b_users.txt
+**/LFM1b*.txt
 
 **/output/wikipedia
 **/output/musixmatch/AAM.txt
 **/output/musixmatch/tfidfs.txt
 
-**/test_data/**
+
 
 # ignore temp files from MSOffice
 **/~$*
-**/results/**/recommended
-AAM_mm.txt
-AAM_wiki.txt
+**/results/**
+**/AMM*.txt
